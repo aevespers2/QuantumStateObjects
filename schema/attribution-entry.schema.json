@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/aevespers2/QuantumStateObjects/blob/main/schema/attribution-entry.schema.json",
+  "title": "QSO Attribution Journey Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entry_id",
+    "qso_instance",
+    "sequence",
+    "timestamp_utc",
+    "event_type",
+    "contributors",
+    "state_before_sha256",
+    "state_after_sha256",
+    "previous_entry_sha256",
+    "artifacts",
+    "terms",
+    "review",
+    "entry_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "entry_id": {"type": "string", "pattern": "^attr-[a-f0-9]{16,64}$"},
+    "qso_instance": {"type": "string", "minLength": 3, "maxLength": 128},
+    "sequence": {"type": "integer", "minimum": 0},
+    "timestamp_utc": {"type": "string", "format": "date-time"},
+    "event_type": {
+      "enum": [
+        "genesis",
+        "hosting_session",
+        "learning_session",
+        "critique_session",
+        "creative_session",
+        "safety_review",
+        "freeze_certificate",
+        "artifact_created",
+        "artifact_derived",
+        "transfer_of_custody",
+        "correction",
+        "retirement"
+      ]
+    },
+    "contributors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contributor_id", "credit_name", "credit_mode", "contribution_classes", "description", "consent"],
+        "properties": {
+          "contributor_id": {"type": "string", "minLength": 2, "maxLength": 160},
+          "credit_name": {"type": "string", "minLength": 1, "maxLength": 200},
+          "credit_mode": {"enum": ["public_named", "public_pseudonymous", "private_escrowed", "anonymous_with_attestation"]},
+          "contribution_classes": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 2, "maxLength": 80}
+          },
+          "description": {"type": "string", "minLength": 1, "maxLength": 2000},
+          "consent": {"enum": ["confirmed", "pending", "withdrawn_public_credit_preserve_private_attestation"]},
+          "influence_estimate": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+          "influence_estimate_note": {"type": ["string", "null"], "maxLength": 500}
+        }
+      }
+    },
+    "state_before_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "state_after_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "previous_entry_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "kind", "sha256", "relationship"],
+        "properties": {
+          "artifact_id": {"type": "string", "minLength": 1, "maxLength": 200},
+          "kind": {"type": "string", "minLength": 1, "maxLength": 80},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "relationship": {"enum": ["input", "created", "derived", "referenced", "licensed"]},
+          "uri": {"type": ["string", "null"], "maxLength": 1000}
+        }
+      }
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attribution_required", "ownership_claimed", "benefit_sharing_defined", "license_reference"],
+      "properties": {
+        "attribution_required": {"type": "boolean"},
+        "ownership_claimed": {"type": "boolean"},
+        "benefit_sharing_defined": {"type": "boolean"},
+        "license_reference": {"type": ["string", "null"], "maxLength": 500},
+        "benefit_sharing_reference": {"type": ["string", "null"], "maxLength": 500}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sprite_reviewed", "human_review_required", "dispute_status"],
+      "properties": {
+        "sprite_reviewed": {"type": "boolean"},
+        "human_review_required": {"type": "boolean"},
+        "dispute_status": {"enum": ["none", "pending", "resolved_by_append_only_correction"]}
+      }
+    },
+    "entry_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

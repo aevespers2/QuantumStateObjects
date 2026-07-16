@@ -4,6 +4,14 @@ Bounded, auditable Quantum State Object prototypes for the QSO-Fabric experiment
 
 This repository contains the active QSO definitions. Genome templates belong in `QSO-GENOMES`; external repository retrieval and sanitization belong in `QSO-SEEKER`; inter-object communication belongs in the future fabric runtime.
 
+## Documentation
+
+- [Project guide and release boundaries](docs/index.md)
+- [Runtime architecture and trust boundaries](docs/architecture.md)
+- [Task chain](taskchain.md)
+- [Release plan](release.md)
+- [Changelog](changelog.md)
+
 ## Initial QSOs
 
 - **Atlas** — mathematical structure, algorithms, compression, and cross-domain mapping.

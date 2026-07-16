@@ -3,20 +3,22 @@
 All notable product, architecture, implementation, release, and deployment changes are recorded here.
 
 ## Unreleased
+
 ### Product
-- Product objectives, MVP scope, priorities, success criteria, and non-goals are maintained by the Product Manager.
+- 2026-07-16 — Set the immediate product objective to a runnable, locally verifiable QuantumStateObjects package before any cross-repository or four-QSO experiment claim.
+- 2026-07-16 — Prioritized repair of the missing CLI, real tests/CI, deterministic local fixtures, and freeze/rollback evidence; upstream integration remains blocked by QSO-GENOMES and QSO-SEEKER contracts.
 
 ### Architecture
-- Architecture decisions and task sequencing are maintained through `taskchain.md`.
+- The portfolio sequence now begins with the local runtime baseline, then schema/hash contract validation, then the bounded four-QSO runner.
 
 ### Implementation
-- Builder work is tracked through `punchlist.md` with verification evidence.
+- Existing runtime modules, schemas, instances, and attribution code remain candidate assets; no current PASS is asserted.
 
 ### Release
-- Release readiness, versioning, artifacts, and rollback criteria are tracked in `release.md`.
+- The `0.1.0-alpha.1` candidate remains blocked by the broken entry point, absent tests/CI, missing Atlas dependency, privacy/licensing approval, and missing security/provenance evidence.
 
 ### Deployment
-- Deployment environments, health checks, validation, and rollback events are tracked in `deploy.md`.
+- No runtime or payment deployment is authorized.
 
 ## Entry Format
 - Date

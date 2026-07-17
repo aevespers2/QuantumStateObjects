@@ -1,0 +1,21 @@
+{
+  "repository": "QuantumStateObjects",
+  "phase_order": ["foundation", "object-model", "assurance", "integration", "release"],
+  "groups": {
+    "": ["pyproject.toml", "requirements.txt", "CHANGELOG.md", "SECURITY.md"],
+    "quantum_state_objects": ["__init__.py"],
+    "quantum_state_objects/core": ["qso.py", "identity.py", "state.py", "lifecycle.py", "limits.py", "result.py"],
+    "quantum_state_objects/genomes": ["loader.py", "validator.py", "canonicalizer.py", "digest.py", "immutable_fields.py"],
+    "quantum_state_objects/memory": ["working.py", "episodic.py", "semantic.py", "provenance.py", "retention_policy.py"],
+    "quantum_state_objects/cognition": ["observation.py", "inference.py", "hypothesis.py", "contradiction.py", "uncertainty.py", "proposal.py"],
+    "quantum_state_objects/communication": ["envelope.py", "permissions.py", "inbox.py", "outbox.py"],
+    "quantum_state_objects/freeze": ["snapshot.py", "checkpoint.py", "controller.py", "restoration.py"],
+    "quantum_state_objects/policy": ["immutable_ethics.py", "capabilities.py", "authority.py", "resource_guard.py", "mutation_guard.py"],
+    "quantum_state_objects/serialization": ["canonical_json.py", "state_export.py", "state_import.py"],
+    "tests": ["test_qso_instantiation.py", "test_genome_validation.py", "test_immutable_fields.py", "test_state_transitions.py", "test_memory_bounds.py", "test_communication_permissions.py", "test_freeze_restore.py", "test_mutation_denials.py", "test_serialization.py"],
+    "examples": ["instantiate_experimenter.py", "freeze_and_restore.py", "validate_genome.py"],
+    "docs": ["object-model.md", "state-machine.md", "genome-loading.md", "memory-model.md", "capability-model.md", "freeze-model.md"],
+    ".github/workflows": ["test.yml", "security.yml"],
+    ".github": ["CODEOWNERS", "pull_request_template.md"]
+  }
+}

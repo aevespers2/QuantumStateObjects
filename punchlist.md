@@ -4,11 +4,9 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Immediate
 
-- [ ] **Select one canonical CLI candidate.** Prefer PR #4 because it includes package-discovery repair, Python 3.11/3.13 CI, and explicit credential boundaries; keep PR #5 as a duplicate candidate until disposition is recorded.
-- [ ] **Make PR #4 exact-head verifiable.** Configure checkout with `ref: ${{ github.event.pull_request.head.sha }}`, assert `git rev-parse HEAD` equals `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`, rerun CI, and retain non-secret test/build evidence.
-- [ ] **Resolve PR #4 review threads.** Confirm package discovery, build requirements, and `persist-credentials: false` remain repaired; resolve only after the final head passes.
-- [ ] **Disposition duplicates.** Record PR #2 as superseded, keep draft PR #3 outside P0, and explicitly supersede or close PR #5 only after PR #4's canonical status is accepted.
-- [ ] **Run and record the accepted repository baseline.** Require clean installation, compilation, tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument failure, wheel/sdist creation, checksums, and retained logs at one immutable head.
+- [ ] **Accept one canonical CLI candidate.** PR #6 is the clean candidate rebuilt from current `main`; accept it only after its latest submitted head passes exact-head Python 3.11/3.13 CI and retained artifacts are inspected.
+- [ ] **Disposition older candidates.** Keep PR #4 and PR #5 open only until PR #6 is verified; then record them as superseded without discarding their evidence. PR #2 is already superseded and draft PR #3 remains outside P0.
+- [ ] **Run and record the accepted repository baseline.** Require exact-head checkout assertion, clean installation, compilation, tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument failure, wheel/sdist creation, checksums, and retained logs at one immutable head.
 - [ ] Inventory the four instance manifests, runtime partitions, message integrity, freeze/rollback controller, resource caps, event ledger, and attribution ledger.
 - [ ] Add validated local configuration loading plus malformed, missing, duplicate, and mismatched-hash fixtures that fail closed.
 - [ ] Confirm every generated snippet remains inert and requires Sprite plus human review.
@@ -16,12 +14,11 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Current evidence
 
-- [x] PR #4 workflow run `29599534913` passed two matrix jobs on Python 3.11 and 3.13.
-- [x] The run passed installation, compilation, four focused tests, CLI smoke, boundary JSON validation, version output, and wheel construction.
-- [x] Checkout credential persistence was disabled, package discovery was constrained to `qso_runtime*`, and build dependencies were installed.
-- [ ] Exact-head evidence is **not** satisfied: the workflow checked out synthetic merge commit `2ab66a8e5f6e463bbe6b5200b92c3d5005934701`, not PR head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`.
-- [ ] No workflow artifact was retained for run `29599534913`.
-- [ ] PR #5 has five local replay tests and a wheel checksum, but no attached workflow and no complete-tree independent clone evidence.
+- [x] PR #6 was created from current `main` as a conflict-free replacement candidate containing the missing `qso_runtime/cli.py`, four deterministic CLI tests, constrained `qso_runtime*` package discovery, and least-privilege CI.
+- [x] PR #6 CI checks out `${{ github.event.pull_request.head.sha || github.sha }}`, asserts the checked-out SHA, disables persisted checkout credentials, and retains the SHA, Python version, deterministic CLI output, CLI version, wheel, and SHA-256 manifest for 30 days.
+- [x] Independent reconstructed verification passed four tests, source/test compilation, workflow YAML parsing, wheel construction, and checksum generation; the reconstructed wheel SHA-256 was `df0bc69d33ac9165f4f75c074c6b7b21b304dbe83a1c2517442c8b21bf1650c3`.
+- [ ] Latest-head GitHub-hosted CI and artifact inspection for PR #6 remain required before canonical acceptance.
+- [ ] Earlier PR #4 matrix CI passed functional checks but used a synthetic merge ref and retained no artifact; PR #5 has local replay evidence but no attached workflow.
 
 ## After upstream contracts are green
 

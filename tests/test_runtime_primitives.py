@@ -6,7 +6,7 @@ import hashlib
 import pytest
 
 from qso_runtime.attribution import AttributionJourneyLedger, ContributorCredit
-from qso_runtime.core import GenomeInterpreter, MCPMessage
+from qso_runtime.core import GenomeInterpreter, MCPMessage, digest
 from qso_runtime.runtime import (
     RuntimeController,
     RuntimeInvariantError,
@@ -65,6 +65,10 @@ def test_instance_lifecycle_is_active_and_invalid_genome_fails_closed() -> None:
     with pytest.raises(ValueError, match="missing genome fields"):
         RuntimeController.instantiate(invalid, identity())
 
+    without_rollback_capacity = genome(max_events=1)
+    with pytest.raises(RuntimeInvariantError, match="reserve capacity"):
+        RuntimeController.instantiate(without_rollback_capacity, identity())
+
 
 def test_message_validation_accepts_canonical_and_rejects_tampering() -> None:
     controller = RuntimeController.instantiate(genome(), identity())
@@ -101,6 +105,25 @@ def test_event_ledger_is_hash_linked_and_tamper_evident() -> None:
     errors = verify_event_ledger(tampered)
     assert "event hash mismatch at 1" in errors
     assert event_ledger_sha256(controller.qso) == original_hash
+
+
+def test_event_ledger_rejects_rehashed_malformed_entries() -> None:
+    controller = RuntimeController.instantiate(genome(), identity())
+    controller.ingest(record("shape"))
+
+    missing_shape = copy.deepcopy(controller.qso.p.events)
+    missing_shape[0].pop("qso")
+    missing_shape[0]["sha256"] = digest(
+        {key: value for key, value in missing_shape[0].items() if key != "sha256"}
+    )
+    assert any("missing event fields at 0" in error for error in verify_event_ledger(missing_shape))
+
+    boolean_sequence = copy.deepcopy(controller.qso.p.events)
+    boolean_sequence[1]["sequence"] = True
+    boolean_sequence[1]["sha256"] = digest(
+        {key: value for key, value in boolean_sequence[1].items() if key != "sha256"}
+    )
+    assert "sequence type mismatch at 1" in verify_event_ledger(boolean_sequence)
 
 
 def test_attribution_ledger_is_deterministic_chained_and_tamper_evident() -> None:
@@ -162,6 +185,63 @@ def test_resource_limits_reject_without_partial_mutation() -> None:
     with pytest.raises(RuntimeInvariantError, match="outbox"):
         controller.send("nova", "proposal", {"sequence": 2})
     assert controller.qso.p.outbox == outbox_before
+
+
+def test_ingest_exception_restores_state_and_event_ledger() -> None:
+    malformed = genome()
+    malformed["resources"].pop("max_records")
+    controller = RuntimeController.instantiate(malformed, identity())
+    state_before = state_sha256(controller.qso)
+    events_before = event_ledger_sha256(controller.qso)
+
+    with pytest.raises(RuntimeInvariantError, match="failed closed"):
+        controller.ingest(record("missing-limit"))
+
+    assert state_sha256(controller.qso) == state_before
+    assert event_ledger_sha256(controller.qso) == events_before
+    assert controller.qso.p.records == []
+
+
+def test_freeze_uses_canonical_checkpoint_for_messages() -> None:
+    controller = RuntimeController.instantiate(genome(), identity())
+    controller.send("nova", "proposal", {"sequence": 1})
+    controller.receive(MCPMessage.build("nova", "atlas", "annotation", {"sequence": 2}))
+
+    frozen = controller.freeze([])
+    assert frozen["state_sha256"] == controller.checkpoint.state_sha256
+    checkpoint_hash = controller.checkpoint.state_sha256
+    checkpoint_inbox = copy.deepcopy(controller.qso.p.inbox)
+    checkpoint_outbox = copy.deepcopy(controller.qso.p.outbox)
+
+    controller.resume()
+    controller.qso.p.inbox.clear()
+    controller.qso.p.outbox.clear()
+    decision = controller.freeze([{"severity": "high", "reason": "synthetic"}])
+
+    assert decision["decision"] == "rollback"
+    assert controller.status == "active"
+    assert controller.qso.p.inbox == checkpoint_inbox
+    assert controller.qso.p.outbox == checkpoint_outbox
+    assert state_sha256(controller.qso) == checkpoint_hash
+    assert controller.qso.p.events[-1]["kind"] == "rollback"
+
+
+def test_event_capacity_reserves_a_rollback_record() -> None:
+    controller = RuntimeController.instantiate(genome(max_records=3, max_events=3), identity())
+    controller.ingest(record("one"))
+    state_after_ingest = state_sha256(controller.qso)
+    events_after_ingest = event_ledger_sha256(controller.qso)
+
+    with pytest.raises(RuntimeInvariantError, match="event limit"):
+        controller.ingest(record("two"))
+    assert state_sha256(controller.qso) == state_after_ingest
+    assert event_ledger_sha256(controller.qso) == events_after_ingest
+
+    controller.rollback()
+    assert controller.qso.p.records == []
+    assert len(controller.qso.p.events) == 3
+    assert controller.qso.p.events[-1]["kind"] == "rollback"
+    assert verify_event_ledger(controller.qso.p.events) == []
 
 
 def test_freeze_interruption_recovery_and_rollback_preserve_evidence() -> None:

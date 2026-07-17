@@ -5,44 +5,45 @@ All notable product, architecture, implementation, release, and deployment chang
 ## Unreleased
 
 ### Product
-- 2026-07-16 — Set the immediate product objective to a runnable, locally verifiable QuantumStateObjects package before any cross-repository or four-QSO experiment claim.
-- 2026-07-16 — Prioritized repair of the missing CLI, real tests/CI, deterministic local fixtures, and freeze/rollback evidence; upstream integration remains blocked by QSO-GENOMES and QSO-SEEKER contracts.
-- 2026-07-17 — Split P0 into canonical CLI-candidate acceptance followed by local configuration/runtime evidence so duplicate branches cannot silently redefine the release path.
-- 2026-07-17 — Advanced the immediate objective from PR #6's earlier source/name/hash findings to PR #7's strict-UTF-8, schema-parity, and integer-version findings before broader runtime or integration work.
+- 2026-07-16 — Set the immediate objective to a runnable, locally verifiable QuantumStateObjects package before cross-repository or four-QSO claims.
+- 2026-07-17 — Selected PR #7 as the sole canonical CLI/configuration path and kept Experimenter work outside P0.
+- 2026-07-17 — Advanced P0 from configuration-only evidence to one bounded runtime-primitives slice while retaining fail-closed review gates.
 
 ### Architecture
-- The portfolio sequence begins with one accepted exact-head CLI/configuration baseline, then local runtime/message/ledger/freeze evidence, schema/hash contract validation, and finally the bounded four-QSO runner.
-- Draft Experimenter object-model work remains outside the first release and cannot displace P0.
-- Configuration acceptance requires agreement among the published schema, loader, resolver, later instantiation path, canonical QSO names, accepted upstream repository/path boundary, SHA-256 pins, strict UTF-8 decoding, complete required blocks, and integer-only schema versions.
+- The accepted sequence is: final PR #7 configuration/runtime acceptance → accepted QSO-GENOMES and QSO-SEEKER contracts → bounded four-QSO experiment with append-only evidence.
+- Configuration, runtime instantiation, persisted evidence, checkpoints, freeze, and rollback must share one canonical schema/type/hash contract.
+- Atlas, Nova, Orion, and Lyra may not be described as running without authorized append-only runtime and ledger proof.
 
 ### Added
-- PR #7 rebuilds the bounded `qso-run` and local configuration candidate from current `main`, adds 15 deterministic unit/smoke tests, constrained setuptools package discovery, and Python 3.11/3.13 exact-head CI with read-only permissions, disabled checkout credential persistence, and retained artifacts.
-- `deploy.md` defines fail-closed environment, permission, artifact, configuration, health, observability, rollback, and post-deployment gates.
+- PR #7 adds a deterministic `RuntimeController` and focused synthetic tests for active/frozen/interrupted lifecycle states, message validation, hash-linked event and attribution ledgers, resource limits, freeze/resume, interruption/recovery, rollback/checkpoint restoration, and canonical state/event hashes.
+- Exact-head CI retains JUnit, CLI/configuration, checked-out-SHA, wheel, and checksum evidence on Python 3.11 and 3.13.
 
 ### Changed
-- PR #6 is closed without merge as superseded after its three review findings were repaired in PR #7; PR #2, PR #4, and PR #5 remain closed as superseded. PR #7 is the sole selected candidate.
-- Planning records distinguish an exact-head passing candidate from an accepted or merged release head.
-- Atlas's absent accepted genome hash remains an explicit fail-closed upstream-contract gate rather than an implicit missing-file condition.
+- PR #7 was reconciled with current `main` through normal two-parent head `395915b60510e9a62c53ad128cf23d151e73eb1f` without force-rewriting reviewed history; it is open, unmerged, mergeable, and zero commits behind `main`.
+- Planning now treats the runtime slice as `REVIEW`, not accepted capability, because new correctness findings remain.
 
 ### Verification
-- Workflow run `29614395650` checked out and asserted PR #7 head `80e0546a53c139b26e956bce8f20c41e907739a6`.
-- Python 3.11 and 3.13 jobs passed installation, compilation, all 15 unit/smoke tests, installed default/configuration CLI smoke, wheel construction, checksum generation, and retained-artifact upload.
-- Artifact digests are `cdfd6817c3d0e0c07b41613072443c4fdd5aa0952ea68e4969ccee362ed7470a` and `221cfa42111ed0a6ac42c0311934d812f437f9eeeaa80d3f5cb574d155cde7ed`.
-- Wheel SHA-256 values are `99fa4f424f4c1ca12ece6d0971e887708e7083275934904d264ace80ecac1790` and `7afba2f01fc3d9481989ea68302b79a8e671c7121572899c374e6c8f6a606dfd`.
-- PR #7 resolved the earlier schema hash-pin, declared repository/path, and canonical-name findings.
-- Three new unresolved P2 findings block acceptance: raw-byte JSON parsing can accept UTF-16/32 payloads, the CLI can accept manifests missing schema-required runtime blocks, and booleans can pass as numeric schema versions.
+- Workflow run `29617877793` passed on Python 3.11 and 3.13 at exact head `395915b60510e9a62c53ad128cf23d151e73eb1f`.
+- Both jobs passed installation, compilation, 22 tests with zero failures/errors/skips, installed default/configuration CLI smoke, wheel construction, checksum generation, and retained-artifact upload.
+- Artifact digests are `c53ecc7692716519be67c92e4e51cc04695187437790c784d8b42f78d70a76fd` and `cf2290f7469b71ebb92cc7b1cb7eb86a64ee9ff56df8b89203fa157bd6b65816`.
+- Wheel SHA-256 values are `97c6ec287e2eb1b23776dc232a16641f566202f1aacf792755a992930adf5dc3` and `b074c2328f90585c2fe8fb7a83d023ef34ea7374b6ee9915c57209d589e678cc`.
+
+### Review findings
+- Three existing P2 findings remain: strict UTF-8 decoding, enforcement of all required instance blocks, and rejection of Boolean schema versions.
+- Five additional P2 findings were recorded: enforce the instance-ID schema pattern; restore state when delegated ingest raises; use one canonical message-inclusive checkpoint when freezing; preserve rollback at a full event ceiling; and reject malformed persisted event-entry shapes/types.
 
 ### Security
-- The candidate explicitly declares no credential access, generated-code execution, network access, or repository writes.
-- Exact-head checkout/assertion and retained evidence pass, but strict-UTF-8 parsing, complete schema parity, integer-only versions, merged-head verification, complete parser/dependency/secret/adversarial review, and local runtime validation remain required.
+- Candidate CI uses read-only contents permission, exact submitted-head checkout/assertion, and disabled checkout credential persistence.
+- The runtime slice uses synthetic local fixtures and does not execute generated snippets, access credentials, consume networked runtime inputs, write external repositories, or run the four named QSOs.
+- Complete parser, state-atomicity, checkpoint, rollback-capacity, persisted-evidence, dependency, secret, workflow, and adversarial review remains required.
 
 ### Release
-- The `0.1.0-alpha.1` candidate remains blocked. The CLI/configuration sub-slice advanced to PR #7 exact-head matrix CI with retained artifacts, but unresolved review findings, repaired final-head and merged-head acceptance, runtime/freeze/rollback evidence, upstream contracts, privacy/licensing, provenance, and approval remain incomplete.
+- The first eligible version remains `0.1.0-alpha.1`.
+- Release remains blocked by eight unresolved P2 findings, repaired final-head and merged-head verification, accepted upstream contracts, source/sdist/SBOM/provenance, privacy/licensing, rollback drill, and approval.
 
 ### Deployment
-- No runtime, package publication, four-QSO experiment, payment path, or production deployment is authorized.
-- The only future initial target is a disposable credential-free local/CI verification environment after every release gate passes.
-- PR #7 artifacts are review evidence only and do not authorize deployment.
+- No runtime, package publication, scheduled execution, four-QSO experiment, external integration, payment path, or production deployment is authorized.
+- The only future initial target is a disposable credential-free, network-disabled local/CI verification environment after every release gate passes.
 
 ## Entry Format
 - Date

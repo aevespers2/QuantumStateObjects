@@ -8,20 +8,20 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Product directive
 
-- **Next objective:** Repair and independently accept PR #6's local-configuration contract before adding broader runtime behavior or cross-repository experiments.
+- **Next objective:** Repair and independently accept PR #7's local-configuration contract before adding broader runtime behavior or cross-repository experiments.
 - **User outcome:** A researcher can install the package, invoke `qso-run`, load and validate canonical local instance configuration, execute a bounded deterministic smoke run, and inspect event/attribution evidence plus freeze/rollback behavior.
-- **MVP scope:** preserve the verified CLI baseline; make loader, schema, repository/path, canonical-name, and hash-pin rules agree; verify instance, message, ledger, attribution, limit, freeze, and rollback primitives with local fixtures; document supported Python versions, privacy/licensing boundaries, commands, failures, and recovery.
-- **Priority:** Final-head acceptance of PR #6's configuration slice now precedes QSO-GENOMES/QSO-SEEKER integration, deterministic runtime evidence, and the four-QSO experiment.
-- **Success criteria:** exact-head and merged-head clean build/install succeed; `qso-run` smoke passes; schema and loader agree; wrong repository/path, wrong case, invalid configuration, and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
+- **MVP scope:** preserve the verified CLI/configuration baseline; require strict UTF-8 JSON, full instance-schema identity blocks, exact integer schema versions, canonical repository/path/name/hash rules, and fail-closed genome resolution; then verify instance, message, ledger, attribution, limit, freeze, interruption, recovery, and rollback primitives with local fixtures.
+- **Priority:** Final-head acceptance of PR #7 now precedes QSO-GENOMES/QSO-SEEKER integration, deterministic runtime evidence, and the four-QSO experiment.
+- **Success criteria:** exact-head and merged-head clean build/install succeed; `qso-run` smoke passes; schema and loader agree; UTF-16/32 payloads, missing required identity/review/status blocks, booleans used as schema versions, wrong repository/path/case, invalid configuration, and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
 - **Non-goals:** autonomous internet learning, executing retrieved/generated code, production payments, unrestricted repository writes, or claiming a verified four-QSO run while upstream Atlas and canonical-record contracts are incomplete.
-- **Release rationale:** The exact-head CLI/configuration candidate is useful evidence, but it cannot safely anchor the portfolio until the three current contract findings are repaired and broader runtime behavior is reproducibly verified.
+- **Release rationale:** PR #7 resolves PR #6's earlier schema/source/name findings and has exact-head matrix evidence, but three new parser/schema-enforcement findings must be repaired and reverified before it can anchor the portfolio.
 
 ## Active chain
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0-A | Reconcile the runnable CLI candidates | Architect | — | REVIEW | PR #6 remains the sole canonical path; exact-head run `29610600428` and artifacts are verified, superseded PR #4/#5 remain closed, all PR #6 review threads are resolved, and final-head plus merged-head checks pass. |
-| P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | IN PROGRESS | Schema permits the required hash pin; repository/path and canonical case-sensitive names are enforced; invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
+| P0-A | Reconcile the runnable CLI/configuration candidates | Architect | — | REVIEW | PR #7 remains the sole canonical path; PR #6 is closed as superseded with review history preserved; all PR #7 review threads are resolved; final immutable-head and merged-head checks pass. |
+| P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | IN PROGRESS | Strict UTF-8 decoding, complete schema-required identity blocks, integer-only schema versions, canonical source/name/hash enforcement, invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
 | P1 | Add cross-repository contract validation | QSOBuilder | P0-B, QSO-GENOMES P1, QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public files and sample artifacts use an approved notice/license model and contain no unintended sensitive data. |
@@ -29,16 +29,17 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Candidate evidence
 
-- PR #6 is open, mergeable, and the sole canonical runnable/configuration candidate at head `6e382853e6746f8eb18e97c64481dccfe6684652`.
-- Workflow run `29610600428` checked out and asserted that exact head. Python 3.11 and 3.13 jobs passed installation, compilation, 11 tests, installed CLI smoke, boundary validation, version output, wheel construction, checksum generation, and retained artifact upload.
-- Retained artifact digests are `505be6dae69827c150c72161ed348a752cf623a9589b29045c70000ff7aa2422` and `f44653928b2974f10f76822aebdac89fd31cdedf485f3ee9b5758be2766ae5f1`; wheel SHA-256 values are `9c1a1fe0209864d1e614d491da881f004792fac288b14a98596e021de2abf7f2` and `be85a103430e911974c28073a2e3bb283c7fdc9d30812b5b8ef9f0fd49e5a225`.
-- Three unresolved P2 threads block acceptance: add `genome.sha256` to the published schema, reject genome references outside the declared QSO-GENOMES repository/path contract, and require canonical case-sensitive Atlas/Nova/Orion/Lyra names.
-- Atlas fails closed because its current reference has no accepted SHA-256. This is correct behavior but also a hard upstream blocker.
-- PR #4 and PR #5 are closed without merge as superseded. PR #2 remains superseded. Draft PR #3 remains outside P0 and outside the first release.
+- PR #7 is open and mergeable at head `80e0546a53c139b26e956bce8f20c41e907739a6`; PR #6 is closed without merge as superseded.
+- Workflow run `29614395650` checked out and asserted that exact head with read-only contents permission and checkout credential persistence disabled.
+- Python 3.11 and 3.13 jobs passed installation, compilation, all 15 unit/smoke tests, installed default/configuration CLI smoke, wheel construction, checksum generation, and retained artifact upload.
+- Retained artifact digests are `cdfd6817c3d0e0c07b41613072443c4fdd5aa0952ea68e4969ccee362ed7470a` and `221cfa42111ed0a6ac42c0311934d812f437f9eeeaa80d3f5cb574d155cde7ed`; wheel SHA-256 values are `99fa4f424f4c1ca12ece6d0971e887708e7083275934904d264ace80ecac1790` and `7afba2f01fc3d9481989ea68302b79a8e671c7121572899c374e6c8f6a606dfd`.
+- PR #7 resolves the earlier schema hash-pin, repository/path, and canonical-name findings, but three new unresolved P2 threads require strict UTF-8 decoding for configuration/genome payloads, enforcement of all schema-required runtime identity/development/review/status blocks, and explicit rejection of boolean schema versions.
+- Atlas continues to fail closed because its current reference has no accepted SHA-256. QSO-GENOMES PR #2 remains unaccepted and non-mergeable; QSO-SEEKER's canonical-record contract remains unpublished or unaccepted.
+- Draft PR #3 remains outside P0 and outside the first release.
 
 ## Portfolio dependency order
 
-PR #6 contract repair and final-head acceptance ↔ QSO-GENOMES canonical artifact/hash acceptance → local runtime/message/ledger/freeze evidence → QSO-SEEKER canonical-record acceptance → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
+PR #7 parser/schema repair and final-head acceptance ↔ QSO-GENOMES canonical artifact/hash acceptance → local runtime/message/ledger/freeze evidence → QSO-SEEKER canonical-record acceptance → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
 
 ## Builder Log
 

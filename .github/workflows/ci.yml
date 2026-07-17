@@ -46,7 +46,9 @@ jobs:
         run: python -m compileall -q qso_runtime tests
 
       - name: Run unit tests
-        run: python -m pytest
+        run: |
+          mkdir -p evidence
+          python -m pytest --junitxml=evidence/pytest.xml
 
       - name: Verify installed CLI smoke
         run: |

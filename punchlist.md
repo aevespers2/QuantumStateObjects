@@ -4,24 +4,28 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Immediate
 
-- [ ] **Select one canonical CLI candidate.** Prefer PR #4 because it includes package-discovery repair, Python 3.11/3.13 CI, and explicit credential boundaries; keep PR #5 as a duplicate candidate until disposition is recorded.
-- [ ] **Make PR #4 exact-head verifiable.** Configure checkout with `ref: ${{ github.event.pull_request.head.sha }}`, assert `git rev-parse HEAD` equals `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`, rerun CI, and retain non-secret test/build evidence.
-- [ ] **Resolve PR #4 review threads.** Confirm package discovery, build requirements, and `persist-credentials: false` remain repaired; resolve only after the final head passes.
-- [ ] **Disposition duplicates.** Record PR #2 as superseded, keep draft PR #3 outside P0, and explicitly supersede or close PR #5 only after PR #4's canonical status is accepted.
-- [ ] **Run and record the accepted repository baseline.** Require clean installation, compilation, tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument failure, wheel/sdist creation, checksums, and retained logs at one immutable head.
-- [ ] Inventory the four instance manifests, runtime partitions, message integrity, freeze/rollback controller, resource caps, event ledger, and attribution ledger.
-- [ ] Add validated local configuration loading plus malformed, missing, duplicate, and mismatched-hash fixtures that fail closed.
+- [x] **Select one canonical CLI/configuration candidate.** PR #6 is the sole selected path; PR #4 and PR #5 are closed as superseded, PR #2 remains superseded, and draft PR #3 remains outside P0.
+- [x] **Make the candidate exact-head verifiable.** Run `29610600428` checked out and asserted head `6e382853e6746f8eb18e97c64481dccfe6684652`, passed Python 3.11/3.13 CI, and retained non-secret artifacts.
+- [ ] **Repair PR #6 schema/hash-pin agreement.** Add the accepted `genome.sha256` field and constraints to `schema/qso-instance.schema.json` so schema-valid manifests can satisfy the resolver without weakening fail-closed behavior.
+- [ ] **Enforce the declared genome source contract.** Reject repositories and paths outside the accepted `aevespers2/QSO-GENOMES` boundary and exact versioned artifact layout; add positive and negative tests.
+- [ ] **Require canonical QSO names.** Reject non-canonical case variants and require exactly `Atlas`, `Nova`, `Orion`, and `Lyra` with unique identities.
+- [ ] **Resolve all PR #6 review threads and rerun final-head CI.** Retain artifacts and inspect checked-out SHA, test results, configuration evidence, wheel hashes, and review disposition at the repaired immutable head.
+- [ ] **Run merged-head acceptance.** After review and merge authorization, require clean installation, compilation, complete tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument/configuration failures, wheel and sdist creation, checksums, and retained logs at the merged head.
+- [ ] Inventory and test the four instance manifests, runtime partitions, message integrity, freeze/rollback controller, resource caps, event ledger, and attribution ledger.
 - [ ] Confirm every generated snippet remains inert and requires Sprite plus human review.
 - [ ] Prepare contract-validation tests that can consume fixed QSO-GENOMES and QSO-SEEKER fixtures once their manifests are published.
 
 ## Current evidence
 
-- [x] PR #4 workflow run `29599534913` passed two matrix jobs on Python 3.11 and 3.13.
-- [x] The run passed installation, compilation, four focused tests, CLI smoke, boundary JSON validation, version output, and wheel construction.
-- [x] Checkout credential persistence was disabled, package discovery was constrained to `qso_runtime*`, and build dependencies were installed.
-- [ ] Exact-head evidence is **not** satisfied: the workflow checked out synthetic merge commit `2ab66a8e5f6e463bbe6b5200b92c3d5005934701`, not PR head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`.
-- [ ] No workflow artifact was retained for run `29599534913`.
-- [ ] PR #5 has five local replay tests and a wheel checksum, but no attached workflow and no complete-tree independent clone evidence.
+- [x] PR #6 workflow run `29610600428` passed Python 3.11 and 3.13 matrix jobs.
+- [x] Both jobs checked out and asserted exact submitted head `6e382853e6746f8eb18e97c64481dccfe6684652` with checkout credential persistence disabled and read-only contents permission.
+- [x] The run passed installation, compilation, all 11 unit/smoke tests, installed CLI smoke, boundary validation, version output, wheel construction, checksum generation, and retained-artifact upload.
+- [x] Artifact digests: Python 3.11 `505be6dae69827c150c72161ed348a752cf623a9589b29045c70000ff7aa2422`; Python 3.13 `f44653928b2974f10f76822aebdac89fd31cdedf485f3ee9b5758be2766ae5f1`.
+- [x] Wheel SHA-256: Python 3.11 `9c1a1fe0209864d1e614d491da881f004792fac288b14a98596e021de2abf7f2`; Python 3.13 `be85a103430e911974c28073a2e3bb283c7fdc9d30812b5b8ef9f0fd49e5a225`.
+- [x] Local configuration validation covers bounded UTF-8 JSON, exact instance count/set, uniqueness, schema versions, relative JSON paths, regular non-symlink files, file-size limits, and optional SHA-256 resolution beneath an explicit local root.
+- [x] Atlas currently fails closed before file access or network activity because no accepted upstream SHA-256 is present.
+- [ ] Three P2 correctness threads remain unresolved: schema omission of the hash pin, repository/path contract bypass, and case-insensitive acceptance of QSO names.
+- [ ] QSO-GENOMES PR #2 remains unaccepted and cannot yet supply a trusted Atlas hash-pinned fixture.
 
 ## After upstream contracts are green
 
@@ -36,8 +40,8 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Quality Gates
 
-- [ ] Deterministic tests and documented rollback path.
-- [ ] Security, dependency, workflow, secret, and adversarial review at the accepted exact head.
+- [ ] Deterministic runtime tests and documented rollback path.
+- [ ] Security, dependency, workflow, secret, parser/contract, and adversarial review at the accepted exact and merged heads.
 - [ ] No generated code is executed without validation and explicit human authorization.
 - [ ] Observations, inferences, hypotheses, proposals, and goals remain distinguishable.
 - [ ] Public artifacts contain only approved privacy, confidentiality, and licensing notices.

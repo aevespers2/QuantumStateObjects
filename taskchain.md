@@ -20,7 +20,7 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0 | Repair and verify the runnable local package baseline | QSOBuilder | — | READY | `qso_runtime.cli:main` exists; clean install, CLI smoke, local fixtures, tests, and CI pass; runtime/ledger/freeze/rollback inventory and exact evidence are recorded. |
+| P0 | Repair and verify the runnable local package baseline | QSOBuilder | — | IN PROGRESS | `qso_runtime.cli:main` exists; clean install, CLI smoke, local fixtures, tests, and CI pass; runtime/ledger/freeze/rollback inventory and exact evidence are recorded. |
 | P1 | Add cross-repository contract validation | QSOBuilder | QSO-GENOMES P1 and QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public files and sample artifacts use an approved notice/license model and contain no unintended sensitive data. |
@@ -32,4 +32,4 @@ Runnable local baseline → QSO-GENOMES and QSO-SEEKER contracts → runtime con
 
 ## Builder Log
 
-Record commits, install/test commands, workflow runs, deterministic seeds, schema and artifact hashes, freeze/rollback evidence, privacy review, residual risks, and follow-ups.
+- 2026-07-17 — Claimed P0 on fresh branch `builder/runnable-baseline-v2` from current main commit `6eb647919a40618066c272569c0d3e320394e89a`. PR #4 restores the missing bounded `qso_runtime.cli:main`, adds four deterministic CLI tests, and adds least-privilege Python 3.11/3.13 CI covering compilation, pytest, installed CLI smoke, boundary validation, version output, and wheel construction. External content remains data-only; generated snippets are not executed; credentials, network, and external repository writes are disabled. Exact-head CI and the broader local configuration/runtime/freeze/rollback evidence remain open, so P0 is not complete.

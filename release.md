@@ -2,9 +2,9 @@
 
 ## Current Decision
 
-Status: `BLOCKED — NON-RUNNABLE PACKAGE AND UPSTREAM CONTRACTS`
+Status: `BLOCKED — CANDIDATE CLI; FULL TEST/CI AND UPSTREAM CONTRACTS OPEN`
 
-QuantumStateObjects contains runtime modules, schemas, four instance declarations, attribution/ledger primitives, and package metadata at version `0.1.0`, but no runtime release is eligible. The declared `qso-run = qso_runtime.cli:main` entry point refers to missing `qso_runtime/cli.py`; the configured `tests` path has no test files and no CI workflow; Atlas references a missing QSO-GENOMES artifact; P0 remains `READY`; and candidate head `358218cbd94d998db0259caca1c713c5ea8d34fe` lacks current build, smoke, deterministic, freeze/rollback, security, documentation, privacy/license, provenance, and artifact evidence.
+QuantumStateObjects contains runtime modules, schemas, four instance declarations, attribution/ledger primitives, and package metadata at version `0.1.0`, but no runtime release is eligible. Builder branch `builder/runnable-cli-baseline-v1` now supplies the previously missing `qso_runtime.cli:main` entry point and three focused CLI tests; this is candidate remediation only. No clean checkout or attached CI run has verified the complete current tree, local configuration loading and broader runtime fixtures remain incomplete, Atlas references a missing QSO-GENOMES artifact, upstream QSO-SEEKER fixtures remain unpublished, P0 is `IN PROGRESS`, and build, deterministic, freeze/rollback, security, documentation, privacy/license, provenance, and release-artifact gates remain open.
 
 ## Versioning
 
@@ -24,7 +24,7 @@ QuantumStateObjects contains runtime modules, schemas, four instance declaration
 
 ## Selected Completed Work
 
-None. Existing modules and declarative assets are candidate inputs, but no task is `DONE`, the package entry point is broken, tests/CI are absent, and upstream contracts are incomplete.
+No release task is `DONE`. The bounded CLI entry point and focused tests are present only as a candidate on `builder/runnable-cli-baseline-v1`; exact-head checkout, complete tests, CI, runtime fixtures, upstream contracts, and all remaining release gates still require acceptance evidence.
 
 ## Planned Changelog Entries
 
@@ -38,7 +38,7 @@ None. Existing modules and declarative assets are candidate inputs, but no task 
 
 | Gate | Status | Requirement |
 |---|---|---|
-| Runnable package/CLI | FAIL | `qso_runtime.cli:main` exists; clean build/install and `qso-run` smoke pass. |
+| Runnable package/CLI | CANDIDATE | `qso_runtime.cli:main` exists on the submitted head; clean exact-head build/install and `qso-run` smoke must pass in CI or an independently reproduced checkout. |
 | Task completion | FAIL | P0 is `DONE`; included later tasks have linked evidence. |
 | Tests/determinism | FAIL | Real tests and CI exist; full tests and repeated seeded runs reproduce canonical hashes. |
 | Freeze/rollback | NO EVIDENCE | Limits, freeze triggers, interruption, recovery, and rollback preserve evidence. |
@@ -63,13 +63,14 @@ Rollback if the entry point fails, schema/hash checks can be bypassed, required 
 
 ## Unresolved Blockers
 
-- `qso_runtime/cli.py` is missing although the package publishes `qso-run`.
-- The configured test path has no tests and no CI workflow exists.
+- The new CLI and focused tests lack exact-head clean-checkout and attached GitHub Actions evidence.
+- Local configuration loading, complete runtime tests, deterministic fixtures, and CI workflow coverage remain incomplete.
 - Atlas references the missing `QSO-GENOMES/genomes/atlas.json`; Seeker's versioned canonical-record contract is unpublished.
-- P0 and all quality-gate evidence remain incomplete.
-- No build, CLI smoke, determinism, resource, freeze/rollback, security, documentation, package, checksum, provenance, or rollback evidence exists.
+- P0 and all broader quality-gate evidence remain incomplete.
+- No accepted determinism, resource, freeze/rollback, security, documentation, package checksum, provenance, or rollback evidence exists.
 - Approval is required for the public privacy/confidentiality/license/attribution notice model.
 
 ## Release Log
 
 - 2026-07-16: Aligned the candidate with the runnable local-package priority; release remains blocked by the missing CLI/tests, upstream contracts, and publication-boundary approval.
+- 2026-07-17: Recorded bounded candidate remediation for the missing CLI entry point and three focused tests. Release remains blocked pending exact-head clean-checkout/CI evidence, broader runtime verification, upstream contracts, and publication-boundary approval.

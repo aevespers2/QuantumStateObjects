@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+
+    steps:
+      - name: Check out exact submitted head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Assert exact submitted head
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          printf '%s\n' "$ACTUAL_SHA" > checked-out-sha.txt
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package and test runner
+        run: |
+          python -m pip install --upgrade pip setuptools wheel pytest
+          python -m pip install -e . --no-build-isolation
+
+      - name: Compile source and tests
+        run: python -m compileall -q qso_runtime tests
+
+      - name: Run unit tests
+        run: python -m pytest
+
+      - name: Verify installed CLI smoke
+        run: |
+          mkdir -p evidence dist
+          qso-run > evidence/qso-run.json
+          qso-run --config config/instances.json > evidence/qso-config.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("evidence/qso-run.json").read_text(encoding="utf-8"))
+          assert payload["status"] == "ok"
+          assert payload["boundaries"] == {
+              "credentials_access": False,
+              "executes_generated_code": False,
+              "external_content": "data_only",
+              "network_access": False,
+              "repository_write": False,
+          }
+          configured = json.loads(Path("evidence/qso-config.json").read_text(encoding="utf-8"))
+          assert configured["configuration"]["primary_names"] == ["Atlas", "Nova", "Orion", "Lyra"]
+          assert configured["configuration"]["genomes_resolved"] is False
+          PY
+          qso-run --version > evidence/qso-run-version.txt
+          python --version > evidence/python-version.txt 2>&1
+          mv checked-out-sha.txt evidence/checked-out-sha.txt
+
+      - name: Build wheel without isolation
+        run: |
+          python -m pip wheel . --no-deps --no-build-isolation --wheel-dir dist
+          sha256sum dist/* > evidence/artifact-sha256.txt
+
+      - name: Retain exact-head evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: qso-runtime-evidence-py${{ matrix.python-version }}
+          path: |
+            evidence/
+            dist/
+          if-no-files-found: error
+          retention-days: 30

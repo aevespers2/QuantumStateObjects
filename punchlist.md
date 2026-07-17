@@ -4,12 +4,13 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Immediate
 
-- [x] **Rebase the canonical configuration repair on current `main`.** PR #7 was created from current `main` after PR #6 diverged by five planning commits and could no longer produce an exact-head pull-request workflow run.
-- [x] **Repair schema/hash-pin agreement.** `schema/qso-instance.schema.json` now permits an optional lowercase 64-character `genome.sha256` while the resolver continues to require it before reading local genome data.
-- [x] **Enforce the declared genome source contract.** The loader rejects repositories other than `aevespers2/QSO-GENOMES` and rejects any per-QSO path other than its canonical `genomes/<name>.json` location.
-- [x] **Require canonical QSO names.** The loader now accepts only exact case-sensitive `Atlas`, `Nova`, `Orion`, and `Lyra` names with unique identities.
-- [ ] **Accept PR #7 at an immutable head.** Require Python 3.11/3.13 exact-head CI, all 15 tests, installed default/configuration CLI smoke, wheel hashes, retained artifacts, review disposition, and a mergeable current-main diff.
-- [ ] **Disposition PR #6.** Close it as superseded only after PR #7 passes exact-head verification so its earlier evidence and review history remain available.
+- [x] **Select one canonical CLI/configuration candidate.** PR #7 is the sole selected path; PR #6, PR #5, PR #4, and PR #2 are closed as superseded without merge, and draft PR #3 remains outside P0.
+- [x] **Make PR #7 exact-head verifiable.** Run `29614395650` checked out and asserted head `80e0546a53c139b26e956bce8f20c41e907739a6`, passed Python 3.11/3.13 CI, and retained non-secret artifacts.
+- [x] **Repair the prior schema/hash-pin, source-contract, and canonical-name findings.** PR #7 permits the optional lowercase SHA-256 field, restricts genomes to `aevespers2/QSO-GENOMES` canonical paths, and requires exact Atlas/Nova/Orion/Lyra names.
+- [ ] **Enforce strict UTF-8 JSON.** Decode bounded configuration and genome bytes with strict UTF-8 before `json.loads`; add UTF-16/UTF-32 negative fixtures.
+- [ ] **Enforce all schema-required instance fields.** Reject manifests missing required identity, development, review, or status blocks before constructing an accepted runtime manifest; add positive and negative schema-parity tests.
+- [ ] **Reject boolean schema versions.** Require integer type and value `1` for both instance and genome schema versions; add `true`/`false` negative fixtures.
+- [ ] **Resolve every PR #7 review thread and rerun final-head CI.** Retain artifacts and inspect checked-out SHA, all tests, configuration evidence, wheel hashes, and review disposition at the repaired immutable head.
 - [ ] **Run merged-head acceptance.** After review and merge authorization, require clean installation, compilation, complete tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument/configuration failures, wheel and sdist creation, checksums, and retained logs at the merged head.
 - [ ] Inventory and test the four instance manifests, runtime partitions, message integrity, freeze/rollback controller, resource caps, event ledger, and attribution ledger.
 - [ ] Confirm every generated snippet remains inert and requires Sprite plus human review.
@@ -17,12 +18,14 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Current evidence
 
-- [x] Earlier PR #6 workflow run `29610600428` passed Python 3.11 and 3.13 at exact head `6e382853e6746f8eb18e97c64481dccfe6684652`, establishing the initial CLI/configuration baseline and retained artifacts.
-- [x] PR #7 starts from current `main` commit `dd455b52beb0c257d2f11abc994da6b94085c2c3`, eliminating PR #6's five-commit planning divergence.
-- [x] Reconstructed verification for PR #7 passed source/test compilation, all 15 unit/smoke tests, and `python -m qso_runtime.cli --config config/instances.json`.
-- [x] Four focused regression tests cover exact canonical name casing, accepted genome repository, canonical per-QSO paths, and schema support for the optional hash pin.
-- [x] Atlas continues to fail closed before file access or network activity because no accepted upstream SHA-256 is present.
-- [ ] PR #7 exact-head hosted CI, retained-artifact inspection, review, and mergeability confirmation remain required.
+- [x] PR #7 workflow run `29614395650` passed Python 3.11 and 3.13 matrix jobs.
+- [x] Both jobs checked out and asserted exact submitted head `80e0546a53c139b26e956bce8f20c41e907739a6` with checkout credential persistence disabled and read-only contents permission.
+- [x] The run passed installation, compilation, all 15 unit/smoke tests, installed default/configuration CLI smoke, boundary validation, wheel construction, checksum generation, and retained-artifact upload.
+- [x] Artifact digests: Python 3.11 `cdfd6817c3d0e0c07b41613072443c4fdd5aa0952ea68e4969ccee362ed7470a`; Python 3.13 `221cfa42111ed0a6ac42c0311934d812f437f9eeeaa80d3f5cb574d155cde7ed`.
+- [x] Wheel SHA-256: Python 3.11 `99fa4f424f4c1ca12ece6d0971e887708e7083275934904d264ace80ecac1790`; Python 3.13 `7afba2f01fc3d9481989ea68302b79a8e671c7121572899c374e6c8f6a606dfd`.
+- [x] PR #6's three review findings were answered and resolved before it was closed as superseded.
+- [x] Atlas fails closed before file access or network activity because no accepted upstream SHA-256 is present.
+- [ ] Three new P2 correctness threads remain unresolved: non-UTF-8 payload acceptance, acceptance of manifests missing schema-required runtime fields, and boolean schema-version acceptance.
 - [ ] QSO-GENOMES PR #2 remains unaccepted and cannot yet supply a trusted Atlas hash-pinned fixture.
 
 ## After upstream contracts are green

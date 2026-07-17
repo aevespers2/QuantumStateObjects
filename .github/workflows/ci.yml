@@ -17,10 +17,19 @@ jobs:
         python-version: ["3.11", "3.13"]
 
     steps:
-      - name: Check out exact head
+      - name: Check out exact submitted head
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+
+      - name: Assert exact submitted head
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          ACTUAL_SHA="$(git rev-parse HEAD)"
+          printf '%s\n' "$ACTUAL_SHA" > checked-out-sha.txt
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -41,12 +50,13 @@ jobs:
 
       - name: Verify installed CLI smoke
         run: |
-          qso-run > qso-run.json
+          mkdir -p evidence dist
+          qso-run > evidence/qso-run.json
           python - <<'PY'
           import json
           from pathlib import Path
 
-          payload = json.loads(Path("qso-run.json").read_text(encoding="utf-8"))
+          payload = json.loads(Path("evidence/qso-run.json").read_text(encoding="utf-8"))
           assert payload["status"] == "ok"
           assert payload["boundaries"] == {
               "credentials_access": False,
@@ -56,7 +66,21 @@ jobs:
               "repository_write": False,
           }
           PY
-          qso-run --version
+          qso-run --version > evidence/qso-run-version.txt
+          python --version > evidence/python-version.txt 2>&1
+          mv checked-out-sha.txt evidence/checked-out-sha.txt
 
       - name: Build wheel without isolation
-        run: python -m pip wheel . --no-deps --no-build-isolation --wheel-dir dist
+        run: |
+          python -m pip wheel . --no-deps --no-build-isolation --wheel-dir dist
+          sha256sum dist/* > evidence/artifact-sha256.txt
+
+      - name: Retain exact-head evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: qso-runtime-evidence-py${{ matrix.python-version }}
+          path: |
+            evidence/
+            dist/
+          if-no-files-found: error
+          retention-days: 30

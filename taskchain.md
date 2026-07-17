@@ -8,29 +8,39 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Product directive
 
-- **Next objective:** Make the existing package runnable and independently verifiable before adding cross-repository experiments.
+- **Next objective:** Select and verify one canonical runnable-package candidate before adding local configuration or cross-repository experiments.
 - **User outcome:** A researcher can install the package, invoke `qso-run`, load and validate local instance configuration, execute a bounded deterministic smoke run, and inspect event/attribution evidence plus freeze/rollback behavior.
 - **MVP scope:** repair the missing CLI entry point; add real unit/smoke tests and CI; verify instance, message, ledger, attribution, limit, freeze, and rollback primitives with local fixtures; document supported Python versions, privacy/licensing boundaries, commands, failures, and recovery.
-- **Priority:** Runnable package and local evidence baseline precede QSO-GENOMES/QSO-SEEKER integration and the four-QSO experiment.
-- **Success criteria:** clean build/install succeeds; `qso-run` smoke passes; invalid configuration and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
+- **Priority:** Exact-head acceptance of one CLI/package path precedes local configuration evidence, QSO-GENOMES/QSO-SEEKER integration, and the four-QSO experiment.
+- **Success criteria:** clean exact-head build/install succeeds; `qso-run` smoke passes; invalid configuration and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
 - **Non-goals:** autonomous internet learning, executing retrieved/generated code, production payments, unrestricted repository writes, or claiming a verified four-QSO run while upstream Atlas and canonical-record contracts are incomplete.
-- **Release rationale:** The core runtime cannot safely anchor the portfolio until its published entry point works and its local behavior is covered by reproducible tests.
+- **Release rationale:** The core runtime cannot safely anchor the portfolio until one immutable candidate is accepted and its local behavior is covered by reproducible tests and retained evidence.
 
 ## Active chain
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0 | Repair and verify the runnable local package baseline | QSOBuilder | — | IN PROGRESS | `qso_runtime.cli:main` exists; clean install, CLI smoke, local fixtures, tests, and CI pass; runtime/ledger/freeze/rollback inventory and exact evidence are recorded. |
-| P1 | Add cross-repository contract validation | QSOBuilder | QSO-GENOMES P1 and QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
+| P0-A | Reconcile the runnable CLI candidates | Architect / QSOBuilder | — | IN PROGRESS | PR #4 dynamically checks out and asserts the submitted head, retains checksummed evidence, passes final latest-head CI, resolves review threads, and explicitly dispositions duplicate PR #5. |
+| P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | BLOCKED | Instance loading, invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
+| P1 | Add cross-repository contract validation | QSOBuilder | P0-B, QSO-GENOMES P1, QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public files and sample artifacts use an approved notice/license model and contain no unintended sensitive data. |
 | P4 | Add simulated payment-intent and distribution records | Builder | P2 and approved payment-policy contract | BLOCKED | Records are simulation-only and distinguish intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
 
+## Candidate evidence
+
+- PR #4 remains the preferred canonical path because it contains the bounded CLI, focused tests, constrained packaging, and least-privilege two-version CI.
+- Earlier workflow run `29599534913` passed Python 3.11 and 3.13 installation, compilation, tests, CLI smoke, boundary validation, version output, and wheel construction, but checked out a synthetic merge ref and retained no artifact.
+- Commit `e9ba8736a00b7f356c352a81a1e7bf409c38c18e` repaired the workflow to check out `${{ github.event.pull_request.head.sha || github.sha }}`, assert that exact SHA, disable persisted checkout credentials, build a checksum manifest, and retain per-Python evidence for 30 days.
+- Independent reconstructed verification passed four tests, source/test compilation, workflow YAML parsing, wheel construction, and produced wheel SHA-256 `df0bc69d33ac9165f4f75c074c6b7b21b304dbe83a1c2517442c8b21bf1650c3`.
+- Final GitHub-hosted CI evidence for the latest PR head remains required before P0-A can move to review or done.
+- PR #5 remains a duplicate candidate without attached workflow evidence; PR #2 is superseded; draft PR #3 remains outside P0.
+
 ## Portfolio dependency order
 
-Runnable local baseline → QSO-GENOMES and QSO-SEEKER contracts → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
+Canonical exact-head CLI baseline → local runtime/configuration evidence → QSO-GENOMES and QSO-SEEKER contracts → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
 
 ## Builder Log
 
-- 2026-07-17 — Claimed P0 on fresh branch `builder/runnable-baseline-v2` from current main commit `6eb647919a40618066c272569c0d3e320394e89a`. PR #4 restores the missing bounded `qso_runtime.cli:main`, adds four deterministic CLI tests, constrains setuptools discovery to `qso_runtime*`, and adds least-privilege Python 3.11/3.13 CI covering compilation, pytest, installed CLI smoke, boundary validation, version output, and wheel construction. External content remains data-only; generated snippets are not executed; credentials, network, and external repository writes are disabled.
-- 2026-07-17 — Exact candidate head `62bc5784619c1d689694f0d0182692302acf6316` passed GitHub Actions run `29599420796` in both Python matrix jobs. Package installation, compilation, four unit/smoke tests, deterministic repeated CLI output, installed CLI boundary checks, version output, and wheel build all succeeded. The runnable CLI/test/CI sub-slice is verified; P0 remains `IN PROGRESS` for local configuration loading, fail-closed invalid fixtures, runtime/ledger/freeze/rollback inventory and tests, and recorded deterministic evidence.
+- 2026-07-17 — Repaired PR #4 exact-head verification and evidence retention. The workflow now dynamically binds checkout and assertion to the submitted pull-request head, records the checked-out SHA and Python version, preserves deterministic CLI output and version, builds a wheel and SHA-256 manifest, and uploads retained artifacts without credentials, network-dependent inputs, external repository writes, or generated-code execution.
+- 2026-07-17 — Reconstructed local verification of the bounded workflow slice passed four CLI tests, compilation, wheel construction, YAML parsing, and checksum generation. GitHub-hosted latest-head CI remains the sole open verification step for this slice.

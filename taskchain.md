@@ -20,7 +20,7 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0 | Repair and verify the runnable local package baseline | QSOBuilder | — | READY | `qso_runtime.cli:main` exists; clean install, CLI smoke, local fixtures, tests, and CI pass; runtime/ledger/freeze/rollback inventory and exact evidence are recorded. |
+| P0 | Repair and verify the runnable local package baseline | QSOBuilder | — | IN PROGRESS | `qso_runtime.cli:main` exists; clean install, CLI smoke, local fixtures, tests, and CI pass; runtime/ledger/freeze/rollback inventory and exact evidence are recorded. |
 | P1 | Add cross-repository contract validation | QSOBuilder | QSO-GENOMES P1 and QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public files and sample artifacts use an approved notice/license model and contain no unintended sensitive data. |
@@ -32,4 +32,4 @@ Runnable local baseline → QSO-GENOMES and QSO-SEEKER contracts → runtime con
 
 ## Builder Log
 
-Record commits, install/test commands, workflow runs, deterministic seeds, schema and artifact hashes, freeze/rollback evidence, privacy review, residual risks, and follow-ups.
+- 2026-07-17 — Claimed the first P0 slice on `builder/runnable-cli-baseline-v2`. PR #5 adds the missing bounded `qso_runtime.cli:main` and five real tests covering unit output, module smoke, and invalid-argument fail-closed behavior. Reconstructed exact-file replay passed five tests, compilation, wheel build, isolated installation, `qso-run`, and `qso-run --version`; wheel SHA-256 `8562d17728721c7f2ba4f4ad0fc0ec262ed0e1bc0bc853f4a2643518ba55f14f`. A full-tree clone was unavailable because the runtime could not resolve `github.com`; exact-head CI remains the next P0 evidence gate.

@@ -7,6 +7,13 @@ from pathlib import Path, PurePosixPath
 from typing import Iterable, Mapping
 
 REQUIRED_QSOS = ("Atlas", "Nova", "Orion", "Lyra")
+ACCEPTED_GENOME_REPOSITORY = "aevespers2/QSO-GENOMES"
+EXPECTED_GENOME_PATHS = {
+    "Atlas": "genomes/atlas.json",
+    "Nova": "genomes/nova.json",
+    "Orion": "genomes/orion.json",
+    "Lyra": "genomes/lyra.json",
+}
 MAX_CONFIG_BYTES = 1_000_000
 MAX_GENOME_BYTES = 1_000_000
 
@@ -112,6 +119,10 @@ def load_runtime_config(
         instance = _require_mapping(raw_instance, label=label)
         instance_id = _require_nonempty_string(instance.get("instance_id"), label=f"{label}.instance_id")
         primary_name = _require_nonempty_string(instance.get("primary_name"), label=f"{label}.primary_name")
+        if primary_name not in REQUIRED_QSOS:
+            raise ConfigurationError(
+                f"{label}.primary_name must be one of the canonical names: {', '.join(REQUIRED_QSOS)}"
+            )
         schema_version = instance.get("schema_version")
         if schema_version != 1:
             raise ConfigurationError(f"{label}.schema_version must equal 1")
@@ -119,19 +130,27 @@ def load_runtime_config(
 
         if instance_id in instance_ids:
             raise ConfigurationError(f"duplicate instance_id: {instance_id}")
-        folded_name = primary_name.casefold()
-        if folded_name in primary_names:
+        if primary_name in primary_names:
             raise ConfigurationError(f"duplicate primary_name: {primary_name}")
         instance_ids.add(instance_id)
-        primary_names.add(folded_name)
+        primary_names.add(primary_name)
 
         genome_value = _require_mapping(instance.get("genome"), label=f"{label}.genome")
         repository = _require_nonempty_string(
             genome_value.get("repository"), label=f"{label}.genome.repository"
         )
+        if repository != ACCEPTED_GENOME_REPOSITORY:
+            raise ConfigurationError(
+                f"{label}.genome.repository must equal {ACCEPTED_GENOME_REPOSITORY}"
+            )
         genome_path = _validate_relative_json_path(
             genome_value.get("path"), label=f"{label}.genome.path"
         )
+        expected_path = EXPECTED_GENOME_PATHS[primary_name]
+        if genome_path != expected_path:
+            raise ConfigurationError(
+                f"{label}.genome.path must equal {expected_path} for {primary_name}"
+            )
         genome_schema_version = genome_value.get("schema_version")
         if genome_schema_version != 1:
             raise ConfigurationError(f"{label}.genome.schema_version must equal 1")
@@ -154,8 +173,8 @@ def load_runtime_config(
         )
 
     if expected_primary_names is not None:
-        expected = {name.casefold() for name in expected_primary_names}
-        actual = {instance.primary_name.casefold() for instance in instances}
+        expected = set(expected_primary_names)
+        actual = {instance.primary_name for instance in instances}
         if actual != expected:
             missing = sorted(expected - actual)
             unexpected = sorted(actual - expected)

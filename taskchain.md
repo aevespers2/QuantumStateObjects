@@ -20,7 +20,7 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0-A | Reconcile the runnable CLI candidates | Architect | — | REVIEW | PR #4 is the preferred canonical path; repair its workflow to check out and assert head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`, rerun CI, resolve review threads, retain artifacts, and explicitly disposition duplicate PR #5. |
+| P0-A | Reconcile the runnable CLI candidates | Architect / QSOBuilder | — | IN PROGRESS | PR #6 passes latest-head Python 3.11/3.13 CI with exact-head assertion and retained checksummed artifacts; then PR #4 and PR #5 are explicitly superseded without losing evidence. |
 | P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | BLOCKED | Instance loading, invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
 | P1 | Add cross-repository contract validation | QSOBuilder | P0-B, QSO-GENOMES P1, QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
@@ -29,11 +29,11 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Candidate evidence
 
-- PR #4 is open and mergeable. Workflow run `29599534913` passed Python 3.11 and 3.13 installation, compilation, four tests, CLI smoke, boundary validation, version output, and wheel construction.
-- The run checked out synthetic merge commit `2ab66a8e5f6e463bbe6b5200b92c3d5005934701`, not submitted head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`; therefore exact-head acceptance remains open.
-- PR #4 has unresolved review threads. Package discovery, build-dependency installation, and credential persistence appear repaired in the current diff, but exact-head checkout is not.
-- PR #5 is open and mergeable but duplicates the CLI slice, has only reconstructed exact-file replay, and has no attached workflow run. It is not selected while PR #4 remains the stronger evidence path.
-- PR #2 is closed as superseded. Draft PR #3 remains outside P0 and outside the first release.
+- PR #6 was created from current `main` as a clean replacement candidate and contains only the bounded CLI, tests, package-discovery repair, and exact-head CI slice.
+- Its workflow checks out `${{ github.event.pull_request.head.sha || github.sha }}`, asserts the checked-out SHA, uses read-only permissions, disables persisted checkout credentials, and retains the SHA, Python version, deterministic CLI output, CLI version, wheel, and SHA-256 manifest for 30 days.
+- Independent reconstructed verification passed four tests, source/test compilation, workflow YAML parsing, wheel construction, and checksum generation; reconstructed wheel SHA-256: `df0bc69d33ac9165f4f75c074c6b7b21b304dbe83a1c2517442c8b21bf1650c3`.
+- Latest-head GitHub-hosted CI and artifact inspection for PR #6 remain required before P0-A can move to `DONE`.
+- Earlier PR #4 matrix CI passed functional checks but used a synthetic merge ref and retained no artifact. PR #5 has reconstructed local evidence but no attached workflow. PR #2 is superseded; draft PR #3 remains outside P0.
 
 ## Portfolio dependency order
 
@@ -41,4 +41,5 @@ Canonical exact-head CLI baseline → local runtime/configuration evidence → Q
 
 ## Builder Log
 
-Record commits, install/test commands, workflow runs, checked-out SHAs, deterministic seeds, schema and artifact hashes, retained artifacts, review-thread dispositions, freeze/rollback evidence, privacy review, residual risks, and follow-ups.
+- 2026-07-17 — Created clean branch `builder/runnable-baseline-v3` from current `main` and opened PR #6 to remove PR #4's conflict/stale-evidence ambiguity. Restored `qso_runtime.cli:main`, added four deterministic tests, constrained package discovery, and added exact-head Python 3.11/3.13 CI with retained checksummed evidence.
+- 2026-07-17 — Reconstructed verification passed four tests, compilation, workflow YAML parsing, wheel construction, and checksum generation. No generated snippets were executed; no credentials, network-dependent inputs, or external repository writes were used.

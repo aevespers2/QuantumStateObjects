@@ -10,9 +10,15 @@ from qso_runtime.cli import main
 from qso_runtime.config import REQUIRED_QSOS, ConfigurationError, load_runtime_config, resolve_local_genomes
 
 
-def _instance(name: str, *, path: str | None = None, sha256: str | None = None) -> dict[str, object]:
+def _instance(
+    name: str,
+    *,
+    path: str | None = None,
+    repository: str = "aevespers2/QSO-GENOMES",
+    sha256: str | None = None,
+) -> dict[str, object]:
     genome: dict[str, object] = {
-        "repository": "aevespers2/QSO-GENOMES",
+        "repository": repository,
         "path": path or f"genomes/{name.lower()}.json",
         "schema_version": 1,
     }
@@ -65,6 +71,47 @@ def test_duplicate_instance_id_fails_closed(tmp_path: Path) -> None:
     _write_json(path, document)
     with pytest.raises(ConfigurationError, match="duplicate instance_id"):
         load_runtime_config(path)
+
+
+def test_noncanonical_primary_name_fails_closed(tmp_path: Path) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0]["primary_name"] = "atlas"
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="canonical names"):
+        load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+
+
+def test_uncontracted_genome_repository_fails_closed(tmp_path: Path) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0]["genome"]["repository"] = "example/other-genomes"
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="QSO-GENOMES"):
+        load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+
+
+def test_noncanonical_genome_path_fails_closed(tmp_path: Path) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0]["genome"]["path"] = "fixtures/atlas.json"
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="genomes/atlas.json"):
+        load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+
+
+def test_schema_declares_optional_genome_hash_pin() -> None:
+    schema = json.loads(Path("schema/qso-instance.schema.json").read_text(encoding="utf-8"))
+    genome = schema["properties"]["genome"]
+    assert "sha256" in genome["properties"]
+    assert "sha256" not in genome["required"]
+    assert genome["properties"]["sha256"]["pattern"] == "^[0-9a-f]{64}$"
 
 
 def test_atlas_missing_hash_fails_closed_before_upstream_resolution(tmp_path: Path) -> None:

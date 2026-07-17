@@ -4,12 +4,13 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Immediate
 
-- [x] **Select one canonical CLI/configuration candidate.** PR #6 is the sole selected path; PR #4 and PR #5 are closed as superseded, PR #2 remains superseded, and draft PR #3 remains outside P0.
-- [x] **Make the candidate exact-head verifiable.** Run `29610600428` checked out and asserted head `6e382853e6746f8eb18e97c64481dccfe6684652`, passed Python 3.11/3.13 CI, and retained non-secret artifacts.
-- [ ] **Repair PR #6 schema/hash-pin agreement.** Add the accepted `genome.sha256` field and constraints to `schema/qso-instance.schema.json` so schema-valid manifests can satisfy the resolver without weakening fail-closed behavior.
-- [ ] **Enforce the declared genome source contract.** Reject repositories and paths outside the accepted `aevespers2/QSO-GENOMES` boundary and exact versioned artifact layout; add positive and negative tests.
-- [ ] **Require canonical QSO names.** Reject non-canonical case variants and require exactly `Atlas`, `Nova`, `Orion`, and `Lyra` with unique identities.
-- [ ] **Resolve all PR #6 review threads and rerun final-head CI.** Retain artifacts and inspect checked-out SHA, test results, configuration evidence, wheel hashes, and review disposition at the repaired immutable head.
+- [x] **Select one canonical CLI/configuration candidate.** PR #7 is the sole selected path; PR #6, PR #5, PR #4, and PR #2 are closed as superseded without merge, and draft PR #3 remains outside P0.
+- [x] **Make PR #7 exact-head verifiable.** Run `29614395650` checked out and asserted head `80e0546a53c139b26e956bce8f20c41e907739a6`, passed Python 3.11/3.13 CI, and retained non-secret artifacts.
+- [x] **Repair the prior schema/hash-pin, source-contract, and canonical-name findings.** PR #7 permits the optional lowercase SHA-256 field, restricts genomes to `aevespers2/QSO-GENOMES` canonical paths, and requires exact Atlas/Nova/Orion/Lyra names.
+- [ ] **Enforce strict UTF-8 JSON.** Decode bounded configuration and genome bytes with strict UTF-8 before `json.loads`; add UTF-16/UTF-32 negative fixtures.
+- [ ] **Enforce all schema-required instance fields.** Reject manifests missing required identity, development, review, or status blocks before constructing an accepted runtime manifest; add positive and negative schema-parity tests.
+- [ ] **Reject boolean schema versions.** Require integer type and value `1` for both instance and genome schema versions; add `true`/`false` negative fixtures.
+- [ ] **Resolve every PR #7 review thread and rerun final-head CI.** Retain artifacts and inspect checked-out SHA, all tests, configuration evidence, wheel hashes, and review disposition at the repaired immutable head.
 - [ ] **Run merged-head acceptance.** After review and merge authorization, require clean installation, compilation, complete tests, installed `qso-run`, `qso-run --version`, deterministic output, invalid-argument/configuration failures, wheel and sdist creation, checksums, and retained logs at the merged head.
 - [ ] Inventory and test the four instance manifests, runtime partitions, message integrity, freeze/rollback controller, resource caps, event ledger, and attribution ledger.
 - [ ] Confirm every generated snippet remains inert and requires Sprite plus human review.
@@ -17,14 +18,14 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Current evidence
 
-- [x] PR #6 workflow run `29610600428` passed Python 3.11 and 3.13 matrix jobs.
-- [x] Both jobs checked out and asserted exact submitted head `6e382853e6746f8eb18e97c64481dccfe6684652` with checkout credential persistence disabled and read-only contents permission.
-- [x] The run passed installation, compilation, all 11 unit/smoke tests, installed CLI smoke, boundary validation, version output, wheel construction, checksum generation, and retained-artifact upload.
-- [x] Artifact digests: Python 3.11 `505be6dae69827c150c72161ed348a752cf623a9589b29045c70000ff7aa2422`; Python 3.13 `f44653928b2974f10f76822aebdac89fd31cdedf485f3ee9b5758be2766ae5f1`.
-- [x] Wheel SHA-256: Python 3.11 `9c1a1fe0209864d1e614d491da881f004792fac288b14a98596e021de2abf7f2`; Python 3.13 `be85a103430e911974c28073a2e3bb283c7fdc9d30812b5b8ef9f0fd49e5a225`.
-- [x] Local configuration validation covers bounded UTF-8 JSON, exact instance count/set, uniqueness, schema versions, relative JSON paths, regular non-symlink files, file-size limits, and optional SHA-256 resolution beneath an explicit local root.
-- [x] Atlas currently fails closed before file access or network activity because no accepted upstream SHA-256 is present.
-- [ ] Three P2 correctness threads remain unresolved: schema omission of the hash pin, repository/path contract bypass, and case-insensitive acceptance of QSO names.
+- [x] PR #7 workflow run `29614395650` passed Python 3.11 and 3.13 matrix jobs.
+- [x] Both jobs checked out and asserted exact submitted head `80e0546a53c139b26e956bce8f20c41e907739a6` with checkout credential persistence disabled and read-only contents permission.
+- [x] The run passed installation, compilation, all 15 unit/smoke tests, installed default/configuration CLI smoke, boundary validation, wheel construction, checksum generation, and retained-artifact upload.
+- [x] Artifact digests: Python 3.11 `cdfd6817c3d0e0c07b41613072443c4fdd5aa0952ea68e4969ccee362ed7470a`; Python 3.13 `221cfa42111ed0a6ac42c0311934d812f437f9eeeaa80d3f5cb574d155cde7ed`.
+- [x] Wheel SHA-256: Python 3.11 `99fa4f424f4c1ca12ece6d0971e887708e7083275934904d264ace80ecac1790`; Python 3.13 `7afba2f01fc3d9481989ea68302b79a8e671c7121572899c374e6c8f6a606dfd`.
+- [x] PR #6's three review findings were answered and resolved before it was closed as superseded.
+- [x] Atlas fails closed before file access or network activity because no accepted upstream SHA-256 is present.
+- [ ] Three new P2 correctness threads remain unresolved: non-UTF-8 payload acceptance, acceptance of manifests missing schema-required runtime fields, and boolean schema-version acceptance.
 - [ ] QSO-GENOMES PR #2 remains unaccepted and cannot yet supply a trusted Atlas hash-pinned fixture.
 
 ## After upstream contracts are green

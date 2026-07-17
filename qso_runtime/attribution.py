@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import string
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +19,15 @@ EPIGRAPH = (
 def canonical_sha256(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
+
+
+def require_sha256(value: str, field_name: str) -> None:
+    if (
+        not isinstance(value, str)
+        or len(value) != 64
+        or any(character not in string.hexdigits for character in value)
+    ):
+        raise ValueError(f"{field_name} must be a SHA-256 hex string")
 
 
 @dataclass(frozen=True)
@@ -77,8 +87,8 @@ class AttributionJourneyLedger:
         dispute_status: str = "none",
         timestamp_utc: str | None = None,
     ) -> dict[str, Any]:
-        if len(state_before_sha256) != 64 or len(state_after_sha256) != 64:
-            raise ValueError("state hashes must be SHA-256 hex strings")
+        require_sha256(state_before_sha256, "state_before_sha256")
+        require_sha256(state_after_sha256, "state_after_sha256")
         previous_hash = self.entries[-1]["entry_sha256"] if self.entries else None
         sequence = len(self.entries)
         timestamp = timestamp_utc or datetime.now(timezone.utc).isoformat()
@@ -159,8 +169,7 @@ def artifact_reference(
 ) -> dict[str, Any]:
     if relationship not in {"input", "created", "derived", "referenced", "licensed"}:
         raise ValueError("unsupported artifact relationship")
-    if len(sha256) != 64:
-        raise ValueError("artifact hash must be SHA-256")
+    require_sha256(sha256, "artifact hash")
     return {
         "artifact_id": artifact_id,
         "kind": kind,

@@ -57,7 +57,7 @@ PR #5 is a duplicate candidate and is not selected. PR #2 is superseded and clos
 |---|---|---|
 | Canonical candidate | REVIEW | Explicitly select PR #4 or another single immutable path and disposition PR #5 without losing evidence. |
 | Runnable package/CLI | PARTIAL | Run `29599534913` passed on the synthetic merge ref; exact-head clean build/install and `qso-run` smoke must pass at the accepted PR head and merged head. |
-| Task completion | FAIL | P0-A and P0-B are `DONE`; included later tasks have linked evidence. |
+| Task completion | FAIL | P0-A and P0-B must be `DONE`; included later tasks must have linked evidence. |
 | Tests/determinism | PARTIAL | Four CLI tests passed in matrix CI; full runtime tests, invalid configuration fixtures, repeated seeded canonical hashes, and retained reports remain. |
 | Local configuration/runtime | FAIL | Instance loading, validation, message/ledger/attribution behavior, resource limits, and deterministic local fixtures are independently verified. |
 | Freeze/rollback | NO EVIDENCE | Limits, freeze triggers, interruption, recovery, and rollback preserve evidence. |

@@ -168,6 +168,13 @@ class QSO:
         return {"identity": copy.deepcopy(self.p.identity), "records": copy.deepcopy(self.p.records), "proposals": copy.deepcopy(self.p.proposals)}
 
     def record_event(self, kind: str, payload: dict[str, Any]) -> None:
-        event = {"sequence": len(self.p.events), "qso": self.p.identity.get("declared_name"), "kind": kind, "payload": copy.deepcopy(payload)}
+        previous_event_sha256 = self.p.events[-1]["sha256"] if self.p.events else None
+        event = {
+            "sequence": len(self.p.events),
+            "qso": self.p.identity.get("declared_name"),
+            "kind": kind,
+            "payload": copy.deepcopy(payload),
+            "previous_event_sha256": previous_event_sha256,
+        }
         event["sha256"] = digest(event)
         self.p.events.append(event)

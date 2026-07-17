@@ -2,13 +2,15 @@
 
 ## Current Decision
 
-Status: `BLOCKED — CLI CANDIDATE; EXACT-HEAD CI, LOCAL RUNTIME, UPSTREAM CONTRACTS, AND PUBLICATION BOUNDARIES REQUIRED`
+Status: `BLOCKED — RUNNABLE CLI BASELINE VERIFIED; LOCAL RUNTIME, UPSTREAM CONTRACTS, AND PUBLICATION BOUNDARIES REQUIRED`
 
-QuantumStateObjects contains runtime modules, schemas, four instance declarations, attribution/ledger primitives, and package metadata at version `0.1.0`, but no runtime release is eligible. PR #2 now provides bounded candidate remediation for the previously missing `qso_runtime.cli:main` entry point and adds three focused CLI tests. The PR is open and mergeable at submitted head `38941cb94119850fb3f6102323b534fa4a23f1e9`; its body records a local CPython 3.13.5 replay in which focused pytest, bytecode compilation, no-isolation wheel construction, isolated installation, `qso-run`, and `qso-run --version` passed.
+QuantumStateObjects contains runtime modules, schemas, four instance declarations, attribution/ledger primitives, and package metadata at version `0.1.0`, but no runtime release is eligible. PR #4 provides the current bounded P0 candidate from the latest `main`: it restores `qso_runtime.cli:main`, adds four deterministic CLI tests, constrains setuptools discovery to `qso_runtime*`, and adds least-privilege CI for Python 3.11 and 3.13 with checkout credential persistence disabled.
 
-Those claims are candidate evidence only. No pull-request workflow run is attached to the submitted head, the complete current tree has not been independently replayed, local configuration loading and broader runtime/ledger/freeze/rollback fixtures remain incomplete, Atlas still depends on an unaccepted QSO-GENOMES contract, QSO-SEEKER has not published an accepted canonical-record contract, and public privacy/confidentiality/license/attribution approval is absent.
+Candidate head `62bc5784619c1d689694f0d0182692302acf6316` passed GitHub Actions run `29599420796` in both matrix jobs. Package installation, bytecode compilation, four pytest cases, repeated deterministic output, installed `qso-run` boundary validation, version output, and wheel construction all succeeded. Later documentation-only commits must also pass on their exact submitted head before merge.
 
-Draft PR #3 adds an Experimenter-QSO roadmap scaffold and materializer. It is open, draft, and mergeable at `7cef9963ee839560ad9e3715abfc9ddf49e0b6ac`, but has no attached pull-request workflow run. Scaffold presence is not implementation, safety, compatibility, or release evidence and must not displace P0.
+The verified CLI/test/CI slice does not complete P0. Local configuration loading, invalid-fixture fail-closed behavior, broader runtime/ledger/freeze/rollback fixtures, Atlas's genome reference, QSO-GENOMES and QSO-SEEKER contracts, deterministic four-QSO evidence, and public privacy/confidentiality/license/attribution approval remain incomplete.
+
+Draft PR #3 adds an Experimenter-QSO roadmap scaffold and materializer. It remains deferred and outside the runnable baseline; scaffold presence is not implementation, safety, compatibility, or release evidence.
 
 ## Versioning
 
@@ -35,15 +37,15 @@ Draft PR #3 adds an Experimenter-QSO roadmap scaffold and materializer. It is op
 
 ## Selected Candidate Work
 
-PR #2 is selected for review as a bounded P0 CLI slice only. It adds `qso_runtime/cli.py`, deterministic JSON self-check output, `--pretty`, `--version`, explicit data-only/no-network/no-repository-write/no-generated-code-execution boundaries, and three focused tests. Local replay evidence is recorded in the PR, but no release task is `DONE` until an independent clean checkout and attached exact-head workflow reproduce the complete accepted tree.
+PR #4 is selected for review as the current bounded P0 CLI/test/CI slice. It adds `qso_runtime/cli.py`, deterministic JSON self-check output, `--pretty`, `--version`, explicit data-only/no-credential/no-network/no-repository-write/no-generated-code-execution boundaries, four focused tests, explicit package discovery, and Python 3.11/3.13 CI. Exact-head run `29599420796` passed at candidate head `62bc5784619c1d689694f0d0182692302acf6316`.
 
-PR #3 is not selected for the first release. It remains a deferred roadmap proposal pending P0 acceptance, upstream contract publication, approved architecture ownership, implementation evidence, security review, and its own exact-head CI.
+PR #2 is superseded by PR #4 because PR #4 was rebuilt from current `main`, includes CI and packaging repair, and has attached workflow evidence. PR #3 is not selected for the first release.
 
 ## Planned Changelog Entries
 
 - `Added`: accepted working CLI, verified local runtime baseline, tests/CI, deterministic evidence formats, and later contract validators.
 - `Security`: resource caps, fail-closed schemas/hashes, inert proposals, input isolation, credential/network/repository-write boundaries, and privacy review.
-- `Fixed`: accepted missing CLI remediation, Atlas reference, and any message/ledger/freeze/rollback/ordering/attribution defects.
+- `Fixed`: accepted missing CLI remediation, package discovery, Atlas reference, and any message/ledger/freeze/rollback/ordering/attribution defects.
 - `Documentation`: installation, CLI, supported Python versions, trust boundaries, commands, privacy/license model, limitations, and recovery.
 - `Release`: sdist/wheel/source artifacts, reports, SBOM, checksums, provenance, and approval.
 - `Excluded`: unaccepted Experimenter scaffold/materialization work from the first runnable baseline.
@@ -52,17 +54,17 @@ PR #3 is not selected for the first release. It remains a deferred roadmap propo
 
 | Gate | Status | Requirement |
 |---|---|---|
-| Runnable package/CLI | REVIEW | PR #2 supplies the entry point and focused tests; an independent exact-head clean build/install and `qso-run` smoke must pass with attached evidence. |
+| Runnable package/CLI | PASS — CANDIDATE | PR #4 exact-head CI installed the package and passed `qso-run`, `qso-run --version`, deterministic output, and wheel construction on Python 3.11 and 3.13. Final merged-head verification remains required. |
 | Task completion | FAIL | P0 is `DONE`; included later tasks have linked evidence. |
-| Tests/determinism | PARTIAL | Three focused CLI tests have local candidate evidence; full runtime tests, CI, invalid fixtures, and repeated seeded canonical hashes remain. |
+| Tests/determinism | PARTIAL | Four CLI tests and repeated byte-for-byte output pass; full runtime tests, invalid fixtures, and repeated seeded canonical run hashes remain. |
 | Local configuration/runtime | FAIL | Instance loading, validation, message/ledger/attribution behavior, resource limits, and deterministic local fixtures are independently verified. |
 | Freeze/rollback | NO EVIDENCE | Limits, freeze triggers, interruption, recovery, and rollback preserve evidence. |
 | Upstream contracts | BLOCKED | QSO-GENOMES manifest including Atlas and QSO-SEEKER canonical-record fixtures are accepted, published, and hash-verifiable. |
-| Scope integrity | REVIEW | PR #3 remains draft and excluded; no scaffold or future Experimenter capability enters the P0 candidate without a separate approval and evidence cycle. |
-| Security | PARTIAL | PR #2 reports bounded no-network/no-write/no-generated-code-execution behavior; complete parser, credential, dependency, secret, workflow, and adversarial review remains. |
-| Documentation | PARTIAL | Architecture/policy documents and candidate CLI output exist; verified install, configuration, operations, limitations, and recovery are incomplete. |
+| Scope integrity | REVIEW | PR #3 remains excluded; no scaffold or future Experimenter capability enters P0 without a separate approval and evidence cycle. |
+| Security | PARTIAL | CI uses read-only permissions and disables checkout credential persistence; the CLI reports no credential/network/write/generated-code authority. Complete parser, dependency, secret, workflow, and adversarial review remains. |
+| Documentation | PARTIAL | CLI boundary and CI evidence are documented; configuration, operations, limitations, and recovery remain incomplete. |
 | Privacy/licensing | BLOCKED | Approve the public license/notice model and handling of personal/confidential identifiers before artifact publication. |
-| Provenance | PARTIAL | PR #2 identifies submitted head and local commands/results; attached CI logs, complete inputs/tools, package hashes, SBOM, attestations, and rollback evidence remain absent. |
+| Provenance | PARTIAL | PR #4 records base/head and workflow run evidence; package hashes, SBOM, attestations, complete input/tool manifest, and rollback bundle remain absent. |
 | Approval | PENDING | Explicit release approval after all blocking gates pass. |
 
 ## Artifact Requirements
@@ -80,16 +82,16 @@ Rollback if the entry point fails, CI verifies a different head, schema/hash che
 
 ## Unresolved Blockers
 
-- PR #2 head `38941cb94119850fb3f6102323b534fa4a23f1e9` has no attached pull-request workflow run or independent complete-tree clean-checkout replay.
-- Local configuration loading, complete runtime tests, deterministic fixtures, resource-limit behavior, freeze/rollback, event/attribution evidence, and CI remain incomplete.
+- Local configuration loading, invalid-fixture validation, complete runtime tests, deterministic fixtures, resource-limit behavior, freeze/rollback, and event/attribution evidence remain incomplete.
 - Atlas depends on an unaccepted QSO-GENOMES artifact set; QSO-SEEKER's versioned canonical-record contract is unpublished or unaccepted.
-- PR #3 is an unaccepted draft scaffold with no attached workflow evidence and must remain outside P0.
+- PR #3 is an unaccepted draft scaffold and must remain outside P0.
 - P0 and the broader quality gates remain incomplete.
-- No accepted package checksum, SBOM, security, privacy/license, provenance, attestation, or rollback bundle exists.
+- No accepted package checksum, SBOM, security review, privacy/license model, provenance attestation, or rollback bundle exists.
 - Approval is required for the public privacy/confidentiality/license/attribution notice model.
 
 ## Release Log
 
 - 2026-07-16: Aligned the candidate with the runnable local-package priority; release remained blocked by the missing CLI/tests, upstream contracts, and publication-boundary approval.
-- 2026-07-17: Recorded PR #2 as bounded CLI remediation. The missing entry point and three focused tests have local replay evidence at `38941cb94119850fb3f6102323b534fa4a23f1e9`, but no attached exact-head workflow or complete runtime evidence exists.
-- 2026-07-17: Classified draft PR #3 as a deferred Experimenter object-model roadmap proposal outside the first runnable baseline. It has no attached workflow run and cannot change P0 priority or release scope.
+- 2026-07-17: Recorded PR #2 as initial bounded CLI remediation with local-only replay evidence.
+- 2026-07-17: Classified draft PR #3 as a deferred Experimenter object-model roadmap proposal outside the first runnable baseline.
+- 2026-07-17: Opened PR #4 from current `main`, repaired explicit package discovery after the first CI attempt exposed install failure, hardened checkout credential handling, and obtained passing Python 3.11/3.13 exact-head workflow evidence in run `29599420796`. The runnable CLI/test/CI slice is verified; local runtime and upstream contract gates remain blocked.

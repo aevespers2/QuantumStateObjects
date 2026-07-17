@@ -8,20 +8,20 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Product directive
 
-- **Next objective:** Select and verify one canonical runnable-package candidate before adding local configuration or cross-repository experiments.
-- **User outcome:** A researcher can install the package, invoke `qso-run`, load and validate local instance configuration, execute a bounded deterministic smoke run, and inspect event/attribution evidence plus freeze/rollback behavior.
-- **MVP scope:** repair the missing CLI entry point; add real unit/smoke tests and CI; verify instance, message, ledger, attribution, limit, freeze, and rollback primitives with local fixtures; document supported Python versions, privacy/licensing boundaries, commands, failures, and recovery.
-- **Priority:** Exact-head acceptance of one CLI/package path precedes local configuration evidence, QSO-GENOMES/QSO-SEEKER integration, and the four-QSO experiment.
-- **Success criteria:** clean exact-head build/install succeeds; `qso-run` smoke passes; invalid configuration and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
+- **Next objective:** Repair and independently accept PR #6's local-configuration contract before adding broader runtime behavior or cross-repository experiments.
+- **User outcome:** A researcher can install the package, invoke `qso-run`, load and validate canonical local instance configuration, execute a bounded deterministic smoke run, and inspect event/attribution evidence plus freeze/rollback behavior.
+- **MVP scope:** preserve the verified CLI baseline; make loader, schema, repository/path, canonical-name, and hash-pin rules agree; verify instance, message, ledger, attribution, limit, freeze, and rollback primitives with local fixtures; document supported Python versions, privacy/licensing boundaries, commands, failures, and recovery.
+- **Priority:** Final-head acceptance of PR #6's configuration slice now precedes QSO-GENOMES/QSO-SEEKER integration, deterministic runtime evidence, and the four-QSO experiment.
+- **Success criteria:** exact-head and merged-head clean build/install succeed; `qso-run` smoke passes; schema and loader agree; wrong repository/path, wrong case, invalid configuration, and mismatched hashes fail closed; deterministic runs reproduce canonical hashes; freeze and rollback preserve evidence; no unapproved external code, credentials, network, or sensitive data enter artifacts.
 - **Non-goals:** autonomous internet learning, executing retrieved/generated code, production payments, unrestricted repository writes, or claiming a verified four-QSO run while upstream Atlas and canonical-record contracts are incomplete.
-- **Release rationale:** The core runtime cannot safely anchor the portfolio until one immutable candidate is accepted and its local behavior is covered by reproducible tests and retained evidence.
+- **Release rationale:** The exact-head CLI/configuration candidate is useful evidence, but it cannot safely anchor the portfolio until the three current contract findings are repaired and broader runtime behavior is reproducibly verified.
 
 ## Active chain
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0-A | Reconcile the runnable CLI candidates | Architect | — | REVIEW | PR #4 is the preferred canonical path; repair its workflow to check out and assert head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`, rerun CI, resolve review threads, retain artifacts, and explicitly disposition duplicate PR #5. |
-| P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | BLOCKED | Instance loading, invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
+| P0-A | Reconcile the runnable CLI candidates | Architect | — | REVIEW | PR #6 remains the sole canonical path; exact-head run `29610600428` and artifacts are verified, superseded PR #4/#5 remain closed, all PR #6 review threads are resolved, and final-head plus merged-head checks pass. |
+| P0-B | Verify local configuration and runtime primitives | QSOBuilder | P0-A | IN PROGRESS | Schema permits the required hash pin; repository/path and canonical case-sensitive names are enforced; invalid fixtures, message/ledger/attribution integrity, resource limits, freeze, interruption, recovery, rollback, and deterministic hashes pass on the accepted immutable head. |
 | P1 | Add cross-repository contract validation | QSOBuilder | P0-B, QSO-GENOMES P1, QSO-SEEKER P1 | BLOCKED | Runtime validates published manifests/fixtures by schema version and hash, fails closed on mismatch, and does not import or execute external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic seeds within configured limits; proposals remain inert; freeze/rollback and append-only evidence are tested. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public files and sample artifacts use an approved notice/license model and contain no unintended sensitive data. |
@@ -29,15 +29,16 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Candidate evidence
 
-- PR #4 is open and mergeable. Workflow run `29599534913` passed Python 3.11 and 3.13 installation, compilation, four tests, CLI smoke, boundary validation, version output, and wheel construction.
-- The run checked out synthetic merge commit `2ab66a8e5f6e463bbe6b5200b92c3d5005934701`, not submitted head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b`; therefore exact-head acceptance remains open.
-- PR #4 has unresolved review threads. Package discovery, build-dependency installation, and credential persistence appear repaired in the current diff, but exact-head checkout is not.
-- PR #5 is open and mergeable but duplicates the CLI slice, has only reconstructed exact-file replay, and has no attached workflow run. It is not selected while PR #4 remains the stronger evidence path.
-- PR #2 is closed as superseded. Draft PR #3 remains outside P0 and outside the first release.
+- PR #6 is open, mergeable, and the sole canonical runnable/configuration candidate at head `6e382853e6746f8eb18e97c64481dccfe6684652`.
+- Workflow run `29610600428` checked out and asserted that exact head. Python 3.11 and 3.13 jobs passed installation, compilation, 11 tests, installed CLI smoke, boundary validation, version output, wheel construction, checksum generation, and retained artifact upload.
+- Retained artifact digests are `505be6dae69827c150c72161ed348a752cf623a9589b29045c70000ff7aa2422` and `f44653928b2974f10f76822aebdac89fd31cdedf485f3ee9b5758be2766ae5f1`; wheel SHA-256 values are `9c1a1fe0209864d1e614d491da881f004792fac288b14a98596e021de2abf7f2` and `be85a103430e911974c28073a2e3bb283c7fdc9d30812b5b8ef9f0fd49e5a225`.
+- Three unresolved P2 threads block acceptance: add `genome.sha256` to the published schema, reject genome references outside the declared QSO-GENOMES repository/path contract, and require canonical case-sensitive Atlas/Nova/Orion/Lyra names.
+- Atlas fails closed because its current reference has no accepted SHA-256. This is correct behavior but also a hard upstream blocker.
+- PR #4 and PR #5 are closed without merge as superseded. PR #2 remains superseded. Draft PR #3 remains outside P0 and outside the first release.
 
 ## Portfolio dependency order
 
-Canonical exact-head CLI baseline → local runtime/configuration evidence → QSO-GENOMES and QSO-SEEKER contracts → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
+PR #6 contract repair and final-head acceptance ↔ QSO-GENOMES canonical artifact/hash acceptance → local runtime/message/ledger/freeze evidence → QSO-SEEKER canonical-record acceptance → runtime contract validation → four-QSO runner → optional simulated economic records → public documentation.
 
 ## Builder Log
 

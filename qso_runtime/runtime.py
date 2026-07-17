@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import string
 from dataclasses import dataclass
 from typing import Any, Iterable
 
@@ -9,6 +10,26 @@ from qso_runtime.core import GenomeInterpreter, MCPMessage, QSO, digest
 
 class RuntimeInvariantError(RuntimeError):
     """Raised when a bounded runtime invariant would be violated."""
+
+
+_EVENT_KEYS = frozenset(
+    {
+        "sequence",
+        "qso",
+        "kind",
+        "payload",
+        "previous_event_sha256",
+        "sha256",
+    }
+)
+
+
+def _is_sha256(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in string.hexdigits for character in value)
+    )
 
 
 def _message_dict(message: MCPMessage) -> dict[str, Any]:
@@ -45,14 +66,50 @@ def verify_event_ledger(events: Iterable[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     previous_hash: str | None = None
     for expected_sequence, event in enumerate(events):
-        if event.get("sequence") != expected_sequence:
+        if not isinstance(event, dict):
+            errors.append(f"event shape mismatch at {expected_sequence}")
+            previous_hash = None
+            continue
+
+        missing = sorted(_EVENT_KEYS - event.keys())
+        extra = sorted(event.keys() - _EVENT_KEYS)
+        if missing:
+            errors.append(f"missing event fields at {expected_sequence}: {missing}")
+        if extra:
+            errors.append(f"unexpected event fields at {expected_sequence}: {extra}")
+
+        sequence = event.get("sequence")
+        if isinstance(sequence, bool) or not isinstance(sequence, int):
+            errors.append(f"sequence type mismatch at {expected_sequence}")
+        elif sequence != expected_sequence:
             errors.append(f"sequence mismatch at {expected_sequence}")
-        if event.get("previous_event_sha256") != previous_hash:
+
+        if not isinstance(event.get("qso"), str) or not event.get("qso"):
+            errors.append(f"qso field mismatch at {expected_sequence}")
+        if not isinstance(event.get("kind"), str) or not event.get("kind"):
+            errors.append(f"kind field mismatch at {expected_sequence}")
+        if not isinstance(event.get("payload"), dict):
+            errors.append(f"payload field mismatch at {expected_sequence}")
+
+        previous = event.get("previous_event_sha256")
+        if expected_sequence == 0:
+            if previous is not None:
+                errors.append("chain mismatch at 0")
+        elif not _is_sha256(previous) or previous != previous_hash:
             errors.append(f"chain mismatch at {expected_sequence}")
-        expected_hash = digest({key: value for key, value in event.items() if key != "sha256"})
-        if event.get("sha256") != expected_hash:
-            errors.append(f"event hash mismatch at {expected_sequence}")
-        previous_hash = event.get("sha256")
+
+        current_hash = event.get("sha256")
+        if not _is_sha256(current_hash):
+            errors.append(f"event hash shape mismatch at {expected_sequence}")
+        try:
+            expected_hash = digest({key: value for key, value in event.items() if key != "sha256"})
+        except (TypeError, ValueError):
+            errors.append(f"event serialization failure at {expected_sequence}")
+        else:
+            if current_hash != expected_hash:
+                errors.append(f"event hash mismatch at {expected_sequence}")
+
+        previous_hash = current_hash if _is_sha256(current_hash) else None
     return errors
 
 
@@ -99,6 +156,9 @@ class RuntimeController:
     def __init__(self, qso: QSO):
         self.qso = qso
         self.status = "active"
+        event_limit = self._resource_limit("max_events", default=10_000)
+        if event_limit < len(self.qso.p.events) + 1:
+            raise RuntimeInvariantError("max_events must reserve capacity for rollback evidence")
         self._checkpoint = self._capture_checkpoint()
 
     @classmethod
@@ -129,9 +189,15 @@ class RuntimeController:
             raise RuntimeInvariantError(f"resource limit {name} must be a positive integer")
         return value
 
-    def _require_event_capacity(self, additions: int = 1) -> None:
+    def _require_event_capacity(
+        self,
+        additions: int = 1,
+        *,
+        reserve_rollback: bool = True,
+    ) -> None:
         limit = self._resource_limit("max_events", default=10_000)
-        if len(self.qso.p.events) + additions > limit:
+        reserve = 1 if reserve_rollback else 0
+        if len(self.qso.p.events) + additions + reserve > limit:
             raise RuntimeInvariantError("event limit exceeded")
 
     def ingest(self, record: dict[str, Any]) -> None:
@@ -140,9 +206,16 @@ class RuntimeController:
             raise RuntimeInvariantError("record limit exceeded")
         self._require_event_capacity()
         before = canonical_state(self.qso)
-        self.qso.ingest(record)
+        events_before = copy.deepcopy(self.qso.p.events)
+        try:
+            self.qso.ingest(record)
+        except Exception as exc:
+            self._restore_state(before)
+            self.qso.p.events = events_before
+            raise RuntimeInvariantError("ingest failed closed without partial mutation") from exc
         if len(self.qso.p.records) > self._resource_limit("max_records", default=1):
             self._restore_state(before)
+            self.qso.p.events = events_before
             raise RuntimeInvariantError("record limit exceeded")
 
     def send(self, recipient: str, kind: str, payload: dict[str, Any]) -> MCPMessage:
@@ -171,13 +244,29 @@ class RuntimeController:
 
     def freeze(self, annotations: list[dict[str, Any]]) -> dict[str, Any]:
         self._require_status("active")
+        if not isinstance(annotations, list) or any(not isinstance(item, dict) for item in annotations):
+            raise RuntimeInvariantError("freeze annotations must be a list of objects")
+        blocked = [copy.deepcopy(item) for item in annotations if item.get("severity") in {"high", "critical"}]
+        if blocked:
+            result = {
+                "qso": self.qso.name,
+                "decision": "rollback",
+                "annotations": blocked,
+                "checkpoint_state_sha256": self._checkpoint.state_sha256,
+            }
+            self._rollback_to_checkpoint(result)
+            return copy.deepcopy(result)
+
         self._require_event_capacity()
-        result = self.qso.freeze(annotations)
-        if result["decision"] == "rollback":
-            self.status = "active"
-        else:
-            self.status = "frozen"
-            self._checkpoint = self._capture_checkpoint()
+        state = canonical_state(self.qso)
+        result = {
+            "qso": self.qso.name,
+            "decision": "frozen_pending_external_commit",
+            "state_sha256": digest(state),
+        }
+        self.qso.record_event("freeze", result)
+        self.status = "frozen"
+        self._checkpoint = self._capture_checkpoint()
         return copy.deepcopy(result)
 
     def resume(self) -> None:
@@ -204,14 +293,21 @@ class RuntimeController:
             {"checkpoint_state_sha256": self._checkpoint.state_sha256},
         )
 
-    def rollback(self) -> None:
-        self._require_status("active", "frozen", "interrupted")
-        self._require_event_capacity()
+    def _rollback_to_checkpoint(self, payload: dict[str, Any]) -> None:
         self._restore_state(self._checkpoint.state)
         self.status = "active"
-        self.qso.record_event(
-            "rollback",
-            {"checkpoint_state_sha256": self._checkpoint.state_sha256},
+        try:
+            self._require_event_capacity(reserve_rollback=False)
+        except RuntimeInvariantError as exc:
+            raise RuntimeInvariantError(
+                "rollback restored state but event evidence capacity is exhausted"
+            ) from exc
+        self.qso.record_event("rollback", copy.deepcopy(payload))
+
+    def rollback(self) -> None:
+        self._require_status("active", "frozen", "interrupted")
+        self._rollback_to_checkpoint(
+            {"checkpoint_state_sha256": self._checkpoint.state_sha256}
         )
 
     def _restore_state(self, state: dict[str, Any]) -> None:

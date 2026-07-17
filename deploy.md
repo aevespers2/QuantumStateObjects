@@ -4,7 +4,7 @@
 
 Status: `BLOCKED — NO DEPLOYMENT TARGET AUTHORIZED`
 
-This repository has no approved runtime, package publication, four-QSO execution, payment, or production deployment. PR #4 has successful Python 3.11/3.13 CI on a synthetic merge ref, not accepted exact-head evidence. Local configuration, runtime integrity, resource limits, freeze/rollback, upstream contracts, privacy/licensing, provenance, and release approval remain incomplete.
+This repository has no approved runtime, package publication, four-QSO execution, payment, or production deployment. PR #6 now has successful exact-head Python 3.11/3.13 CI, 11 passing tests, and retained artifacts, but the candidate remains blocked by three unresolved configuration-contract findings, merged-head verification, complete runtime integrity, resource limits, freeze/rollback, upstream contracts, privacy/licensing, provenance, and release approval.
 
 ## Permitted First Target
 
@@ -32,7 +32,7 @@ Deployment preparation must bind to one immutable accepted source head and recor
 - exact workflow run IDs and retained artifact digests;
 - SBOM and provenance/attestation references where applicable.
 
-PR #4 head `cdc808db74d165dfb7cb4d5604aab96e10f1af4b` is not accepted because run `29599534913` checked out synthetic merge commit `2ab66a8e5f6e463bbe6b5200b92c3d5005934701`. PR #5 is a duplicate candidate without attached CI. Neither may be deployed.
+PR #6 head `6e382853e6746f8eb18e97c64481dccfe6684652` is exact-head verified by run `29610600428`, but it is not accepted or deployable. Three unresolved P2 findings show that the schema omits the required genome hash pin, the resolver can accept references outside the declared QSO-GENOMES repository/path contract, and non-canonical QSO name casing can pass. PR #4 and PR #5 are closed as superseded. No merged head has passed the complete gate set.
 
 ## Permission Gate
 
@@ -49,14 +49,16 @@ Before any verification deployment:
 
 Required retained non-secret artifacts:
 
-- exact-head checkout and identity report;
+- exact-head and merged-head checkout and identity reports;
 - clean build/install report;
-- unit, smoke, invalid-configuration, deterministic, resource-limit, interruption, freeze, rollback, and security reports;
+- unit, smoke, invalid-configuration, wrong-repository/path, non-canonical-name, deterministic, resource-limit, interruption, freeze, rollback, and security reports;
 - source archive, sdist, wheel, checksums, and SBOM where applicable;
 - sanitized configuration and fixture manifests;
 - sample append-only event and attribution ledgers;
 - freeze point, rollback checkpoint, recovery, and cleanup evidence;
 - review-thread disposition and explicit release/deployment approval.
+
+Run `29610600428` retained Python 3.11 and 3.13 candidate artifacts with digests `505be6dae69827c150c72161ed348a752cf623a9589b29045c70000ff7aa2422` and `f44653928b2974f10f76822aebdac89fd31cdedf485f3ee9b5758be2766ae5f1`. These are review evidence only and do not satisfy the full artifact gate.
 
 No artifact may contain credentials, private identifiers, unapproved confidential data, or executable generated content.
 
@@ -67,12 +69,17 @@ Configuration must be local, versioned, schema-validated, and fail closed for:
 - missing required fields;
 - unknown fields where forbidden;
 - duplicate identifiers;
+- non-canonical QSO names or casing;
 - invalid versions;
+- repositories or paths outside the accepted upstream contract;
+- missing required hash pins;
 - mismatched hashes;
 - missing Atlas or upstream artifacts;
 - unsupported capabilities;
 - resource limits outside approved bounds;
 - network, credential, repository-write, generated-code, or payment capability requests.
+
+The schema and loader must express the same contract. No resolver success may bypass the published instance schema or accepted upstream repository/path boundary.
 
 ## Pre-Deployment Validation
 
@@ -83,7 +90,7 @@ Run from a clean disposable environment:
 3. Install without undeclared dependencies.
 4. Run compilation and the complete test suite.
 5. Run `qso-run`, `qso-run --version`, deterministic repeatability, and invalid-argument checks.
-6. Validate local configuration and all negative fixtures.
+6. Validate local configuration and all negative fixtures, including wrong repository/path, absent hash pins, hash mismatch, duplicate identity, and non-canonical name casing.
 7. Exercise resource ceilings, interruption, freeze, checkpoint, rollback, and recovery.
 8. Verify ledgers are append-only, hash-linked, ordered, attributable, and preserved across rollback.
 9. Confirm no network, credentials, repository writes, generated-code execution, or sensitive data access.
@@ -94,7 +101,7 @@ Run from a clean disposable environment:
 A verification deployment is healthy only when:
 
 - process startup and clean shutdown succeed;
-- configured instances load exactly once with expected IDs and hashes;
+- configured instances load exactly once with canonical expected names, IDs, repository/path contracts, schema versions, and hashes;
 - deterministic seed and input replay produces the expected canonical output hash;
 - message, event, attribution, freeze, and rollback ledgers validate;
 - resource consumption remains inside declared limits;
@@ -108,6 +115,8 @@ A verification deployment is healthy only when:
 Retain structured local evidence for:
 
 - source and configuration identity;
+- schema and loader contract version;
+- accepted upstream repository/path and hash identities;
 - start, stop, freeze, rollback, and recovery events;
 - instance state transitions;
 - message counts, sizes, ordering, rejection reasons, and hashes;
@@ -124,6 +133,8 @@ Immediately stop and roll back if:
 
 - the running source differs from the approved SHA;
 - artifacts or configuration fail hash or schema validation;
+- the schema and loader disagree;
+- a non-canonical name, unapproved repository/path, missing hash pin, or mismatched hash is accepted;
 - deterministic outputs diverge;
 - invalid input produces partial accepted state;
 - resource limits, stop controls, freeze, checkpoint, or rollback fail;
@@ -136,7 +147,7 @@ Immediately stop and roll back if:
 ## Rollback Procedure
 
 1. Stop the process and deny further input.
-2. Preserve logs, failed inputs, exact source/configuration hashes, ledger heads, and resource evidence.
+2. Preserve logs, failed inputs, exact source/configuration/schema/upstream hashes, ledger heads, and resource evidence.
 3. Restore the last accepted checkpoint or remove the disposable run directory when no accepted checkpoint exists.
 4. Verify no external state, repository, credential, package registry, or payment system was modified.
 5. Re-run integrity checks on preserved evidence.
@@ -147,7 +158,7 @@ Immediately stop and roll back if:
 
 After a permitted verification run:
 
-- repeat CLI smoke and deterministic replay;
+- repeat CLI and configuration smoke plus deterministic replay;
 - validate final event/attribution ledger heads and checkpoint hashes;
 - prove cleanup removed transient state without deleting retained evidence;
 - confirm no network, credentials, external writes, generated execution, payment actions, or sensitive-data leakage occurred;
@@ -158,8 +169,9 @@ After a permitted verification run:
 
 ## Promotion Rules
 
-A disposable verification pass does not authorize package publication, persistent hosting, scheduled execution, multi-user service, four-QSO operation, external integration, or production deployment. Each promotion requires a separately scoped architecture, threat model, acceptance matrix, rollback drill, evidence bundle, and explicit approval.
+A disposable verification pass does not authorize package publication, persistent hosting, scheduled execution, multi-user service, four-QSO operation, external integration, credentials, or production deployment. Each promotion requires a separately scoped architecture, threat model, acceptance matrix, rollback drill, evidence bundle, and explicit approval.
 
 ## Deployment Log
 
 - 2026-07-17 — Added the fail-closed deployment plan. No deployment was attempted or authorized.
+- 2026-07-17 — Recorded PR #6 exact-head CI and retained artifacts as review evidence. Deployment remains blocked by unresolved configuration-contract findings, merged-head/runtime/upstream/security/publication gates, and approval.

@@ -79,6 +79,17 @@ def _validate_json_value(value: object, *, label: str) -> None:
     raise RuntimeInvariantError(f"{label} must contain only canonical JSON values")
 
 
+def _validate_freeze_annotation_severities(annotations: list[dict[str, Any]]) -> None:
+    for index, annotation in enumerate(annotations):
+        if "severity" not in annotation:
+            continue
+        severity = annotation["severity"]
+        label = f"freeze annotations[{index}].severity"
+        if not isinstance(severity, str):
+            raise RuntimeInvariantError(f"{label} must be a string")
+        _validate_json_value(severity, label=label)
+
+
 def _require_object_field(value: dict[str, Any], field: str, *, label: str) -> dict[str, Any]:
     candidate = value.get(field)
     if not isinstance(candidate, dict):
@@ -438,6 +449,7 @@ class RuntimeController:
         self._require_status("active")
         if not isinstance(annotations, list) or any(not isinstance(item, dict) for item in annotations):
             raise RuntimeInvariantError("freeze annotations must be a list of objects")
+        _validate_freeze_annotation_severities(annotations)
         _validate_json_value(annotations, label="freeze annotations")
         blocked = [copy.deepcopy(item) for item in annotations if item.get("severity") in {"high", "critical"}]
         if blocked:

@@ -1,0 +1,56 @@
+name: Glyph Lock
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  hostile-input:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - name: Check out exact submitted head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Assert exact head
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install local package and test runner
+        run: |
+          python -m pip install --upgrade pip setuptools wheel pytest
+          python -m pip install -e . --no-build-isolation
+      - name: Compile security code and tests
+        run: python -m compileall -q qso_runtime/glyph_lock tests/test_glyph_lock_security.py
+      - name: Run hostile-input regressions
+        run: python -m pytest -q tests/test_glyph_lock_security.py
+      - name: Scan tracked text paths for forbidden control bytes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib
+          from qso_runtime.glyph_lock import GlyphLockPolicy, scan_bytes
+
+          machine = GlyphLockPolicy(field_type="path", allow_newline=False, allow_combining_marks=False)
+          failures = []
+          for path in pathlib.Path(".").rglob("*"):
+              if not path.is_file() or ".git" in path.parts:
+                  continue
+              path_result = scan_bytes(str(path).encode("utf-8"), machine)
+              if not path_result.accepted:
+                  failures.append((str(path), [f.code for f in path_result.findings]))
+          if failures:
+              raise SystemExit(f"Glyph Lock path failures: {failures}")
+          PY

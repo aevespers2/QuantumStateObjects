@@ -88,9 +88,12 @@ class AttributionJourneyLedger:
     ) -> dict[str, Any]:
         require_sha256(state_before_sha256, "state_before_sha256")
         require_sha256(state_after_sha256, "state_after_sha256")
-        artifact_entries = copy.deepcopy(artifacts or [])
-        if not isinstance(artifact_entries, list):
+        if artifacts is None:
+            artifact_entries: list[dict[str, Any]] = []
+        elif not isinstance(artifacts, list):
             raise ValueError("artifacts must be a list")
+        else:
+            artifact_entries = copy.deepcopy(artifacts)
         for index, artifact in enumerate(artifact_entries):
             if not isinstance(artifact, dict):
                 raise ValueError(f"artifacts[{index}] must be an object")

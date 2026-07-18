@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -108,13 +109,34 @@ def _reject_nonstandard_json_constant(value: str) -> object:
     raise ValueError(f"non-standard JSON constant: {value}")
 
 
+def _reject_duplicate_object_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
+def _parse_finite_json_float(value: str) -> float:
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise ValueError(f"JSON number exceeds finite range: {value}")
+    return parsed
+
+
 def _decode_json(payload: bytes, *, label: str) -> object:
     try:
         text = payload.decode("utf-8", errors="strict")
     except UnicodeDecodeError as exc:
         raise ConfigurationError(f"{label} is not valid UTF-8 JSON") from exc
     try:
-        return json.loads(text, parse_constant=_reject_nonstandard_json_constant)
+        return json.loads(
+            text,
+            object_pairs_hook=_reject_duplicate_object_pairs,
+            parse_constant=_reject_nonstandard_json_constant,
+            parse_float=_parse_finite_json_float,
+        )
     except (json.JSONDecodeError, ValueError) as exc:
         raise ConfigurationError(f"{label} is not valid UTF-8 JSON") from exc
 

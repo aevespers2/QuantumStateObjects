@@ -7,6 +7,8 @@ import math
 from dataclasses import dataclass, field
 from typing import Any
 
+from qso_runtime.config import REQUIRED_QSOS, _SECONDARY_NAME_PATTERN
+
 
 def digest(value: Any) -> str:
     raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
@@ -77,6 +79,25 @@ class Partition:
     events: list[dict[str, Any]] = field(default_factory=list)
 
 
+def validate_identity_name_contract(identity: dict[str, Any]) -> None:
+    """Apply the published instance naming contract before QSO construction."""
+    primary_name = identity.get("primary_name")
+    if primary_name not in REQUIRED_QSOS:
+        raise ValueError(
+            "identity primary_name must be one of the canonical names: "
+            + ", ".join(REQUIRED_QSOS)
+        )
+
+    secondary_name = identity.get("secondary_name")
+    if not isinstance(secondary_name, str) or _SECONDARY_NAME_PATTERN.fullmatch(secondary_name) is None:
+        raise ValueError("identity secondary_name does not match the published schema")
+
+    declared_name = identity.get("declared_name")
+    expected_declared_name = f"{primary_name}-{secondary_name}-Vespers"
+    if declared_name != expected_declared_name:
+        raise ValueError(f"identity declared_name must equal {expected_declared_name}")
+
+
 class GenomeInterpreter:
     REQUIRED_FORBIDDEN = {
         "shell_execution", "subprocess_execution", "arbitrary_code_execution",
@@ -94,11 +115,9 @@ class GenomeInterpreter:
             raise ValueError("genome capability boundary is incomplete")
         if genome["learning"].get("input_boundary") != "qso_seeker_canonical_records_only":
             raise ValueError("QSO-SEEKER must be the external input boundary")
-        if identity.get("primary_name", "").lower() != genome["genome_id"]:
+        validate_identity_name_contract(identity)
+        if identity["primary_name"].lower() != genome["genome_id"]:
             raise ValueError("identity does not match genome")
-        expected = f"{identity['primary_name']}-{identity['secondary_name']}-Vespers"
-        if identity.get("declared_name") != expected:
-            raise ValueError("invalid declared lineage name")
         return QSO(Partition(copy.deepcopy(identity), copy.deepcopy(genome)))
 
 

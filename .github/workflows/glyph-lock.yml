@@ -38,15 +38,18 @@ jobs:
             qso_runtime/glyph_lock \
             qso_runtime/mutation_audit.py \
             qso_runtime/audit_observer.py \
+            qso_runtime/risk_watch.py \
             tests/test_glyph_lock_security.py \
             tests/test_mutation_audit.py \
-            tests/test_audit_observer.py
-      - name: Run hostile-input, mutation-audit, and observer regressions
+            tests/test_audit_observer.py \
+            tests/test_risk_watch.py
+      - name: Run security regressions
         run: |
           python -m pytest -q \
             tests/test_glyph_lock_security.py \
             tests/test_mutation_audit.py \
-            tests/test_audit_observer.py
+            tests/test_audit_observer.py \
+            tests/test_risk_watch.py
       - name: Scan tracked text paths for forbidden control bytes
         shell: bash
         run: |

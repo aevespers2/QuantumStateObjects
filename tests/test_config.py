@@ -17,6 +17,13 @@ def _instance(
     repository: str = "aevespers2/QSO-GENOMES",
     sha256: str | None = None,
 ) -> dict[str, object]:
+    secondary_names = {
+        "Atlas": "Helix",
+        "Nova": "Talon",
+        "Orion": "Keystone",
+        "Lyra": "Cadence",
+    }
+    secondary_name = secondary_names[name]
     genome: dict[str, object] = {
         "repository": repository,
         "path": path or f"genomes/{name.lower()}.json",
@@ -26,10 +33,33 @@ def _instance(
         genome["sha256"] = sha256
     return {
         "schema_version": 1,
-        "instance_id": f"{name.lower()}-0-1-0",
+        "instance_id": f"{name.lower()}-{secondary_name.lower()}-vespers-0-1-0",
+        "declared_name": f"{name}-{secondary_name}-Vespers",
         "primary_name": name,
+        "secondary_name": secondary_name,
+        "lineage_suffix": "Vespers",
         "version": "0.1.0",
         "genome": genome,
+        "identity_declaration": {
+            "secondary_name_basis": "declared_intent",
+            "secondary_focus": f"Synthetic deterministic focus for {name}.",
+            "chosen_at_freeze_point": True,
+            "human_review_required": True,
+        },
+        "development": {
+            "interpretation_enabled": True,
+            "self_reflection_enabled": True,
+            "self_edit_mode": "proposal_only",
+            "immutable_fields_locked": True,
+            "proposal_log": f"proposals/{name.lower()}-{secondary_name.lower()}-vespers.jsonl",
+            "max_proposals_per_run": 8,
+        },
+        "sprite_review": {
+            "required": True,
+            "sprite": "aequitas",
+            "activation_rule": "pending_until_sprite_and_human_review",
+        },
+        "status": "pending_review",
     }
 
 
@@ -62,6 +92,13 @@ def test_malformed_configuration_fails_closed(tmp_path: Path) -> None:
         load_runtime_config(path)
 
 
+def test_non_utf8_configuration_fails_closed(tmp_path: Path) -> None:
+    path = tmp_path / "instances.json"
+    path.write_bytes(json.dumps(_document()).encode("utf-16"))
+    with pytest.raises(ConfigurationError, match="not valid UTF-8 JSON"):
+        load_runtime_config(path)
+
+
 def test_duplicate_instance_id_fails_closed(tmp_path: Path) -> None:
     document = _document()
     instances = document["instances"]
@@ -82,6 +119,79 @@ def test_noncanonical_primary_name_fails_closed(tmp_path: Path) -> None:
     _write_json(path, document)
     with pytest.raises(ConfigurationError, match="canonical names"):
         load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+
+
+@pytest.mark.parametrize(
+    "missing_key",
+    [
+        "declared_name",
+        "secondary_name",
+        "lineage_suffix",
+        "identity_declaration",
+        "development",
+        "sprite_review",
+        "status",
+    ],
+)
+def test_missing_schema_required_instance_blocks_fail_closed(
+    tmp_path: Path, missing_key: str
+) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0].pop(missing_key)
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="missing required fields"):
+        load_runtime_config(path)
+
+
+@pytest.mark.parametrize(
+    ("block", "missing_key"),
+    [
+        ("identity_declaration", "human_review_required"),
+        ("development", "immutable_fields_locked"),
+        ("sprite_review", "activation_rule"),
+    ],
+)
+def test_missing_schema_required_nested_fields_fail_closed(
+    tmp_path: Path, block: str, missing_key: str
+) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0][block].pop(missing_key)
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="missing required fields"):
+        load_runtime_config(path)
+
+
+@pytest.mark.parametrize("location", ["instance", "genome"])
+def test_boolean_schema_versions_fail_closed(tmp_path: Path, location: str) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    if location == "instance":
+        instances[0]["schema_version"] = True
+    else:
+        instances[0]["genome"]["schema_version"] = True
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="integer 1"):
+        load_runtime_config(path)
+
+
+@pytest.mark.parametrize("instance_id", ["BAD ID", "ab", "Atlas-valid-looking"])
+def test_invalid_instance_id_fails_closed(tmp_path: Path, instance_id: str) -> None:
+    document = _document()
+    instances = document["instances"]
+    assert isinstance(instances, list)
+    instances[0]["instance_id"] = instance_id
+    path = tmp_path / "instances.json"
+    _write_json(path, document)
+    with pytest.raises(ConfigurationError, match="instance_id must match"):
+        load_runtime_config(path)
 
 
 def test_uncontracted_genome_repository_fails_closed(tmp_path: Path) -> None:
@@ -139,11 +249,41 @@ def test_hash_mismatch_fails_closed(tmp_path: Path) -> None:
         resolve_local_genomes(config, genome_root)
 
 
+def test_non_utf8_hash_pinned_genome_fails_closed(tmp_path: Path) -> None:
+    genome_payload = json.dumps({"schema_version": 1}).encode("utf-16")
+    genome_hash = hashlib.sha256(genome_payload).hexdigest()
+    path = tmp_path / "instances.json"
+    _write_json(path, _document(sha256=genome_hash))
+    genome_root = tmp_path / "QSO-GENOMES"
+    for name in REQUIRED_QSOS:
+        genome_path = genome_root / "genomes" / f"{name.lower()}.json"
+        genome_path.parent.mkdir(parents=True, exist_ok=True)
+        genome_path.write_bytes(genome_payload)
+    config = load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+    with pytest.raises(ConfigurationError, match="Atlas genome is not valid UTF-8 JSON"):
+        resolve_local_genomes(config, genome_root)
+
+
+def test_boolean_genome_document_schema_version_fails_closed(tmp_path: Path) -> None:
+    genome_payload = json.dumps({"schema_version": True}, sort_keys=True).encode("utf-8")
+    genome_hash = hashlib.sha256(genome_payload).hexdigest()
+    path = tmp_path / "instances.json"
+    _write_json(path, _document(sha256=genome_hash))
+    genome_root = tmp_path / "QSO-GENOMES"
+    for name in REQUIRED_QSOS:
+        genome_path = genome_root / "genomes" / f"{name.lower()}.json"
+        genome_path.parent.mkdir(parents=True, exist_ok=True)
+        genome_path.write_bytes(genome_payload)
+    config = load_runtime_config(path, expected_primary_names=REQUIRED_QSOS)
+    with pytest.raises(ConfigurationError, match="integer 1"):
+        resolve_local_genomes(config, genome_root)
+
+
 def test_hash_pinned_local_genomes_resolve_deterministically(tmp_path: Path) -> None:
     genome_payload = json.dumps({"schema_version": 1, "kind": "bounded-fixture"}, sort_keys=True).encode()
-    digest = hashlib.sha256(genome_payload).hexdigest()
+    genome_hash = hashlib.sha256(genome_payload).hexdigest()
     path = tmp_path / "instances.json"
-    _write_json(path, _document(sha256=digest))
+    _write_json(path, _document(sha256=genome_hash))
     genome_root = tmp_path / "QSO-GENOMES"
     for name in REQUIRED_QSOS:
         genome_path = genome_root / "genomes" / f"{name.lower()}.json"
@@ -153,4 +293,4 @@ def test_hash_pinned_local_genomes_resolve_deterministically(tmp_path: Path) -> 
     first = resolve_local_genomes(config, genome_root)
     second = resolve_local_genomes(config, genome_root)
     assert first == second
-    assert set(first.values()) == {digest}
+    assert set(first.values()) == {genome_hash}

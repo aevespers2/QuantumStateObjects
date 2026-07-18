@@ -88,6 +88,13 @@ class AttributionJourneyLedger:
     ) -> dict[str, Any]:
         require_sha256(state_before_sha256, "state_before_sha256")
         require_sha256(state_after_sha256, "state_after_sha256")
+        artifact_entries = copy.deepcopy(artifacts or [])
+        if not isinstance(artifact_entries, list):
+            raise ValueError("artifacts must be a list")
+        for index, artifact in enumerate(artifact_entries):
+            if not isinstance(artifact, dict):
+                raise ValueError(f"artifacts[{index}] must be an object")
+            require_sha256(artifact.get("sha256"), f"artifacts[{index}].sha256")
         previous_hash = self.entries[-1]["entry_sha256"] if self.entries else None
         sequence = len(self.entries)
         timestamp = timestamp_utc or datetime.now(timezone.utc).isoformat()
@@ -101,7 +108,7 @@ class AttributionJourneyLedger:
             "state_before_sha256": state_before_sha256,
             "state_after_sha256": state_after_sha256,
             "previous_entry_sha256": previous_hash,
-            "artifacts": copy.deepcopy(artifacts or []),
+            "artifacts": artifact_entries,
             "terms": {
                 "attribution_required": attribution_required,
                 "ownership_claimed": ownership_claimed,

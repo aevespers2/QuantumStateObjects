@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import math
 import string
 from dataclasses import dataclass
 from typing import Any, Iterable
@@ -23,6 +24,9 @@ _EVENT_KEYS = frozenset(
         "sha256",
     }
 )
+_CANONICAL_RECORD_REQUIRED_KEYS = frozenset(
+    {"content", "content_sha256", "flags", "transformations"}
+)
 
 
 def _is_sha256(value: object) -> bool:
@@ -31,6 +35,59 @@ def _is_sha256(value: object) -> bool:
         and len(value) == 64
         and all(character in string.hexdigits for character in value)
     )
+
+
+def _validate_json_value(value: object, *, label: str) -> None:
+    if value is None or isinstance(value, (str, bool, int)):
+        return
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise RuntimeInvariantError(f"{label} must contain only finite JSON numbers")
+        return
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            _validate_json_value(item, label=f"{label}[{index}]")
+        return
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise RuntimeInvariantError(f"{label} must contain only string object keys")
+            _validate_json_value(item, label=f"{label}.{key}")
+        return
+    raise RuntimeInvariantError(f"{label} must contain only canonical JSON values")
+
+
+def _validate_canonical_record(record: object) -> dict[str, Any]:
+    if not isinstance(record, dict):
+        raise RuntimeInvariantError("canonical record must be an object")
+    missing = sorted(_CANONICAL_RECORD_REQUIRED_KEYS - record.keys())
+    if missing:
+        raise RuntimeInvariantError(f"canonical record is missing required fields: {missing}")
+    _validate_json_value(record, label="canonical record")
+
+    content = record.get("content")
+    if not isinstance(content, str):
+        raise RuntimeInvariantError("canonical record content must be a string")
+    declared_hash = record.get("content_sha256")
+    if (
+        not isinstance(declared_hash, str)
+        or len(declared_hash) != 64
+        or any(character not in "0123456789abcdef" for character in declared_hash)
+    ):
+        raise RuntimeInvariantError(
+            "canonical record content_sha256 must be a lowercase SHA-256 hex string"
+        )
+    flags = record.get("flags")
+    if not isinstance(flags, list) or any(not isinstance(flag, str) for flag in flags):
+        raise RuntimeInvariantError("canonical record flags must be an array of strings")
+    transformations = record.get("transformations")
+    if not isinstance(transformations, list) or any(
+        not isinstance(transformation, str) for transformation in transformations
+    ):
+        raise RuntimeInvariantError(
+            "canonical record transformations must be an array of strings"
+        )
+    return record
 
 
 def _message_dict(message: MCPMessage) -> dict[str, Any]:
@@ -190,6 +247,21 @@ class RuntimeController:
             raise RuntimeInvariantError(f"resource limit {name} must be a positive integer")
         return value
 
+    def _allowed_peers(self) -> tuple[str, ...]:
+        communication = self.qso.p.genome.get("communication")
+        if not isinstance(communication, dict):
+            raise RuntimeInvariantError("communication must be an object")
+        peers = communication.get("allowed_peers")
+        if not isinstance(peers, list):
+            raise RuntimeInvariantError("communication.allowed_peers must be a JSON array")
+        if any(not isinstance(peer, str) or not peer.strip() for peer in peers):
+            raise RuntimeInvariantError(
+                "communication.allowed_peers must contain only non-empty strings"
+            )
+        if len(set(peers)) != len(peers):
+            raise RuntimeInvariantError("communication.allowed_peers must not contain duplicates")
+        return tuple(peers)
+
     def _require_event_capacity(
         self,
         additions: int = 1,
@@ -203,12 +275,9 @@ class RuntimeController:
 
     def ingest(self, record: dict[str, Any]) -> None:
         self._require_status("active")
-        if not isinstance(record, dict):
-            raise RuntimeInvariantError("canonical record must be an object")
-        content = record.get("content")
-        if not isinstance(content, str):
-            raise RuntimeInvariantError("canonical record content must be a string")
-        declared_hash = record.get("content_sha256")
+        record = _validate_canonical_record(record)
+        content = record["content"]
+        declared_hash = record["content_sha256"]
         expected_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
         if declared_hash != expected_hash:
             raise RuntimeInvariantError("canonical record content hash mismatch")
@@ -232,11 +301,12 @@ class RuntimeController:
         self._require_status("active")
         if len(self.qso.p.outbox) >= self._resource_limit("max_messages", default=1_000):
             raise RuntimeInvariantError("outbox message limit exceeded")
+        allowed_peers = self._allowed_peers()
         message = MCPMessage.build(self.qso.genome_id, recipient, kind, payload)
         validate_message(
             message,
             allowed_senders={self.qso.genome_id},
-            allowed_recipients=self.qso.p.genome["communication"]["allowed_peers"],
+            allowed_recipients=allowed_peers,
         )
         self.qso.p.outbox.append(message)
         return message
@@ -245,12 +315,19 @@ class RuntimeController:
         self._require_status("active")
         if len(self.qso.p.inbox) >= self._resource_limit("max_messages", default=1_000):
             raise RuntimeInvariantError("inbox message limit exceeded")
+        stored_message = MCPMessage(
+            sender=message.sender,
+            recipient=message.recipient,
+            kind=message.kind,
+            payload=copy.deepcopy(message.payload),
+            sha256=message.sha256,
+        )
         validate_message(
-            message,
-            allowed_senders=self.qso.p.genome["communication"]["allowed_peers"],
+            stored_message,
+            allowed_senders=self._allowed_peers(),
             allowed_recipients={self.qso.genome_id},
         )
-        self.qso.receive(message)
+        self.qso.receive(stored_message)
 
     def freeze(self, annotations: list[dict[str, Any]]) -> dict[str, Any]:
         self._require_status("active")
@@ -295,15 +372,25 @@ class RuntimeController:
 
     def recover(self) -> None:
         self._require_status("interrupted")
-        self._require_event_capacity()
-        self._restore_state(self._checkpoint.state)
-        self.status = "active"
-        self.qso.record_event(
-            "recovered",
-            {"checkpoint_state_sha256": self._checkpoint.state_sha256},
-        )
+        self._require_event_capacity(reserve_rollback=False)
+        state_before = canonical_state(self.qso)
+        events_before = copy.deepcopy(self.qso.p.events)
+        status_before = self.status
+        try:
+            self._restore_state(self._checkpoint.state)
+            self.status = "active"
+            self.qso.record_event(
+                "recovered",
+                {"checkpoint_state_sha256": self._checkpoint.state_sha256},
+            )
+        except Exception as exc:
+            self._restore_state(state_before)
+            self.qso.p.events = events_before
+            self.status = status_before
+            raise RuntimeInvariantError("recovery failed closed without partial mutation") from exc
 
     def _rollback_to_checkpoint(self, payload: dict[str, Any]) -> None:
+        _validate_json_value(payload, label="rollback payload")
         self._restore_state(self._checkpoint.state)
         self.status = "active"
         try:

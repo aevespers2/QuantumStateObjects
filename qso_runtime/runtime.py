@@ -146,8 +146,14 @@ def verify_event_ledger(events: Iterable[dict[str, Any]]) -> list[str]:
             errors.append(f"qso field mismatch at {expected_sequence}")
         if not isinstance(event.get("kind"), str) or not event.get("kind"):
             errors.append(f"kind field mismatch at {expected_sequence}")
-        if not isinstance(event.get("payload"), dict):
+        payload = event.get("payload")
+        if not isinstance(payload, dict):
             errors.append(f"payload field mismatch at {expected_sequence}")
+        else:
+            try:
+                _validate_json_value(payload, label=f"event payload at {expected_sequence}")
+            except RuntimeInvariantError:
+                errors.append(f"payload canonical JSON mismatch at {expected_sequence}")
 
         previous = event.get("previous_event_sha256")
         if expected_sequence == 0:
@@ -185,6 +191,7 @@ def validate_message(
         raise RuntimeInvariantError("unsupported message kind")
     if not isinstance(message.payload, dict):
         raise RuntimeInvariantError("message payload must be an object")
+    _validate_json_value(message.payload, label="message payload")
     if allowed_senders is not None and message.sender not in set(allowed_senders):
         raise RuntimeInvariantError("message sender is outside the allowed set")
     if allowed_recipients is not None and message.recipient not in set(allowed_recipients):
@@ -308,7 +315,14 @@ class RuntimeController:
             allowed_senders={self.qso.genome_id},
             allowed_recipients=allowed_peers,
         )
-        self.qso.p.outbox.append(message)
+        stored_message = MCPMessage(
+            sender=message.sender,
+            recipient=message.recipient,
+            kind=message.kind,
+            payload=copy.deepcopy(message.payload),
+            sha256=message.sha256,
+        )
+        self.qso.p.outbox.append(stored_message)
         return message
 
     def receive(self, message: MCPMessage) -> None:
@@ -333,6 +347,7 @@ class RuntimeController:
         self._require_status("active")
         if not isinstance(annotations, list) or any(not isinstance(item, dict) for item in annotations):
             raise RuntimeInvariantError("freeze annotations must be a list of objects")
+        _validate_json_value(annotations, label="freeze annotations")
         blocked = [copy.deepcopy(item) for item in annotations if item.get("severity") in {"high", "critical"}]
         if blocked:
             result = {

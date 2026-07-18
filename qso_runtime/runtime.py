@@ -27,6 +27,19 @@ _EVENT_KEYS = frozenset(
 _CANONICAL_RECORD_REQUIRED_KEYS = frozenset(
     {"content", "content_sha256", "flags", "transformations"}
 )
+_GENOME_REQUIRED_KEYS = frozenset(
+    {
+        "genome_id",
+        "purpose",
+        "immutable",
+        "mutable",
+        "resources",
+        "freeze",
+        "communication",
+        "learning",
+    }
+)
+_IDENTITY_REQUIRED_KEYS = frozenset({"primary_name", "secondary_name", "declared_name"})
 
 
 def _is_sha256(value: object) -> bool:
@@ -64,6 +77,57 @@ def _validate_json_value(value: object, *, label: str) -> None:
             _validate_json_value(item, label=f"{label}.{key}")
         return
     raise RuntimeInvariantError(f"{label} must contain only canonical JSON values")
+
+
+def _require_object_field(value: dict[str, Any], field: str, *, label: str) -> dict[str, Any]:
+    candidate = value.get(field)
+    if not isinstance(candidate, dict):
+        raise RuntimeInvariantError(f"{label}.{field} must be an object")
+    return candidate
+
+
+def _require_nonempty_string_field(value: dict[str, Any], field: str, *, label: str) -> str:
+    candidate = value.get(field)
+    if not isinstance(candidate, str) or not candidate.strip():
+        raise RuntimeInvariantError(f"{label}.{field} must be a non-empty string")
+    return candidate
+
+
+def _require_string_array(value: object, *, label: str) -> list[str]:
+    if not isinstance(value, list):
+        raise RuntimeInvariantError(f"{label} must be an array of strings")
+    if any(not isinstance(item, str) or not item.strip() for item in value):
+        raise RuntimeInvariantError(f"{label} must contain only non-empty strings")
+    return value
+
+
+def _validate_instantiation_contract(genome: dict[str, Any], identity: dict[str, Any]) -> None:
+    missing_genome = sorted(_GENOME_REQUIRED_KEYS - genome.keys())
+    if missing_genome:
+        raise RuntimeInvariantError(f"genome is missing required fields: {missing_genome}")
+    missing_identity = sorted(_IDENTITY_REQUIRED_KEYS - identity.keys())
+    if missing_identity:
+        raise RuntimeInvariantError(f"identity is missing required fields: {missing_identity}")
+
+    _require_nonempty_string_field(genome, "genome_id", label="genome")
+    _require_nonempty_string_field(genome, "purpose", label="genome")
+    immutable = _require_object_field(genome, "immutable", label="genome")
+    _require_string_array(
+        immutable.get("forbidden_capabilities"),
+        label="genome.immutable.forbidden_capabilities",
+    )
+    _require_object_field(genome, "mutable", label="genome")
+    _require_object_field(genome, "resources", label="genome")
+    _require_object_field(genome, "freeze", label="genome")
+    communication = _require_object_field(genome, "communication", label="genome")
+    _require_string_array(
+        communication.get("allowed_peers"),
+        label="genome.communication.allowed_peers",
+    )
+    _require_object_field(genome, "learning", label="genome")
+
+    for field in sorted(_IDENTITY_REQUIRED_KEYS):
+        _require_nonempty_string_field(identity, field, label="identity")
 
 
 def _validate_canonical_record(record: object) -> dict[str, Any]:
@@ -132,6 +196,7 @@ def event_ledger_sha256(qso: QSO) -> str:
 def verify_event_ledger(events: Iterable[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     previous_hash: str | None = None
+    expected_qso: str | None = None
     for expected_sequence, event in enumerate(events):
         if not isinstance(event, dict):
             errors.append(f"event shape mismatch at {expected_sequence}")
@@ -155,8 +220,13 @@ def verify_event_ledger(events: Iterable[dict[str, Any]]) -> list[str]:
         elif sequence != expected_sequence:
             errors.append(f"sequence mismatch at {expected_sequence}")
 
-        if not isinstance(event.get("qso"), str) or not event.get("qso"):
+        qso_name = event.get("qso")
+        if not isinstance(qso_name, str) or not qso_name:
             errors.append(f"qso field mismatch at {expected_sequence}")
+        elif expected_qso is None:
+            expected_qso = qso_name
+        elif qso_name != expected_qso:
+            errors.append(f"qso identity mismatch at {expected_sequence}")
         if not isinstance(event.get("kind"), str) or not event.get("kind"):
             errors.append(f"kind field mismatch at {expected_sequence}")
         payload = event.get("payload")
@@ -247,10 +317,12 @@ class RuntimeController:
             raise RuntimeInvariantError("identity must be an object")
         _validate_json_value(genome, label="genome")
         _validate_json_value(identity, label="identity")
-        resources = genome.get("resources")
-        if not isinstance(resources, dict):
-            raise RuntimeInvariantError("genome resources must be an object")
-        return cls(GenomeInterpreter().instantiate(genome, identity))
+        _validate_instantiation_contract(genome, identity)
+        try:
+            qso = GenomeInterpreter().instantiate(genome, identity)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RuntimeInvariantError("genome and identity contract is invalid") from exc
+        return cls(qso)
 
     @property
     def checkpoint(self) -> RuntimeCheckpoint:

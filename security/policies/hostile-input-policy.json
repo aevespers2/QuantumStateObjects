@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "unicode_normalization": "NFC",
+  "default_disposition": "quarantine",
+  "strict_utf8": true,
+  "preserve_raw_bytes": true,
+  "taint_propagation": true,
+  "generated_content_authority": "none",
+  "external_repository_write": false,
+  "generated_code_execution": false,
+  "machine_fields": {
+    "ascii_only": true,
+    "allow_newline": false,
+    "allow_tab": false,
+    "allow_emoji": false,
+    "allow_combining_marks": false
+  },
+  "natural_language": {
+    "allow_newline": true,
+    "allow_tab": false,
+    "allow_emoji": false,
+    "allow_combining_marks": true,
+    "normalization_must_be_stable": true
+  }
+}

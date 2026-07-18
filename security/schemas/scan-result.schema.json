@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qso.invalid/schemas/scan-result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["raw_sha256", "canonical_sha256", "accepted", "disposition", "tainted", "normalization", "findings"],
+  "properties": {
+    "raw_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "canonical_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "accepted": {"type": "boolean"},
+    "disposition": {"enum": ["accept", "quarantine", "reject"]},
+    "tainted": {"type": "boolean"},
+    "normalization": {"enum": ["NFC", "NFD", "NFKC", "NFKD"]},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "offset", "codepoint", "name", "severity"],
+        "properties": {
+          "code": {"type": "string"},
+          "offset": {"type": "integer", "minimum": 0},
+          "codepoint": {"type": "string"},
+          "name": {"type": "string"},
+          "severity": {"enum": ["low", "medium", "high", "critical"]}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qso.invalid/schemas/mutation-audit.schema.json",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "repository",
+    "sequence",
+    "phase",
+    "operation",
+    "target",
+    "before_state_sha256",
+    "after_state_sha256",
+    "result",
+    "timestamp_utc",
+    "previous_entry_sha256",
+    "entry_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "repository": {"type": "string", "minLength": 1},
+    "sequence": {"type": "integer", "minimum": 0},
+    "phase": {"enum": ["intent", "completion"]},
+    "operation": {"type": "string", "minLength": 1},
+    "target": {"type": "object", "minProperties": 1},
+    "before_state_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "after_state_sha256": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      ]
+    },
+    "result": {"enum": ["pending", "succeeded", "failed", "denied"]},
+    "timestamp_utc": {"type": "string", "minLength": 1},
+    "previous_entry_sha256": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      ]
+    },
+    "entry_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

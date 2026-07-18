@@ -482,11 +482,15 @@ class RuntimeController:
 
     def interrupt(self, reason: str) -> None:
         self._require_status("active")
-        if not isinstance(reason, str) or not reason.strip():
+        if not isinstance(reason, str):
+            raise RuntimeInvariantError("interruption reason must be a string")
+        canonical_reason = reason.strip()
+        if not canonical_reason:
             raise RuntimeInvariantError("interruption reason must be non-empty")
+        _validate_json_value(canonical_reason, label="interruption reason")
         self._require_event_capacity()
+        self.qso.record_event("interrupted", {"reason": canonical_reason})
         self.status = "interrupted"
-        self.qso.record_event("interrupted", {"reason": reason.strip()})
 
     def recover(self) -> None:
         self._require_status("interrupted")

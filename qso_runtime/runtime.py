@@ -138,8 +138,12 @@ def verify_event_ledger(events: Iterable[dict[str, Any]]) -> list[str]:
             previous_hash = None
             continue
 
-        missing = sorted(_EVENT_KEYS - event.keys())
-        extra = sorted(event.keys() - _EVENT_KEYS)
+        event_keys = tuple(event.keys())
+        string_keys = {key for key in event_keys if isinstance(key, str)}
+        if len(string_keys) != len(event_keys):
+            errors.append(f"event key type mismatch at {expected_sequence}")
+        missing = sorted(_EVENT_KEYS - string_keys)
+        extra = sorted(string_keys - _EVENT_KEYS)
         if missing:
             errors.append(f"missing event fields at {expected_sequence}: {missing}")
         if extra:
@@ -243,6 +247,9 @@ class RuntimeController:
             raise RuntimeInvariantError("identity must be an object")
         _validate_json_value(genome, label="genome")
         _validate_json_value(identity, label="identity")
+        resources = genome.get("resources")
+        if not isinstance(resources, dict):
+            raise RuntimeInvariantError("genome resources must be an object")
         return cls(GenomeInterpreter().instantiate(genome, identity))
 
     @property

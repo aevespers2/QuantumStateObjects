@@ -62,7 +62,7 @@ def test_instance_lifecycle_is_active_and_invalid_genome_fails_closed() -> None:
 
     invalid = genome()
     invalid.pop("freeze")
-    with pytest.raises(ValueError, match="missing genome fields"):
+    with pytest.raises(RuntimeInvariantError, match="missing required fields"):
         RuntimeController.instantiate(invalid, identity())
 
     without_rollback_capacity = genome(max_events=1)

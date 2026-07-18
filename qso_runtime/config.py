@@ -99,8 +99,7 @@ def _read_bounded_file(path: Path, *, max_bytes: int, label: str) -> bytes:
         raise ConfigurationError(f"{label} must not be a symbolic link: {path}")
     if not path.is_file():
         raise ConfigurationError(f"{label} is not a regular file: {path}")
-    size = path.stat().st_size
-    if size > max_bytes:
+    if path.stat().st_size > max_bytes:
         raise ConfigurationError(f"{label} exceeds the {max_bytes}-byte limit: {path}")
     return path.read_bytes()
 
@@ -158,7 +157,11 @@ def _require_true(value: object, *, label: str) -> None:
 def _validate_sha256(value: object, *, label: str, required: bool) -> str | None:
     if value is None and not required:
         return None
-    if not isinstance(value, str) or len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
+    if (
+        not isinstance(value, str)
+        or len(value) != 64
+        or any(character not in "0123456789abcdef" for character in value)
+    ):
         raise ConfigurationError(f"{label} must be a lowercase SHA-256 hex string")
     return value
 
@@ -201,10 +204,7 @@ def _validate_instance_contract(
     )
     expected_declared_name = f"{primary_name}-{secondary_name}-Vespers"
     if declared_name != expected_declared_name:
-        raise ConfigurationError(
-            f"{label}.declared_name must equal {expected_declared_name}"
-        )
-
+        raise ConfigurationError(f"{label}.declared_name must equal {expected_declared_name}")
     if instance.get("lineage_suffix") != "Vespers":
         raise ConfigurationError(f"{label}.lineage_suffix must equal Vespers")
 
@@ -240,9 +240,12 @@ def _validate_instance_contract(
     genome_schema_version = _require_exact_version(
         genome_value.get("schema_version"), label=f"{label}.genome.schema_version"
     )
-    expected_hash = _validate_sha256(
-        genome_value.get("sha256"), label=f"{label}.genome.sha256", required=False
-    )
+    if "sha256" in genome_value:
+        expected_hash = _validate_sha256(
+            genome_value["sha256"], label=f"{label}.genome.sha256", required=True
+        )
+    else:
+        expected_hash = None
 
     identity_declaration = _require_mapping(
         instance.get("identity_declaration"), label=f"{label}.identity_declaration"
@@ -285,16 +288,10 @@ def _validate_instance_contract(
         allowed=_DEVELOPMENT_KEYS,
         label=f"{label}.development",
     )
-    for field in (
-        "interpretation_enabled",
-        "self_reflection_enabled",
-        "immutable_fields_locked",
-    ):
+    for field in ("interpretation_enabled", "self_reflection_enabled", "immutable_fields_locked"):
         _require_true(development.get(field), label=f"{label}.development.{field}")
     if development.get("self_edit_mode") != "proposal_only":
-        raise ConfigurationError(
-            f"{label}.development.self_edit_mode must equal proposal_only"
-        )
+        raise ConfigurationError(f"{label}.development.self_edit_mode must equal proposal_only")
     proposal_log = _require_nonempty_string(
         development.get("proposal_log"), label=f"{label}.development.proposal_log"
     )
@@ -351,7 +348,6 @@ def load_runtime_config(
     source = Path(path)
     payload = _read_bounded_file(source, max_bytes=MAX_CONFIG_BYTES, label="configuration file")
     document = _decode_json(payload, label=f"configuration file: {source}")
-
     root = _require_mapping(document, label="configuration root")
     raw_instances = root.get("instances")
     if not isinstance(raw_instances, list) or not raw_instances:
@@ -366,14 +362,12 @@ def load_runtime_config(
         instance_id, primary_name, schema_version, version, genome = _validate_instance_contract(
             instance, label=label
         )
-
         if instance_id in instance_ids:
             raise ConfigurationError(f"duplicate instance_id: {instance_id}")
         if primary_name in primary_names:
             raise ConfigurationError(f"duplicate primary_name: {primary_name}")
         instance_ids.add(instance_id)
         primary_names.add(primary_name)
-
         instances.append(
             InstanceManifest(
                 instance_id=instance_id,

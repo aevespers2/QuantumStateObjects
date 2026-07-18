@@ -15,7 +15,13 @@ def digest(value: Any) -> str:
 
 def validate_canonical_json_value(value: Any, *, label: str = "value") -> None:
     """Reject values that cannot be represented as deterministic canonical JSON."""
-    if value is None or isinstance(value, (str, bool, int)):
+    if value is None or isinstance(value, (bool, int)):
+        return
+    if isinstance(value, str):
+        try:
+            value.encode("utf-8")
+        except UnicodeEncodeError as exc:
+            raise ValueError(f"{label} must contain only UTF-8 encodable strings") from exc
         return
     if isinstance(value, float):
         if not math.isfinite(value):
@@ -29,6 +35,7 @@ def validate_canonical_json_value(value: Any, *, label: str = "value") -> None:
         for key, item in value.items():
             if not isinstance(key, str):
                 raise ValueError(f"{label} must contain only string object keys")
+            validate_canonical_json_value(key, label=f"{label} object key")
             validate_canonical_json_value(item, label=f"{label}.{key}")
         return
     raise ValueError(f"{label} must contain only canonical JSON values")
@@ -202,12 +209,19 @@ class QSO:
         return {"identity": copy.deepcopy(self.p.identity), "records": copy.deepcopy(self.p.records), "proposals": copy.deepcopy(self.p.proposals)}
 
     def record_event(self, kind: str, payload: dict[str, Any]) -> None:
+        if not isinstance(kind, str) or not kind:
+            raise ValueError("event kind must be a non-empty string")
+        validate_canonical_json_value(kind, label="event kind")
+        if not isinstance(payload, dict):
+            raise ValueError("event payload must be an object")
+        stored_payload = copy.deepcopy(payload)
+        validate_canonical_json_value(stored_payload, label="event payload")
         previous_event_sha256 = self.p.events[-1]["sha256"] if self.p.events else None
         event = {
             "sequence": len(self.p.events),
             "qso": self.p.identity.get("declared_name"),
             "kind": kind,
-            "payload": copy.deepcopy(payload),
+            "payload": stored_payload,
             "previous_event_sha256": previous_event_sha256,
         }
         event["sha256"] = digest(event)

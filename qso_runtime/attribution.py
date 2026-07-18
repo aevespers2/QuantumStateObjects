@@ -3,7 +3,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import string
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,9 +24,9 @@ def require_sha256(value: str, field_name: str) -> None:
     if (
         not isinstance(value, str)
         or len(value) != 64
-        or any(character not in string.hexdigits for character in value)
+        or any(character not in "0123456789abcdef" for character in value)
     ):
-        raise ValueError(f"{field_name} must be a SHA-256 hex string")
+        raise ValueError(f"{field_name} must be a lowercase SHA-256 hex string")
 
 
 @dataclass(frozen=True)

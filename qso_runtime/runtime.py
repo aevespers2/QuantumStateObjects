@@ -38,7 +38,15 @@ def _is_sha256(value: object) -> bool:
 
 
 def _validate_json_value(value: object, *, label: str) -> None:
-    if value is None or isinstance(value, (str, bool, int)):
+    if value is None or isinstance(value, (bool, int)):
+        return
+    if isinstance(value, str):
+        try:
+            value.encode("utf-8")
+        except UnicodeEncodeError as exc:
+            raise RuntimeInvariantError(
+                f"{label} must contain only UTF-8 encodable strings"
+            ) from exc
         return
     if isinstance(value, float):
         if not math.isfinite(value):
@@ -52,6 +60,7 @@ def _validate_json_value(value: object, *, label: str) -> None:
         for key, item in value.items():
             if not isinstance(key, str):
                 raise RuntimeInvariantError(f"{label} must contain only string object keys")
+            _validate_json_value(key, label=f"{label} object key")
             _validate_json_value(item, label=f"{label}.{key}")
         return
     raise RuntimeInvariantError(f"{label} must contain only canonical JSON values")
@@ -228,6 +237,12 @@ class RuntimeController:
 
     @classmethod
     def instantiate(cls, genome: dict[str, Any], identity: dict[str, Any]) -> "RuntimeController":
+        if not isinstance(genome, dict):
+            raise RuntimeInvariantError("genome must be an object")
+        if not isinstance(identity, dict):
+            raise RuntimeInvariantError("identity must be an object")
+        _validate_json_value(genome, label="genome")
+        _validate_json_value(identity, label="identity")
         return cls(GenomeInterpreter().instantiate(genome, identity))
 
     @property
@@ -406,14 +421,9 @@ class RuntimeController:
 
     def _rollback_to_checkpoint(self, payload: dict[str, Any]) -> None:
         _validate_json_value(payload, label="rollback payload")
+        self._require_event_capacity(reserve_rollback=False)
         self._restore_state(self._checkpoint.state)
         self.status = "active"
-        try:
-            self._require_event_capacity(reserve_rollback=False)
-        except RuntimeInvariantError as exc:
-            raise RuntimeInvariantError(
-                "rollback restored state but event evidence capacity is exhausted"
-            ) from exc
         self.qso.record_event("rollback", copy.deepcopy(payload))
 
     def rollback(self) -> None:

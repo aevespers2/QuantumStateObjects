@@ -117,13 +117,10 @@ def _validate_instantiation_contract(genome: dict[str, Any], identity: dict[str,
         label="genome.immutable.forbidden_capabilities",
     )
     _require_object_field(genome, "mutable", label="genome")
-    _require_object_field(genome, "resources", label="genome")
+    if not isinstance(genome.get("resources"), dict):
+        raise RuntimeInvariantError("genome resources must be an object")
     _require_object_field(genome, "freeze", label="genome")
-    communication = _require_object_field(genome, "communication", label="genome")
-    _require_string_array(
-        communication.get("allowed_peers"),
-        label="genome.communication.allowed_peers",
-    )
+    _require_object_field(genome, "communication", label="genome")
     _require_object_field(genome, "learning", label="genome")
 
     for field in sorted(_IDENTITY_REQUIRED_KEYS):

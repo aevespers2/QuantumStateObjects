@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import string
 from dataclasses import dataclass
 from typing import Any, Iterable
@@ -202,6 +203,15 @@ class RuntimeController:
 
     def ingest(self, record: dict[str, Any]) -> None:
         self._require_status("active")
+        if not isinstance(record, dict):
+            raise RuntimeInvariantError("canonical record must be an object")
+        content = record.get("content")
+        if not isinstance(content, str):
+            raise RuntimeInvariantError("canonical record content must be a string")
+        declared_hash = record.get("content_sha256")
+        expected_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
+        if declared_hash != expected_hash:
+            raise RuntimeInvariantError("canonical record content hash mismatch")
         if len(self.qso.p.records) >= self._resource_limit("max_records", default=1):
             raise RuntimeInvariantError("record limit exceeded")
         self._require_event_capacity()

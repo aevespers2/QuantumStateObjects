@@ -104,14 +104,18 @@ def _read_bounded_file(path: Path, *, max_bytes: int, label: str) -> bytes:
     return path.read_bytes()
 
 
+def _reject_nonstandard_json_constant(value: str) -> object:
+    raise ValueError(f"non-standard JSON constant: {value}")
+
+
 def _decode_json(payload: bytes, *, label: str) -> object:
     try:
         text = payload.decode("utf-8", errors="strict")
     except UnicodeDecodeError as exc:
         raise ConfigurationError(f"{label} is not valid UTF-8 JSON") from exc
     try:
-        return json.loads(text)
-    except json.JSONDecodeError as exc:
+        return json.loads(text, parse_constant=_reject_nonstandard_json_constant)
+    except (json.JSONDecodeError, ValueError) as exc:
         raise ConfigurationError(f"{label} is not valid UTF-8 JSON") from exc
 
 

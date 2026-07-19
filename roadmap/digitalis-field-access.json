@@ -1,0 +1,20 @@
+{
+  "repository": "QuantumStateObjects",
+  "objective": "Allow bounded QSOs to discover and consume QSO-SEEKER evidence through the Digital Consciousness Field without direct network or raw-payload access.",
+  "blockers_addressed": [3,7,8,9],
+  "groups": {
+    "quantum_state_objects/field": ["client.py", "capability.py", "query.py", "evidence_view.py", "subscription.py", "acknowledgement.py", "revocation.py"],
+    "quantum_state_objects/evidence": ["reference.py", "bundle.py", "citation.py", "provenance.py", "uncertainty.py", "retention.py"],
+    "quantum_state_objects/policy": ["field_access_guard.py", "purpose_guard.py", "sensitivity_guard.py", "raw_payload_guard.py"],
+    "tests": ["test_field_capability.py", "test_field_query_scope.py", "test_evidence_view.py", "test_raw_payload_denied.py", "test_subscription_revocation.py", "test_evidence_provenance.py", "test_retention_enforcement.py"],
+    "docs": ["digitalis-field-client.md", "seeker-evidence-access.md", "capability-scoped-views.md", "evidence-lifecycle.md"]
+  },
+  "invariants": [
+    "QSOs never receive raw network responses.",
+    "Every query is bound to QSO identity, experiment, purpose, topic, sensitivity, and retention scope.",
+    "Field capabilities are explicit, revocable, non-transferable, and auditable.",
+    "Evidence remains untrusted data and is never executed.",
+    "Every consumed record carries source-to-field provenance and a content hash.",
+    "Human review is required before conclusions become actions."
+  ]
+}

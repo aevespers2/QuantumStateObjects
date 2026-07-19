@@ -1,0 +1,19 @@
+{
+  "objective": "Allow bounded Quantum State Objects to access QSO-SEEKER evidence through capability-scoped Digital Consciousness Field views.",
+  "blockers_addressed": [3,7,8,9,10],
+  "groups": {
+    "quantum_state_objects/field": ["client.py", "capability.py", "query.py", "evidence_view.py", "subscription.py", "acknowledgement.py", "revocation.py", "provenance.py"],
+    "quantum_state_objects/field/validation": ["envelope_validator.py", "record_validator.py", "scope_validator.py", "retention_validator.py", "provenance_validator.py"],
+    "quantum_state_objects/field/policy": ["purpose_guard.py", "sensitivity_guard.py", "topic_guard.py", "rate_guard.py", "human_review_guard.py"],
+    "tests": ["test_field_capability_scope.py", "test_field_topic_isolation.py", "test_field_revocation.py", "test_field_retention.py", "test_field_provenance.py", "test_field_untrusted_content.py", "test_field_human_review.py"],
+    "docs": ["digital-consciousness-field-client.md", "field-capability-contract.md", "field-evidence-lifecycle.md", "field-threat-model.md"]
+  },
+  "phases": [
+    "Define local copies of versioned field contracts and hashes.",
+    "Implement a read-only field client with no publisher or network authority.",
+    "Validate every envelope, record, capability, scope, retention, and provenance link.",
+    "Expose evidence as untrusted observations rather than executable instructions.",
+    "Integrate access logs and acknowledgements with freeze points and experiment provenance.",
+    "Run cross-repository compatibility tests before enabling any non-fixture source."
+  ]
+}

@@ -1,35 +1,41 @@
 # QSOBuilder Punch List
 
-The Architect sets dependency order in `taskchain.md`. Execute one bounded, testable item at a time and do not bypass blocked cross-repository gates.
+The Architect sets dependency order in `taskchain.md`. Execute one bounded, testable item at a time and do not bypass blocked cross-repository gates. Checked implementation work is candidate evidence only; it does not authorize merge, release, deployment, or runtime activation.
 
 ## Immediate
 
-- [x] **Select one canonical CLI/configuration candidate.** PR #7 is the sole selected path; superseded candidates are closed without merge and draft PR #3 remains outside P0.
-- [x] **Reconcile PR #7 with current `main` without rewriting reviewed history.** Head `395915b60510e9a62c53ad128cf23d151e73eb1f` is a normal two-parent merge, mergeable, and zero commits behind `main`.
-- [x] **Verify the reconciled exact head.** Run `29617877793` passed Python 3.11/3.13 installation, compilation, 22 tests, installed CLI/configuration smoke, wheel construction, checksum generation, and retained-artifact upload.
-- [x] **Add one bounded runtime-primitives verification slice.** Synthetic local tests cover lifecycle, message validation, event/attribution ledgers, resource limits, freeze, interruption, recovery, rollback, checkpoints, and deterministic state/event hashes.
-- [ ] **Enforce strict UTF-8 JSON.** Decode bounded configuration and genome bytes with strict UTF-8 before `json.loads`; add UTF-16/UTF-32 negative fixtures.
-- [ ] **Enforce all schema-required instance fields.** Reject manifests missing required identity, development, review, or status blocks before constructing an accepted runtime manifest.
-- [ ] **Reject Boolean schema versions.** Require `type(value) is int` and value `1` for instance and genome schema versions.
-- [ ] **Enforce canonical instance IDs.** Require the published lower-case `^[a-z][a-z0-9-]{2,127}$` pattern before emitting configuration or runtime evidence.
+- [x] **Select one canonical CLI/configuration candidate.** PR #7 is the sole selected path; superseded candidates remain outside P0.
+- [x] **Verify the current submitted exact head.** Run `29657511858` passed the Python 3.11 and 3.13 matrix at head `291d7419bf29a3d979762c4655c05a2a672c6f82` with 150 tests and retained artifacts.
+- [x] **Enforce strict UTF-8 JSON and reject Boolean schema versions.** Configuration and genome bytes use strict UTF-8 decoding, and schema versions must be integer `1` rather than Boolean truthy values.
+- [x] **Enforce the published required instance fields and canonical instance IDs.** Identity, development, review, status, and lower-case instance-ID contracts are checked before runtime acceptance.
+- [ ] **Remove the retired Aequitas runtime dependency.** Replace `sprite_review.sprite == "aequitas"` and its activation rule with the accepted Jacob Thomas Redmond human-review authority contract, preserve human final approval, and add negative tests proving retired identity aliases cannot resolve through configuration, runtime, evidence, or release paths.
+- [ ] **Require canonical repository-field shape.** Validate repository references against the accepted object/string contract consistently across configuration, evidence, and downstream fixtures.
+- [ ] **Require singleton message allowlists where the schema requires one value.** Reject extra allowed senders, recipients, or message kinds rather than silently widening authority.
+- [ ] **Correct `max_records` default handling.** Preserve an explicit zero where allowed, reject Boolean/non-integer values, and do not replace caller intent through truthiness defaults.
+- [ ] **Add complete configuration enum guards.** Reject unsupported lifecycle, status, edit-mode, review-state, and other enum-like values before constructing runtime state.
+- [ ] **Add message-kind guards.** Reject unknown incoming and outgoing kinds before queueing, ledger mutation, or evidence emission.
+- [ ] **Validate outgoing recipients against the canonical instance set.** No message may target an unknown, alias-only, or retired identity.
+- [ ] **Reject malformed incoming-message shape atomically.** Validate required fields, exact key set, sizes, identities, kind, and provenance before changing queues, counters, or ledgers.
+- [ ] **Wrap bounded file-read failures consistently.** Convert operating-system, decoding, size, type, and path failures into the published fail-closed configuration/runtime error taxonomy without leaking partial state.
 - [ ] **Make ingest failures atomic.** Normalize required limits before delegation or restore the pre-operation checkpoint on every delegated ingest exception; prove no unledgered partial mutation remains.
 - [ ] **Use one canonical freeze checkpoint.** Freeze certificates, controller checkpoints, resume, high-severity annotation rollback, and message state must hash and restore the same canonical snapshot.
 - [ ] **Guarantee rollback at event capacity.** Reserve safety-event capacity or restore state through an invariant-safe path even when `max_events` is full.
 - [ ] **Validate persisted event-entry shape strictly.** Reject missing required fields, Boolean/non-integer sequences, unexpected shape, invalid hashes, and non-canonical entries before reporting a ledger as verified.
-- [ ] **Resolve every PR #7 review thread and rerun final-head CI.** Retain artifacts and inspect exact checkout, all tests, wheel/source hashes, negative fixtures, and review disposition at the repaired immutable head.
+- [ ] **Resolve every PR #7 review thread and rerun final-head CI.** Retain artifacts and inspect exact checkout, all tests, wheel/source hashes, negative fixtures, and review disposition at one repaired immutable head.
 - [ ] **Run merged-head acceptance.** After explicit merge authorization, require clean installation, compilation, complete tests, installed CLI/version/configuration smoke, deterministic evidence, wheel and sdist, checksums, and retained logs at the merged head.
-- [ ] Confirm every generated snippet remains inert and requires Sprite plus human review.
 - [ ] Prepare contract-validation tests that consume only accepted, hash-fixed QSO-GENOMES and QSO-SEEKER fixtures.
 
 ## Current evidence
 
-- [x] Workflow run `29617877793` completed successfully for exact head `395915b60510e9a62c53ad128cf23d151e73eb1f` on Python 3.11 and 3.13.
+- [x] Workflow run `29657511858` completed successfully for exact head `291d7419bf29a3d979762c4655c05a2a672c6f82` on Python 3.11 and 3.13.
 - [x] Both jobs used exact submitted-head checkout/assertion, read-only contents permission, and disabled checkout credential persistence.
-- [x] Both jobs passed 22 tests with zero failures, errors, or skips and retained JUnit, CLI/configuration, version, checked-out-SHA, wheel, and checksum evidence.
-- [x] Artifact digests: Python 3.11 `c53ecc7692716519be67c92e4e51cc04695187437790c784d8b42f78d70a76fd`; Python 3.13 `cf2290f7469b71ebb92cc7b1cb7eb86a64ee9ff56df8b89203fa157bd6b65816`.
-- [x] Wheel SHA-256: Python 3.11 `97c6ec287e2eb1b23776dc232a16641f566202f1aacf792755a992930adf5dc3`; Python 3.13 `b074c2328f90585c2fe8fb7a83d023ef34ea7374b6ee9915c57209d589e678cc`.
-- [ ] Eight P2 correctness threads remain unresolved: three configuration/parser findings plus atomic ingest recovery, canonical freeze/checkpoint parity, rollback capacity, instance-ID schema parity, and strict event-entry validation.
-- [ ] QSO-GENOMES PR #2 remains unaccepted and cannot yet supply a trusted Atlas hash-pinned fixture.
+- [x] Both jobs passed 150 tests with retained runtime evidence.
+- [x] Artifact digests: Python 3.11 `b0b302798c234922e9f75323d60da85dd810c957bd4af4922512f1a5aa714388`; Python 3.13 `930f14ed7a411b5d6c36f901c0d80280db093cef2b367e406641e81289da6d49`.
+- [ ] Eight current correctness findings remain unresolved: repository-field shape, singleton message allowlists, `max_records` default handling, config enum guards, message-kind guards, outgoing-recipient canonical validation, malformed incoming-message shape, and file-read error wrapping.
+- [ ] Additional runtime invariants remain open for atomic ingest, canonical freeze/checkpoint parity, rollback capacity, and strict persisted-event validation.
+- [ ] QSO-GENOMES PRs #2, #12, and #13 are not yet reconciled into one accepted compatibility head and cannot supply final trusted hashes.
+- [ ] QSO-SEEKER candidates remain unreconciled with current `main` and cannot supply final accepted canonical-record fixtures.
+- [ ] Issue #8 hostile-input and prompt-injection hardening remains open.
 
 ## After upstream contracts are green
 
@@ -40,11 +46,11 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 ## Held behind approval
 
 - [ ] Simulated payment-intent/distribution records remain blocked until the declarative policy contract is approved.
-- [ ] Production settlement, credentials, custody, automatic transfers, scheduled execution, and unrestricted repository writes are out of scope.
+- [ ] Production settlement, credentials, custody, automatic transfers, scheduled execution, and unrestricted repository writes remain out of scope.
 
 ## Quality Gates
 
-- [ ] Deterministic runtime tests and documented rollback path remain valid under malformed inputs and exhausted limits.
+- [ ] Deterministic runtime tests and documented rollback paths remain valid under malformed inputs and exhausted limits.
 - [ ] Security, dependency, workflow, secret, parser/contract, persisted-evidence, and adversarial review pass at accepted exact and merged heads.
 - [ ] No generated code is executed without validation and explicit human authorization.
 - [ ] Observations, inferences, hypotheses, proposals, and goals remain distinguishable.

@@ -1,5 +1,7 @@
 # QSOBuilder Punch List
 
+Policy binding: `QSO-CONSENT-CAPACITY-LOCK-v1`; explicit consent and capacity review remain required for every covered human/AI interaction and fail closed on ambiguity or withdrawal.
+
 The Architect sets dependency order in `taskchain.md`. Execute one bounded, testable item at a time and do not bypass blocked cross-repository gates. Checked implementation work is candidate evidence only; it does not authorize merge, release, deployment, or runtime activation.
 
 ## Immediate

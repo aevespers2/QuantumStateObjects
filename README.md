@@ -6,14 +6,16 @@ Bounded, auditable Quantum State Object prototypes and candidate runtime primiti
 
 ## Purpose
 
-This repository owns local QSO identity declarations, isolated runtime partitions, bounded messages, integrity evidence, checkpoints, freeze/interruption/recovery/rollback behavior, and the future local four-QSO experiment boundary.
+Within A.L.I.S.T.A.I.R.E., this repository is the bounded local execution and evidence layer. It owns local QSO identity declarations, isolated runtime partitions, bounded messages, integrity evidence, checkpoints, freeze/interruption/recovery/rollback behavior, and the future local four-QSO experiment boundary.
 
 It does not own:
 
+- the canonical A.L.I.S.T.A.I.R.E. architecture, portfolio strategy, or final governance;
 - canonical genome authoring — see `QSO-GENOMES`;
 - external repository retrieval and sanitization — see `QSO-SEEKER`;
 - portfolio-wide fabric aggregation — see `QSO-FABRIC`;
-- unrestricted networking, credentials, repository writes, generated-code execution, financial settlement, persistent hosting, or production orchestration.
+- autonomous-development scheduling, branch preparation, merging, release, deployment, credentials, or incident authority;
+- unrestricted networking, repository writes, generated-code execution, financial settlement, persistent hosting, or production orchestration.
 
 ## Initial QSO roles
 
@@ -47,6 +49,7 @@ Every accepted QSO design:
 | Prototype QSO roles, partitions, inactive proposals, messages, snapshots, freeze, and rollback | Present on accepted `main` |
 | Repository-wide policy validator and exact-head workflow controls | Accepted on current `main` |
 | Installable package, `qso-run` CLI, strict configuration, runtime controller, ledgers, and recovery controls | Draft PR #7 candidate |
+| A.L.I.S.T.A.I.R.E. subsystem and authority contract | Documented candidate; control-plane owner unresolved |
 | Accepted QSO-GENOMES integration | Blocked |
 | Accepted QSO-SEEKER integration | Blocked |
 | Four-QSO experiment runner | Proposed after prerequisite acceptance |
@@ -77,6 +80,7 @@ flowchart LR
 The Pages-ready documentation candidate is in `docs/`:
 
 - [Project overview](docs/project-overview.md)
+- [A.L.I.S.T.A.I.R.E. integration](docs/alistaire-integration.md)
 - [Architecture](docs/architecture.md)
 - [Design contracts](docs/design-contracts.md)
 - [Developer guide](docs/developer-guide.md)
@@ -102,7 +106,7 @@ mkdocs build --strict
 mkdocs serve
 ```
 
-A successful local build does not publish the site. Pages source, workflow, accessibility, link, provenance, rollback, and approval gates remain separate.
+The `Documentation` workflow repeats the strict build from the exact submitted head with read-only permissions, disabled credential persistence, pinned actions, a generated-site boundary check, dependency capture, SHA-256 evidence, and a retained site artifact. A successful build does not publish the site; Pages source, accessibility, link, privacy, license, provenance, rollback, and approval gates remain separate.
 
 ## Candidate package verification
 
@@ -131,7 +135,8 @@ Record the exact checked-out SHA and do not use credentials, network-dependent i
 4. Accept one QSO-SEEKER canonical-record and attribution contract.
 5. Validate cross-repository fixtures without importing or executing external code.
 6. Run a bounded four-QSO experiment only after explicit approval.
-7. Consider later scope only from reviewed experiment evidence.
+7. Consider integration with a separately governed autonomous-development control plane only after its owner, authority, credentials, review, release, deployment, incident, and rollback contracts are approved.
+8. Consider later scope only from reviewed experiment evidence.
 
 ## Contribution boundary
 

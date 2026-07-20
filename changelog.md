@@ -10,6 +10,7 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-17 — Selected PR #7 as the sole canonical CLI/configuration/runtime candidate and kept Experimenter work outside P0.
 - 2026-07-17 — Advanced P0 from configuration-only evidence to one bounded runtime-primitives slice while retaining fail-closed review gates.
 - 2026-07-19 — Preserved the same bounded implementation scope while adding a complete documentation and Pages-readiness foundation.
+- 2026-07-20 — Positioned QuantumStateObjects explicitly as A.L.I.S.T.A.I.R.E.'s bounded local runtime and evidence subsystem, not its autonomous-development control plane.
 
 ### Architecture
 
@@ -17,6 +18,8 @@ All notable product, architecture, implementation, documentation, release, and d
 - Configuration, runtime state, messages, events, attribution, checkpoints, freeze, interruption, recovery, and rollback must share explicit versioned canonicalization and integrity rules.
 - Atlas, Nova, Orion, and Lyra may not be described as running without authorized append-only runtime evidence.
 - 2026-07-19 — Added component, sequence, lifecycle, trust-zone, failure-boundary, and cross-repository dependency diagrams without changing runtime behavior.
+- 2026-07-20 — Added A.L.I.S.T.A.I.R.E. system-position, evolution-loop, authority-zone, contract-boundary, and capability-progression diagrams.
+- 2026-07-20 — Recorded the unresolved need to designate the autonomous-development control plane that owns task authority, credentials, evidence, merge, release, deployment, incident, emergency-stop, rollback, and final-approval boundaries.
 
 ### Added
 
@@ -24,12 +27,15 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-18 — Accepted `main` gained the repaired repository-wide policy validator, exact submitted-source controls, pinned workflow actions, focused regression tests, and retained evidence.
 - 2026-07-19 — Added `mkdocs.yml` and a pinned documentation toolchain.
 - 2026-07-19 — Added Pages-ready project overview, architecture, design contracts, developer guide, security guide, operations/recovery runbook, and release-status guide.
+- 2026-07-20 — Added an A.L.I.S.T.A.I.R.E. integration guide defining repository responsibility, denied authority, autonomous-development relationship, cross-repository contracts, capability progression, and the required control-plane clarification.
+- 2026-07-20 — Added a read-only `Documentation` workflow that checks out and asserts the exact submitted head, uses pinned actions, installs pinned documentation dependencies, builds MkDocs strictly, validates the generated-site boundary, records dependency/tool/source identities and SHA-256 values, and retains the site evidence artifact.
 
 ### Changed
 
 - 2026-07-18 — PR #7 became stale against accepted `main` after the policy-control repair merged; it requires normal reconciliation and fresh exact-head evidence.
 - 2026-07-19 — Expanded the root README with evidence-qualified status, repository responsibilities, architecture, documentation navigation, candidate verification, and contribution boundaries.
 - 2026-07-19 — Updated `taskchain.md` and `release.md` to reflect the accepted policy-control base, the current PR #7 pre-reconciliation state, open candidate findings, and documentation publication gates.
+- 2026-07-20 — Updated the README, task chain, release plan, navigation, and capability order to align with the canonical A.L.I.S.T.A.I.R.E. doctrine without changing runtime scope.
 
 ### Documentation
 
@@ -38,12 +44,13 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-19 — Added isolated developer onboarding, test matrices, exact-head evidence guidance, pull-request requirements, and architectural stop conditions.
 - 2026-07-19 — Added hostile-input and prompt-injection threat modeling, least-privilege rules, security evidence requirements, and vulnerability response guidance.
 - 2026-07-19 — Added local verification, health, observability, incident, cleanup, recovery, rollback, Pages publication, and release stop procedures.
+- 2026-07-20 — Clarified that increasingly autonomous development may consume bounded QSO proposals and evidence, but adoption remains external, authorized, reviewable, and separately governed.
 
 ### Verification
 
 - Historical PR #7 exact-head runs remain evidence for their recorded commits only. The latest candidate description reports a successful Python 3.11/3.13 matrix with 150 tests at a prior immutable head.
 - Accepted `main` policy-control repair passed its exact-head focused tests and repository-wide validator before merge.
-- Documentation strict build, rendered-diagram review, link checking, accessibility review, site artifact hashing, and Pages deployment validation remain pending.
+- The documentation candidate now includes an exact-head strict-build workflow and retained evidence path. A passing workflow establishes build evidence only for its named source head and does not complete independent content, link, accessibility, privacy, license, publication, or deployment review.
 
 ### Review findings
 
@@ -65,9 +72,11 @@ Current PR #7 work includes:
 - accepted hash-fixed upstream contracts;
 - complete review-thread, exact-head, and merged-head acceptance.
 
+Portfolio architecture review additionally requires designation of the autonomous-development control plane before this repository can accept any task envelope carrying repository, release, deployment, credential, or incident authority.
+
 ### Security
 
-- Candidate CI uses read-only contents permission, exact submitted-head checkout/assertion, and disabled checkout credential persistence; the accepted policy workflow additionally pins actions by commit.
+- Candidate CI uses read-only contents permission, exact submitted-head checkout/assertion, and disabled checkout credential persistence; the accepted policy workflow and documentation workflow pin actions by commit.
 - Runtime and documentation examples remain local, synthetic, credential-free, network-independent, and non-deploying.
 - Complete parser, identity, message, state-atomicity, checkpoint, rollback-capacity, persisted-evidence, dependency, secret, workflow, hostile-input, and adversarial review remains required.
 
@@ -75,11 +84,12 @@ Current PR #7 work includes:
 
 - The first eligible package version remains `0.1.0-alpha.1`.
 - Runtime release remains blocked by reconciliation, open findings, fresh exact-head and merged-head evidence, accepted upstream contracts, source/sdist/wheel/SBOM/provenance, privacy/licensing, rollback drill, and approval.
-- Documentation publication remains blocked by strict build, content review, link/accessibility checks, privacy/license review, site provenance, publication approval, deployment validation, and rollback evidence.
+- Documentation publication remains blocked by content review, exact-head strict build, link/accessibility checks, privacy/license review, site provenance, publication approval, deployment validation, and rollback evidence.
+- Autonomous-development control-plane integration remains blocked until its owner and authority contract are explicitly approved.
 
 ### Deployment
 
-- No runtime, package publication, Pages publication, scheduled execution, four-QSO experiment, external integration, financial path, or production deployment is authorized.
+- No runtime, package publication, Pages publication, scheduled execution, four-QSO experiment, autonomous-development integration, external integration, financial path, or production deployment is authorized.
 - The only initial target remains a disposable credential-free, network-independent local/CI verification environment after applicable gates pass.
 
 ## Entry format

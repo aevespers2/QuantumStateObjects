@@ -4,6 +4,8 @@
 
 Bounded QSO identities, runtime partitions, freeze/rollback control, inter-object messages, deterministic experiments, event evidence, attribution journey records, and the local integration boundary for accepted QSO-GENOMES and QSO-SEEKER artifacts.
 
+Within A.L.I.S.T.A.I.R.E., QuantumStateObjects is the bounded local execution and evidence subsystem. It is not the portfolio strategy, autonomous-development control plane, credential authority, merge/release/deployment service, or final approval authority.
+
 States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE`
 
 ## Product directive
@@ -11,7 +13,7 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 - **Next objective:** Reconcile draft PR #7 with accepted `main` commit `40efcbf8ce2bda7d6b05b3fb1f3ccf0384facc51`, repair the current configuration/runtime/security findings, and independently accept one immutable local package/runtime head before any upstream integration or four-QSO experiment.
 - **User outcome:** A researcher can install the package, invoke `qso-run`, validate canonical local instance configuration, exercise one bounded deterministic runtime controller, and inspect integrity-checked event, attribution, checkpoint, freeze, interruption, recovery, and rollback evidence.
 - **MVP scope:** one local Python package and CLI; strict local configuration and hash-fixed artifact validation; isolated QSO partitions; bounded messages and records; atomic fail-closed mutation; canonical evidence; deterministic replay; explicit human review; no network, credentials, generated-code execution, external writes, payment behavior, scheduling, or persistent deployment.
-- **Priority:** Final acceptance of the reconciled PR #7 lineage precedes QSO-GENOMES/QSO-SEEKER integration, any population experiment, and all later Experimenter work.
+- **Priority:** Final acceptance of the reconciled PR #7 lineage precedes QSO-GENOMES/QSO-SEEKER integration, any population experiment, autonomous-development control-plane integration, and all later Experimenter work.
 - **Success criteria:** clean install/build on supported Python versions; complete positive, negative, adversarial, interruption, recovery, freeze, rollback, and deterministic tests at exact and merged heads; resolved review threads; accepted upstream contracts; reproducible artifacts and provenance; no unapproved external capability.
 - **Non-goals:** autonomous internet learning, executing retrieved or generated code, production payments, unrestricted repository writes, persistent services, distributed execution, or claims that Atlas, Nova, Orion, or Lyra are running without authorized append-only runtime evidence.
 
@@ -36,8 +38,9 @@ Historical PR #7 runs provide evidence for their exact heads only. The latest ca
 | P1 | Accept cross-repository contracts | Architect / QSOBuilder | P0-H, accepted QSO-GENOMES, accepted QSO-SEEKER | BLOCKED | Runtime validates immutable manifests and fixtures by repository, path, schema/canonicalization version, and digest without importing or executing external code. |
 | P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic local seeds within configured limits; proposals remain inactive; freeze/rollback and append-only evidence verify. |
 | P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public source, docs, samples, reports, and artifacts use an approved notice/license model and contain no unintended sensitive data. |
-| P4 | Validate and publish documentation | Documentation reviewer | P0 contract accuracy, P3 | REVIEW | `mkdocs build --strict`, link/accessibility review, exact-status review, artifact provenance, publication approval, deployment validation, and rollback evidence pass. |
-| P5 | Add simulated payment-intent and distribution records | Builder | P2 and approved payment-policy contract | BLOCKED | Records are simulation-only and distinguish intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
+| P4 | Validate and publish documentation | Documentation reviewer | P0 contract accuracy, P3 | REVIEW | Exact-head `Documentation` workflow, strict MkDocs build, generated-site boundary check, retained dependency/hash/site evidence, link/accessibility review, status review, publication approval, deployment validation, and rollback evidence pass. |
+| P5 | Design autonomous-development control-plane integration | Portfolio architect | P0-H, accepted system owner/authority contract | BLOCKED | The owning repository/service, task authority, credentials, review, evidence, merge, release, deployment, incident, emergency-stop, rollback, and human-approval boundaries are explicit and versioned. |
+| P6 | Add simulated payment-intent and distribution records | Builder | P2 and approved payment-policy contract | BLOCKED | Records are simulation-only and distinguish intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
 
 ## Documentation milestone
 
@@ -45,19 +48,21 @@ The `docs/pages-architecture-onboarding` branch adds a Pages-ready documentation
 
 - expanded repository overview and status vocabulary;
 - project and portfolio boundary guide;
+- an explicit A.L.I.S.T.A.I.R.E. subsystem, contract, authority, capability-progression, and unresolved control-plane guide;
 - component, sequence, state, dependency, and trust-zone diagrams;
 - configuration, identity, genome, record, message, proposal, ledger, attribution, resource, checkpoint, freeze, interruption, recovery, rollback, determinism, and compatibility contracts;
 - developer onboarding and contribution workflow;
 - hostile-input threat model and security evidence guide;
 - local operations, incident, recovery, cleanup, and rollback runbook;
-- evidence-qualified release and Pages readiness guide.
+- evidence-qualified release and Pages readiness guide;
+- an exact-submitted-head documentation workflow using read-only permissions, pinned actions, strict build validation, generated-site checks, dependency capture, SHA-256 manifests, and retained artifacts.
 
-This milestone is documentation-only. It does not change runtime behavior, resolve PR #7 findings, accept upstream artifacts, publish Pages, or mark release/deployment gates passed.
+This milestone is documentation-only. It does not change runtime behavior, resolve PR #7 findings, accept upstream artifacts, publish Pages, designate the autonomous-development control plane, or mark release/deployment gates passed.
 
 ## Portfolio dependency order
 
-Reconcile PR #7 with accepted `main` → repair identity/configuration/message/runtime/evidence/security findings → final exact-head and merged-head acceptance → accepted QSO-GENOMES compatibility set → accepted QSO-SEEKER canonical-record contract → local cross-repository validation → bounded four-QSO experiment → reviewed evidence → optional later scopes.
+Reconcile PR #7 with accepted `main` → repair identity/configuration/message/runtime/evidence/security findings → final exact-head and merged-head acceptance → accepted QSO-GENOMES compatibility set → accepted QSO-SEEKER canonical-record contract → local cross-repository validation → bounded four-QSO experiment → reviewed evidence → separately approved autonomous-development control-plane integration → optional later scopes.
 
 ## Builder log requirements
 
-Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, retained reports, review-thread dispositions, hostile-input fixtures, atomic-failure evidence, checkpoint/freeze/rollback evidence, privacy/license review, documentation build, publication result, residual risks, and follow-ups.
+Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, retained reports, review-thread dispositions, hostile-input fixtures, atomic-failure evidence, checkpoint/freeze/rollback evidence, privacy/license review, documentation build and site hashes, publication result, residual risks, and follow-ups.

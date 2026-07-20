@@ -2,6 +2,8 @@
 
 QuantumStateObjects is a bounded research repository for defining, validating, and exercising auditable Quantum State Object runtime primitives.
 
+Within A.L.I.S.T.A.I.R.E., it is the local execution and evidence subsystem: accepted identities, genomes, configuration, and canonical records enter a constrained runtime; inactive proposals, events, attribution, checkpoints, freeze decisions, and rollback evidence leave for review. It is not the portfolio strategy, autonomous-development control plane, credential authority, merge/release/deployment service, or final approval authority.
+
 The project separates declarative identity and genome material from runtime state, treats external content as untrusted data, records integrity evidence, and keeps generated proposals inactive until explicit review. It does not authorize external network access, credentials, code execution, repository writes, financial operations, or production orchestration.
 
 ## Current status
@@ -12,7 +14,7 @@ The repository is not release-ready or deployment-ready. The accepted `main` bra
 
 The repository owns QSO identity declarations, local runtime partitions, bounded messages, integrity ledgers, checkpoints, freeze and rollback primitives, deterministic local verification, and the future integration boundary for accepted QSO-GENOMES and QSO-SEEKER artifacts.
 
-The repository does not own genome authoring, external repository retrieval, settlement, production deployment, or unrestricted multi-agent orchestration.
+The repository does not own genome authoring, external repository retrieval, portfolio-wide autonomous-development orchestration, settlement, production deployment, or unrestricted multi-agent operation.
 
 ## Named research roles
 
@@ -34,9 +36,11 @@ These are role definitions, not claims that four autonomous systems are currentl
 | Installable package and `qso-run` CLI | Candidate in PR #7 | Draft, unmerged, and not release-authorized |
 | Strict local configuration validation | Candidate in PR #7 | Under active correctness review |
 | Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current accepted-head evidence is incomplete |
+| A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit; portfolio control-plane owner remains unresolved |
 | QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed hashes |
 | QSO-SEEKER integration | Blocked | Requires an accepted canonical-record and attribution contract |
 | Four-QSO experiment | Proposed | Must not run before prerequisite gates pass |
+| Autonomous-development control-plane integration | Blocked | Requires an explicitly designated owner and authority contract |
 | Package publication or persistent deployment | Blocked | Requires security, privacy, licensing, provenance, rollback, and approval evidence |
 
 ## Architecture at a glance
@@ -60,6 +64,7 @@ flowchart LR
 ## Documentation map
 
 - [Project overview](project-overview.md)
+- [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)
 - [Developer guide](developer-guide.md)

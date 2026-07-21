@@ -2,67 +2,65 @@
 
 ## Repository role
 
-Bounded QSO identities, runtime partitions, freeze/rollback control, inter-object messages, deterministic experiments, event evidence, attribution journey records, and the local integration boundary for accepted QSO-GENOMES and QSO-SEEKER artifacts.
+QuantumStateObjects owns bounded local QSO identities, runtime partitions, message handling, deterministic experiments, event and attribution evidence, checkpoints, freeze/interruption/recovery/rollback, and local validation of accepted genome, observation, capability, and task-envelope artifacts.
 
-Within A.L.I.S.T.A.I.R.E., QuantumStateObjects is the bounded local execution and evidence subsystem. It is not the portfolio strategy, autonomous-development control plane, credential authority, merge/release/deployment service, or final approval authority.
+Within A.L.I.S.T.A.I.R.E., it is the bounded local execution and evidence subsystem. It is not constitutional governance, Repository `0` portable bootstrap or planning, Repository `1` capability or canonical-state authority, genome authorship, hostile-source retrieval, portfolio-wide collaboration, generic evidence transport, credentials, merge/release/deployment, or final approval authority.
 
 States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE`
 
 ## Product directive
 
-- **Next objective:** Reconcile draft PR #7 with accepted `main` commit `40efcbf8ce2bda7d6b05b3fb1f3ccf0384facc51`, repair the current configuration/runtime/security findings, and independently accept one immutable local package/runtime head before any upstream integration or four-QSO experiment.
-- **User outcome:** A researcher can install the package, invoke `qso-run`, validate canonical local instance configuration, exercise one bounded deterministic runtime controller, and inspect integrity-checked event, attribution, checkpoint, freeze, interruption, recovery, and rollback evidence.
-- **MVP scope:** one local Python package and CLI; strict local configuration and hash-fixed artifact validation; isolated QSO partitions; bounded messages and records; atomic fail-closed mutation; canonical evidence; deterministic replay; explicit human review; no network, credentials, generated-code execution, external writes, payment behavior, scheduling, or persistent deployment.
-- **Priority:** Final acceptance of the reconciled PR #7 lineage precedes QSO-GENOMES/QSO-SEEKER integration, any population experiment, autonomous-development control-plane integration, and all later Experimenter work.
-- **Success criteria:** clean install/build on supported Python versions; complete positive, negative, adversarial, interruption, recovery, freeze, rollback, and deterministic tests at exact and merged heads; resolved review threads; accepted upstream contracts; reproducible artifacts and provenance; no unapproved external capability.
-- **Non-goals:** autonomous internet learning, executing retrieved or generated code, production payments, unrestricted repository writes, persistent services, distributed execution, or claims that Atlas, Nova, Orion, or Lyra are running without authorized append-only runtime evidence.
+- **Next objective:** Reconcile draft PR #7 with accepted `main`, repair the current configuration/runtime/security findings, and independently accept one immutable local package/runtime head before any upstream or Repository `0`/`1` integration.
+- **User outcome:** A researcher can install the package, invoke `qso-run`, validate canonical local configuration, exercise one bounded deterministic runtime controller, and inspect integrity-checked event, attribution, checkpoint, freeze, interruption, recovery, rollback, and execution-receipt evidence.
+- **MVP scope:** one local Python package and CLI; strict local configuration and hash-fixed artifact validation; isolated partitions; bounded messages and records; atomic fail-closed mutation; canonical evidence; deterministic replay; explicit human review; no network, credentials, generated-code execution, external writes, payment behavior, device administration, scheduling, or persistent deployment.
+- **Priority:** Final acceptance of the reconciled PR #7 lineage precedes genome, observation, capability, Fabric, Bridge, four-QSO, or autonomous-development integration.
+- **Success criteria:** clean install/build on supported Python versions; complete positive, negative, adversarial, interruption, recovery, freeze, rollback, replay, correction, and deterministic tests at exact and merged heads; accepted ownership and upstream contracts; reproducible artifacts and provenance; no unapproved external capability.
+- **Non-goals:** autonomous internet learning, host-security collection, executing retrieved or generated code, production payments, unrestricted repository writes, persistent services, distributed execution, canonical-state authority, or claims that Atlas, Nova, Orion, or Lyra are active without authorized append-only runtime evidence.
 
 ## Current status
 
-The accepted `main` branch includes the repaired repository-wide policy validator and exact-head workflow controls. Draft PR #7 remains open, unmerged, mergeable, and the sole canonical runtime/configuration candidate. Its current pre-reconciliation head observed during the documentation review is `40a0c123c271c883356b9315dc213556d4abbb14`; it must be reconciled with current `main` and reverified.
+Accepted `main` includes the repaired repository-wide consent-capacity policy validator and exact-head workflow controls. Draft PR #7 remains open, unmerged, mergeable, and the sole package/configuration/runtime candidate at pre-reconciliation head `40a0c123c271c883356b9315dc213556d4abbb14`. Its successful runs are historical exact-head evidence only; it must be reconciled with current `main` and reverified with the policy control and complete runtime matrix at one new head.
 
-Historical PR #7 runs provide evidence for their exact heads only. The latest candidate description records successful historical Python 3.11/3.13 testing with 150 tests, but the current/reconciled and eventual merged heads are not accepted by that evidence.
+The portfolio direction now identifies Repository `0` as the portable bootstrap, planning, proposal, and maintenance-orchestration candidate and Repository `1` as the independent capability, canonical-state, revocation, and recovery authority candidate. QuantumStateObjects may consume only a narrow Repository `1` capability and accepted task envelope after the route, schemas, fixtures, and authority owners are approved.
 
 ## Active chain
 
 | Priority | Task | Owner | Depends on | Status | Acceptance criteria |
 |---|---|---|---|---|---|
-| P0-A | Maintain one canonical candidate and reconcile current `main` | Architect | — | REVIEW | PR #7 remains the sole path; current `main` is merged normally without rewriting reviewed history; exact head is recorded. |
-| P0-B | Remove retired review identity and bind accepted human-review authority | Architect / Builder | P0-A | BLOCKED | Configuration, runtime, evidence, and release paths reject retired aliases and preserve explicit human final approval. |
-| P0-C | Complete configuration and file-boundary hardening | QSOBuilder | P0-A | REVIEW | Canonical repository shape, singleton allowlists, exact limit/default handling, enum guards, strict bounded file errors, and complete negative fixtures pass atomically. |
-| P0-D | Complete message and identity hardening | QSOBuilder | P0-C | REVIEW | Unknown kinds, malformed shapes, unauthorized senders/recipients, aliases, digest mismatches, replay, and capacity failures reject before mutation. |
-| P0-E | Complete runtime atomicity and recovery invariants | QSOBuilder | P0-C, P0-D | REVIEW | Delegated failures restore complete state; checkpoints include message state; freeze paths share one canonical checkpoint; rollback works at full event capacity. |
-| P0-F | Complete ledger and persisted-evidence validation | QSOBuilder | P0-E | REVIEW | Exact entry shape/type, sequence, identity, canonical payload, chain, digest, truncation, reorder, and replay fixtures fail closed. |
-| P0-G | Close hostile-input security envelope | Security reviewer | P0-C through P0-F, issue #8 | BLOCKED | Direct, indirect, encoded, nested, metadata, filename, document, JSON, Markdown, comment, and cross-repository injection fixtures pass with provenance, quarantine, and denied authority. |
+| P0-A | Maintain one canonical candidate and reconcile current `main` | Architect | — | REVIEW | PR #7 remains the sole path; current `main` is merged normally without rewriting history; exact head is recorded. |
+| P0-B | Remove retired review identity and preserve human authority | Architect / Builder | P0-A | BLOCKED | Configuration, runtime, evidence, and release paths reject retired aliases and retain explicit human final approval. |
+| P0-C | Complete parser, configuration, and file-boundary hardening | QSOBuilder | P0-A | REVIEW | Strict UTF-8, duplicate-key, exact-type, canonical-ID, schema, default/limit, bounded-file, hash, and atomic rejection fixtures pass. |
+| P0-D | Complete message and identity hardening | QSOBuilder | P0-C | REVIEW | Unknown kinds, malformed shapes, unauthorized identities, aliases, digest mismatch, replay, and capacity failures reject before mutation. |
+| P0-E | Complete runtime atomicity and recovery invariants | QSOBuilder | P0-C, P0-D | REVIEW | Delegated failures restore complete state; one message-inclusive checkpoint governs freeze/recovery; rollback works at full capacity. |
+| P0-F | Complete ledger and persisted-evidence validation | QSOBuilder | P0-E | REVIEW | Shape, types, sequence, identity, canonical payload, chain, digest, truncation, reorder, replay, tamper, correction, and revocation fixtures fail closed. |
+| P0-G | Close hostile-input security envelope | Security reviewer | P0-C through P0-F, issue #8 | BLOCKED | Direct, indirect, encoded, nested, Unicode, metadata, filename, document, JSON, Markdown, comment, and cross-repository injection fixtures pass with quarantine and denied authority. |
 | P0-H | Final exact-head and merged-head acceptance | Architect / independent reviewer | P0-B through P0-G | BLOCKED | Clean builds, complete tests, deterministic reports, artifacts, checksums, review disposition, policy controls, provenance, and rollback pass at one immutable head and approved merged head. |
-| P1 | Accept cross-repository contracts | Architect / QSOBuilder | P0-H, accepted QSO-GENOMES, accepted QSO-SEEKER | BLOCKED | Runtime validates immutable manifests and fixtures by repository, path, schema/canonicalization version, and digest without importing or executing external code. |
-| P2 | Build the bounded four-QSO experiment runner | QSOBuilder | P1 | PROPOSED | Atlas, Nova, Orion, and Lyra run from deterministic local seeds within configured limits; proposals remain inactive; freeze/rollback and append-only evidence verify. |
-| P3 | Resolve public privacy, confidentiality, licensing, and attribution notices | Architect | User approval | BLOCKED | Public source, docs, samples, reports, and artifacts use an approved notice/license model and contain no unintended sensitive data. |
-| P4 | Validate and publish documentation | Documentation reviewer | P0 contract accuracy, P3 | REVIEW | Exact-head `Documentation` workflow, strict MkDocs build, generated-site boundary check, retained dependency/hash/site evidence, link/accessibility review, status review, publication approval, deployment validation, and rollback evidence pass. |
-| P5 | Design autonomous-development control-plane integration | Portfolio architect | P0-H, accepted system owner/authority contract | BLOCKED | The owning repository/service, task authority, credentials, review, evidence, merge, release, deployment, incident, emergency-stop, rollback, and human-approval boundaries are explicit and versioned. |
-| P6 | Add simulated payment-intent and distribution records | Builder | P2 and approved payment-policy contract | BLOCKED | Records are simulation-only and distinguish intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
+| P1-A | Approve semantic ownership and obstruction repairs | Portfolio architect | P0-H | BLOCKED | `qsio-kernel`, runtime, Fabric, genomes, Seeker, Bridge, Repository `0`, and Repository `1` have non-overlapping accepted responsibilities and migrations. |
+| P1-B | Accept Repository `0` → Repository `1` → runtime route | Portfolio architect / security owner | P1-A | BLOCKED | Proposal, quarantine, capability, task, expected-head, expiry, replay, receipt, revocation, and reconciliation contracts and shared fixtures are approved. |
+| P2-A | Accept genome compatibility set | Architect / QSOBuilder | P0-H, accepted QSO-GENOMES | BLOCKED | Immutable genome identity, lineage, schema, canonicalization, policy, lifecycle, digest, migration, and producer/consumer fixtures pass. |
+| P2-B | Accept observation and temporal compatibility set | Architect / QSOBuilder | P0-H, accepted QSO-SEEKER and temporal owner | BLOCKED | Subject, source, provenance, classification, clocks, freshness, replay, correction, revocation, uncertainty, and atomic rejection fixtures pass. |
+| P2-C | Accept Fabric, Bridge, interface, and canonical-state gluing | Portfolio architect | P1-A, P1-B, P2-A, P2-B | BLOCKED | Pairwise and triple-overlap fixtures prove separation of local execution, collaboration, transport, display, and canonical acceptance. |
+| P3 | Build bounded four-QSO experiment runner | QSOBuilder | P2-C | PROPOSED | Atlas, Nova, Orion, and Lyra run from accepted identities and deterministic seeds within limits; proposals remain inactive; complete evidence verifies. |
+| P4 | Resolve public privacy, confidentiality, licensing, and attribution | Architect | User approval | BLOCKED | Public source, docs, samples, reports, and artifacts use approved notices and contain no unintended sensitive data. |
+| P5 | Validate and publish documentation | Documentation reviewer | Contract accuracy, P4 | REVIEW | Exact-head strict build, links, accessibility, privacy/license, artifact retention, publication approval, public validation, and rollback pass. |
+| P6 | Integrate governed autonomous-development tasks | Portfolio architect | P1-B, P2-C, accepted Repository `0`/`1` implementation | BLOCKED | Task authority, capabilities, credentials, evidence, incident, emergency-stop, recovery, and human approval are explicit and versioned. |
+| P7 | Add simulated payment-intent records | Builder | P3 and approved payment policy | BLOCKED | Simulation distinguishes intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
 
-## Documentation milestone
+## Obstruction and gluing milestone
 
-The `docs/pages-architecture-onboarding` branch adds a Pages-ready documentation foundation:
+The documentation branch now adds:
 
-- expanded repository overview and status vocabulary;
-- project and portfolio boundary guide;
-- an explicit A.L.I.S.T.A.I.R.E. subsystem, contract, authority, capability-progression, and unresolved control-plane guide;
-- component, sequence, state, dependency, and trust-zone diagrams;
-- configuration, identity, genome, record, message, proposal, ledger, attribution, resource, checkpoint, freeze, interruption, recovery, rollback, determinism, and compatibility contracts;
-- developer onboarding and contribution workflow;
-- hostile-input threat model and security evidence guide;
-- local operations, incident, recovery, cleanup, and rollback runbook;
-- evidence-qualified release and Pages readiness guide;
-- an exact-submitted-head documentation workflow using read-only permissions, pinned actions, strict build validation, generated-site checks, dependency capture, SHA-256 manifests, and retained artifacts.
+- an active obstruction ledger covering genome, observation, capability, runtime/Fabric/kernel, local/canonical state, Bridge/interface, identity, serialization, hostile input, replay, stop/recovery, resources, corrections, privacy, candidate lineage, and release authority;
+- pairwise contract maps and six required triple-overlap witness groups;
+- a sequenced P0–P5 punch list for runtime acceptance, security, semantic ownership, Repository `0`/`1`, genome, observation, Fabric/kernel, Bridge/interface, resource/replay, experiment, publication, and recovery work;
+- an updated A.L.I.S.T.A.I.R.E. integration model reflecting the portable first-install roles of Repositories `0` and `1`.
 
-This milestone is documentation-only. It does not change runtime behavior, resolve PR #7 findings, accept upstream artifacts, publish Pages, designate the autonomous-development control plane, or mark release/deployment gates passed.
+This milestone is documentation-only. It does not change runtime behavior, accept PR #7, select schema owners, activate capabilities or adapters, publish Pages, run the four-QSO experiment, or authorize merge, release, deployment, credentials, device control, payment, or canonical-state mutation.
 
 ## Portfolio dependency order
 
-Reconcile PR #7 with accepted `main` → repair identity/configuration/message/runtime/evidence/security findings → final exact-head and merged-head acceptance → accepted QSO-GENOMES compatibility set → accepted QSO-SEEKER canonical-record contract → local cross-repository validation → bounded four-QSO experiment → reviewed evidence → separately approved autonomous-development control-plane integration → optional later scopes.
+Reconcile and accept PR #7 → approve semantic ownership and stop/recovery vocabulary → accept Repository `0`/`1` task and capability route → accept genome compatibility → accept observation/temporal compatibility → validate Fabric, Bridge, interface, and Repository `1` gluing → run bounded four-QSO experiment → review evidence → consider governed autonomous-development integration → optional later scopes.
 
 ## Builder log requirements
 
-Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, retained reports, review-thread dispositions, hostile-input fixtures, atomic-failure evidence, checkpoint/freeze/rollback evidence, privacy/license review, documentation build and site hashes, publication result, residual risks, and follow-ups.
+Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, capability and task identities, retained reports, review dispositions, hostile-input fixtures, atomic-failure evidence, pairwise/triple-overlap witnesses, checkpoint/freeze/revocation/recovery evidence, privacy/license review, documentation/site hashes, publication result, residual risks, and follow-ups.

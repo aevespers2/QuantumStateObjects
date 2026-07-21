@@ -2,19 +2,26 @@
 
 QuantumStateObjects is a bounded research repository for defining, validating, and exercising auditable Quantum State Object runtime primitives.
 
-Within A.L.I.S.T.A.I.R.E., it is the local execution and evidence subsystem: accepted identities, genomes, configuration, and canonical records enter a constrained runtime; inactive proposals, events, attribution, checkpoints, freeze decisions, and rollback evidence leave for review. It is not the portfolio strategy, autonomous-development control plane, credential authority, merge/release/deployment service, or final approval authority.
+Within A.L.I.S.T.A.I.R.E., it is the local execution and evidence subsystem: accepted identities, genomes, configuration, observations, capabilities, and task envelopes enter a constrained runtime; inactive proposals, events, attribution, checkpoints, freeze decisions, corrections, rollback records, and execution receipts leave for review. It is not constitutional governance, Repository `0` portable bootstrap or planning, Repository `1` capability or canonical-state authority, credential authority, merge/release/deployment service, or final approval authority.
 
-The project separates declarative identity and genome material from runtime state, treats external content as untrusted data, records integrity evidence, and keeps generated proposals inactive until explicit review. It does not authorize external network access, credentials, code execution, repository writes, financial operations, or production orchestration.
+The project separates declarative identity and genome material from runtime state, treats external content as untrusted data, records integrity evidence, and keeps generated proposals inactive until explicit review. It does not authorize external network access, host-security administration, credentials, code execution, repository writes, financial operations, or production orchestration.
 
 ## Current status
 
-The repository is not release-ready or deployment-ready. The accepted `main` branch contains the repository-wide policy validator and the earlier bounded prototype. Draft PR #7 remains the sole candidate path for the hardened package, CLI, configuration parser, runtime controller, ledgers, checkpoints, freeze, interruption, recovery, and rollback behavior. That candidate still requires reconciliation with current `main`, repair of open findings, exact-head and merged-head verification, upstream contract acceptance, publication evidence, and explicit approval.
+The repository is not release-ready or deployment-ready. Accepted `main` contains the repository-wide consent-capacity policy validator and the earlier bounded prototype. Draft PR #7 remains the sole candidate path for the hardened package, CLI, configuration parser, runtime controller, ledgers, checkpoints, freeze, interruption, recovery, and rollback behavior. Its current head remains pre-reconciliation against accepted `main`; historical passing runs do not accept a future integrated or merged head.
+
+The portfolio direction is now clearer:
+
+- Repository `0` is the candidate portable bootstrap, planning, proposal, and maintenance-orchestration plane;
+- Repository `1` is the candidate independent capability, canonical-state, revocation, and recovery authority;
+- QuantumStateObjects accepts only narrow, versioned, identity-bound inputs after their contracts and fixtures are approved;
+- local runtime success remains evidence and never becomes canonical acceptance automatically.
 
 ## Repository purpose
 
-The repository owns QSO identity declarations, local runtime partitions, bounded messages, integrity ledgers, checkpoints, freeze and rollback primitives, deterministic local verification, and the future integration boundary for accepted QSO-GENOMES and QSO-SEEKER artifacts.
+The repository owns QSO identity declarations, local runtime partitions, bounded messages, integrity ledgers, checkpoints, freeze and rollback primitives, deterministic local verification, and the local compatibility boundary for accepted genome, observation, capability, and task-envelope artifacts.
 
-The repository does not own genome authoring, external repository retrieval, portfolio-wide autonomous-development orchestration, settlement, production deployment, or unrestricted multi-agent operation.
+The repository does not own genome authoring, external retrieval and sanitization, temporal interpretation, portable device security, portfolio-wide collaboration, generic evidence transport, canonical-state reconciliation, production deployment, or unrestricted multi-agent operation.
 
 ## Named research roles
 
@@ -25,41 +32,50 @@ The repository does not own genome authoring, external repository retrieval, por
 | Orion | Software architecture, interfaces, protocols, and systems composition |
 | Lyra | Language, documentation, ontology, epistemology, and human context |
 
-These are role definitions, not claims that four autonomous systems are currently running.
+These are local role definitions and fixtures, not claims that four autonomous systems are currently running. Accepted QSO-GENOMES identities must eventually bind the names, policy, lineage, and lifecycle semantics before runtime instantiation claims are made.
 
 ## Capability map
 
 | Capability | Status | Meaning |
 |---|---|---|
 | Declarative QSO roles and boundaries | Implemented on `main` | Present in repository documentation and prototype code |
-| Repository-wide policy validator | Accepted on `main` | Exact-head tested and merged before this documentation branch |
+| Repository-wide consent-capacity policy validator | Accepted on `main` | Exact-head tested and merged before this documentation branch |
 | Installable package and `qso-run` CLI | Candidate in PR #7 | Draft, unmerged, and not release-authorized |
 | Strict local configuration validation | Candidate in PR #7 | Under active correctness review |
-| Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current accepted-head evidence is incomplete |
-| A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit; portfolio control-plane owner remains unresolved |
-| QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed hashes |
-| QSO-SEEKER integration | Blocked | Requires an accepted canonical-record and attribution contract |
+| Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current integrated-head acceptance is absent |
+| A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit |
+| Repository `0`/`1` governed task input | Blocked | Route is documented; schemas, shared fixtures, authority owners, and implementation are unaccepted |
+| QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed identities and hashes |
+| QSO-SEEKER and temporal integration | Blocked | Requires accepted subject, freshness, replay, correction, and revocation contracts |
+| QSO-FABRIC and `qsio-kernel` gluing | Blocked | Lifecycle, message, format, ledger, checkpoint, freeze, and rollback ownership unresolved |
+| Bridge and interface evidence path | Blocked | Requires transport, redaction, correction, privacy, retention, and read-only presentation fixtures |
 | Four-QSO experiment | Proposed | Must not run before prerequisite gates pass |
-| Autonomous-development control-plane integration | Blocked | Requires an explicitly designated owner and authority contract |
-| Package publication or persistent deployment | Blocked | Requires security, privacy, licensing, provenance, rollback, and approval evidence |
+| Package publication or persistent deployment | Blocked | Requires runtime, contract, security, privacy, licensing, provenance, recovery, and approval evidence |
 
 ## Architecture at a glance
 
 ```mermaid
 flowchart LR
-    Human[Human reviewer] --> Config[Local configuration]
-    Config --> Validator[Strict configuration validator]
-    Genomes[Accepted hash-fixed genome files] --> Validator
-    Seeker[Accepted canonical records] --> Runtime[Bounded runtime controller]
-    Validator --> Runtime
+    Zero[Repository 0\nproposal and orchestration] --> One[Repository 1\ncapability and canonical-state candidate]
+    One -->|accepted task and narrow capability| Runtime[QuantumStateObjects\nbounded local runtime]
+    Genomes[Accepted genome artifacts] --> Runtime
+    Seeker[Sanitized observation envelope] --> Time[Temporal interpretation]
+    Time --> Runtime
     Runtime --> Partition[Isolated QSO partition]
     Partition --> Messages[Validated messages]
-    Partition --> Evidence[Event and attribution ledgers]
-    Partition --> Checkpoints[Checkpoints and freeze records]
-    Evidence --> Human
-    Checkpoints --> Human
-    Runtime -. denied external capabilities .-> Denied[No network, credentials, external writes, or generated-code execution]
+    Partition --> Evidence[Events, attribution, checkpoints, receipts]
+    Evidence --> Fabric[QSO-FABRIC]
+    Evidence --> Bridge[Bridge]
+    Bridge --> Interfaces[QSO-STUDIO / AionUi]
+    Evidence --> One
+    Runtime -. denied external authority .-> Denied[No network, credentials, device control, external writes, merge, release, deployment, or canonical acceptance]
 ```
+
+## Material obstruction summary
+
+The current portfolio does not yet share one accepted meaning for genome identity, observation freshness, task authority, canonical serialization, lifecycle, messages, local versus canonical state, freeze/Quietus/revocation, correction, privacy, or recovery. Pairwise agreement is insufficient: genome → runtime → Fabric, Repository `0` → Repository `1` → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
+
+See [Obstruction and gluing analysis](obstruction-and-gluing.md) for the complete ledger and repair order.
 
 ## Documentation map
 
@@ -67,10 +83,19 @@ flowchart LR
 - [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)
+- [Obstruction and gluing analysis](obstruction-and-gluing.md)
 - [Developer guide](developer-guide.md)
 - [Security and trust](security.md)
 - [Operations and recovery](operations.md)
 - [Release status](release-status.md)
+
+Repository planning and evidence documents:
+
+- [`taskchain.md`](../taskchain.md)
+- [`punchlist.md`](../punchlist.md)
+- [`release.md`](../release.md)
+- [`deploy.md`](../deploy.md)
+- [`changelog.md`](../changelog.md)
 
 ## Status vocabulary
 

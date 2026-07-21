@@ -20,6 +20,7 @@ nav:
   - A.L.I.S.T.A.I.R.E. integration: alistaire-integration.md
   - Architecture: architecture.md
   - Design contracts: design-contracts.md
+  - Obstruction and gluing: obstruction-and-gluing.md
   - Developer guide: developer-guide.md
   - Security and trust: security.md
   - Operations and recovery: operations.md

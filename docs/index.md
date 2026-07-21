@@ -91,11 +91,11 @@ See [Obstruction and gluing analysis](obstruction-and-gluing.md) for the complet
 
 Repository planning and evidence documents:
 
-- [`taskchain.md`](../taskchain.md)
-- [`punchlist.md`](../punchlist.md)
-- [`release.md`](../release.md)
-- [`deploy.md`](../deploy.md)
-- [`changelog.md`](../changelog.md)
+- [Task chain](https://github.com/aevespers2/QuantumStateObjects/blob/main/taskchain.md)
+- [Punch list](https://github.com/aevespers2/QuantumStateObjects/blob/main/punchlist.md)
+- [Release plan](https://github.com/aevespers2/QuantumStateObjects/blob/main/release.md)
+- [Deployment plan](https://github.com/aevespers2/QuantumStateObjects/blob/main/deploy.md)
+- [Changelog](https://github.com/aevespers2/QuantumStateObjects/blob/main/changelog.md)
 
 ## Status vocabulary
 

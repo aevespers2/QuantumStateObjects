@@ -15,6 +15,7 @@ The portfolio direction is now clearer:
 - Repository `0` is the candidate portable bootstrap, planning, proposal, and maintenance-orchestration plane;
 - Repository `1` is the candidate independent capability, canonical-state, revocation, and recovery authority;
 - QuantumStateObjects accepts only narrow, versioned, identity-bound inputs after their contracts and fixtures are approved;
+- local runtime admission, execution success, Fabric collaboration, Bridge delivery, and interface display are separate states;
 - local runtime success remains evidence and never becomes canonical acceptance automatically.
 
 ## Repository purpose
@@ -44,9 +45,10 @@ These are local role definitions and fixtures, not claims that four autonomous s
 | Strict local configuration validation | Candidate in PR #7 | Under active correctness review |
 | Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current integrated-head acceptance is absent |
 | A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit |
+| Runtime admission and reconciliation profile | Documentation candidate | Separates proposal, quarantine, capability, admission, execution, receipt, and canonical reconciliation |
 | Repository `0`/`1` governed task input | Blocked | Route is documented; schemas, shared fixtures, authority owners, and implementation are unaccepted |
 | QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed identities and hashes |
-| QSO-SEEKER and temporal integration | Blocked | Requires accepted subject, freshness, replay, correction, and revocation contracts |
+| QSO-SEEKER and temporal/Digitalis integration | Blocked | Requires accepted source, interpretation, freshness, replay, correction, privacy, and revocation contracts |
 | QSO-FABRIC and `qsio-kernel` gluing | Blocked | Lifecycle, message, format, ledger, checkpoint, freeze, and rollback ownership unresolved |
 | Bridge and interface evidence path | Blocked | Requires transport, redaction, correction, privacy, retention, and read-only presentation fixtures |
 | Four-QSO experiment | Proposed | Must not run before prerequisite gates pass |
@@ -56,31 +58,33 @@ These are local role definitions and fixtures, not claims that four autonomous s
 
 ```mermaid
 flowchart LR
-    Zero[Repository 0\nproposal and orchestration] --> One[Repository 1\ncapability and canonical-state candidate]
-    One -->|accepted task and narrow capability| Runtime[QuantumStateObjects\nbounded local runtime]
-    Genomes[Accepted genome artifacts] --> Runtime
-    Seeker[Sanitized observation envelope] --> Time[Temporal interpretation]
-    Time --> Runtime
+    Zero[Repository 0\nproposal and orchestration] --> One[Repository 1\nquarantine, capability, and canonical-state candidate]
+    One -->|accepted task and narrow capability| Admission[Runtime admission\nidentity and scope validation]
+    Genomes[Accepted genome artifacts] --> Admission
+    Seeker[Sanitized source observation] --> Time[Temporal / Digitalis interpretation]
+    Time --> Admission
+    Admission --> Runtime[QuantumStateObjects\nbounded local runtime]
     Runtime --> Partition[Isolated QSO partition]
     Partition --> Messages[Validated messages]
     Partition --> Evidence[Events, attribution, checkpoints, receipts]
     Evidence --> Fabric[QSO-FABRIC]
     Evidence --> Bridge[Bridge]
     Bridge --> Interfaces[QSO-STUDIO / AionUi]
-    Evidence --> One
+    Evidence --> Reconcile[Repository 1 reconciliation]
     Runtime -. denied external authority .-> Denied[No network, credentials, device control, external writes, merge, release, deployment, or canonical acceptance]
 ```
 
 ## Material obstruction summary
 
-The current portfolio does not yet share one accepted meaning for genome identity, observation freshness, task authority, canonical serialization, lifecycle, messages, local versus canonical state, freeze/Quietus/revocation, correction, privacy, or recovery. Pairwise agreement is insufficient: genome → runtime → Fabric, Repository `0` → Repository `1` → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
+The portfolio now has candidate records for proposals, quarantine admissions, capabilities, source observations, interpretations, execution receipts, transports, review projections, and reconciliation, but it still lacks one accepted namespace and schema set proving those records cannot collapse into a single misleading status. Pairwise agreement is insufficient: Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, Seeker → temporal/Digitalis → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
 
-See [Obstruction and gluing analysis](obstruction-and-gluing.md) for the complete ledger and repair order.
+See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md) for the candidate admission boundary and [Obstruction and gluing analysis](obstruction-and-gluing.md) for the broader ledger and repair order.
 
 ## Documentation map
 
 - [Project overview](project-overview.md)
 - [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
+- [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)
 - [Obstruction and gluing analysis](obstruction-and-gluing.md)

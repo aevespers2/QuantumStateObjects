@@ -2,20 +2,20 @@
 
 ## Current decision
 
-Status: `BLOCKED — DOCUMENTATION AND GLUING MODEL READY FOR EXACT-HEAD REVIEW; RUNTIME AND CROSS-REPOSITORY CONTRACTS UNACCEPTED`
+Status: `BLOCKED — DOCUMENTATION AND RUNTIME-ADMISSION MODEL READY FOR EXACT-HEAD REVIEW; RUNTIME AND CROSS-REPOSITORY CONTRACTS UNACCEPTED`
 
 QuantumStateObjects contains an accepted bounded prototype and repository-wide consent-capacity policy controls on `main`, plus draft package/runtime candidate PR #7. No package release, GitHub Pages publication, experiment activation, Repository `0`/`1` integration, external adapter, canonical-state mutation, or deployment is authorized.
 
 Draft PR #7 remains the sole package/configuration/runtime candidate at pre-reconciliation head `40a0c123c271c883356b9315dc213556d4abbb14`. It must be reconciled with current `main` and pass the repaired policy control plus the complete runtime matrix at one new exact head. Historical successful runs remain evidence only for their named immutable sources.
 
-Within A.L.I.S.T.A.I.R.E., this repository is the bounded local runtime and evidence subsystem. Repository `0` is the portable bootstrap, planning, proposal, and maintenance-orchestration candidate; Repository `1` is the independent capability, canonical-state, revocation, and recovery authority candidate. QuantumStateObjects may consume their outputs only after versioned contracts, shared fixtures, authority ownership, and explicit approval exist.
+Within A.L.I.S.T.A.I.R.E., this repository is the bounded local runtime and evidence subsystem. Repository `0` is the portable bootstrap, planning, proposal, and maintenance-orchestration candidate; Repository `1` is the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. QuantumStateObjects may consume their outputs only after versioned contracts, shared fixtures, authority ownership, and explicit approval exist.
 
 ## Versioning
 
 - Scheme: Semantic Versioning.
 - Existing package metadata is `0.1.0`; the first eligible candidate remains `0.1.0-alpha.1` until every blocking gate passes.
-- Identity, configuration, genome, observation, capability, task, message, event, attribution, checkpoint, freeze, interruption, recovery, rollback, correction, revocation, evidence, and upstream-contract versions must be explicit.
-- Incompatible schema, canonicalization, hash-input, lifecycle, clock, replay, checkpoint, ledger, rollback, authority, or cross-repository changes require migrations and coordinated consumer fixtures.
+- Identity, configuration, genome, observation, temporal assessment, interpretation, proposal, quarantine, capability, task, runtime admission, message, event, attribution, checkpoint, freeze, interruption, recovery, rollback, correction, revocation, execution receipt, resulting-state evidence, reconciliation, and upstream-contract versions must be explicit.
+- Incompatible schema, canonicalization, hash-input, namespace, lifecycle, clock, replay, checkpoint, ledger, rollback, authority, privacy, or cross-repository changes require migrations and coordinated consumer fixtures.
 - Experimenter work, four-QSO execution, autonomous-development integration, device administration, and payment behavior remain separate later scopes.
 
 ## First candidate scope
@@ -24,11 +24,12 @@ Within A.L.I.S.T.A.I.R.E., this repository is the bounded local runtime and evid
 - Strict, bounded, local-only configuration and artifact validation.
 - Canonical local fixture identities for Atlas, Nova, Orion, and Lyra.
 - Isolated QSO partitions and inactive generated proposals.
-- Atomic canonical-record and message handling.
+- Atomic canonical-record, admission-envelope, and message handling.
 - Versioned event and attribution evidence.
 - Canonical checkpoints, freeze, interruption, recovery, and rollback.
 - Deterministic local replay with fixed inputs and recorded hashes.
 - Accepted hash-fixed genome, observation, capability, and task-envelope validation without importing or executing producer code.
+- Admission decisions and execution receipts that remain distinct from Repository `1` canonical reconciliation.
 - Reproducible source, sdist, wheel, checksums, test reports, provenance, rollback bundle, and approved documentation.
 
 ### Explicitly excluded
@@ -53,8 +54,9 @@ Before acceptance, PR #7 must:
 4. complete atomic ingestion, message-inclusive checkpoints, freeze parity, rollback at full capacity, and persisted-evidence validation;
 5. close hostile-input and prompt-injection issue #8;
 6. consume only accepted immutable upstream and Repository `1` contracts;
-7. resolve every material review thread;
-8. pass fresh exact-head and approved merged-head acceptance with retained evidence.
+7. implement or explicitly defer the approved runtime-admission contract without implying that documentation is runtime behavior;
+8. resolve every material review thread;
+9. pass fresh exact-head and approved merged-head acceptance with retained evidence.
 
 ## Documentation and gluing candidate
 
@@ -63,14 +65,30 @@ The `docs/pages-architecture-onboarding` branch adds:
 - Pages-ready MkDocs configuration and pinned documentation tooling;
 - project overview, architecture, design contracts, onboarding, security, operations, and release guidance;
 - an updated A.L.I.S.T.A.I.R.E. integration model reflecting Repositories `0` and `1`;
-- an obstruction ledger covering sixteen active compatibility and authority failures;
-- pairwise gluing maps and six required triple-overlap witnesses;
-- a release punch list spanning runtime acceptance, security, semantic ownership, Repository `0`/`1`, genomes, observations, Fabric/kernel, Bridge/interfaces, resources/replay, experiment readiness, publication, and recovery;
+- a runtime admission and reconciliation profile separating proposal, quarantine, capability, admission, execution, receipt, transport, review, correction, revocation, and canonical disposition;
+- an obstruction ledger covering active compatibility and authority failures;
+- pairwise gluing maps and required triple-overlap witnesses;
+- a release punch list spanning runtime acceptance, security, semantic ownership, Repository `0`/`1`, admission, genomes, observations, Digitalis/temporal interpretation, Fabric/kernel, Bridge/interfaces, resources/replay, experiment readiness, publication, and recovery;
 - a read-only exact-submitted-head Documentation workflow with strict build validation, generated-site checks, dependency capture, SHA-256 manifests, and retained artifacts.
 
 A successful documentation workflow proves only that its named immutable head built under the recorded environment. It does not select canonical owners, accept contracts, complete accessibility/privacy/license review, publish Pages, activate adapters, approve PR #7, or authorize release or deployment.
 
-## Acceptance gates
+## Runtime admission acceptance gates
+
+| Gate | Status | Requirement |
+|---|---|---|
+| Record separation | BLOCKED | Proposal, quarantine, capability, task, admission, execution, receipt, resulting-state, reconciliation, annotation, correction, revocation, and recovery records have distinct types and identities. |
+| Device/environment binding | BLOCKED | Device identity, enrollment generation, ownership scope, platform profile, and revocation lifecycle are accepted. |
+| Workspace/runtime binding | BLOCKED | Repository, base commit, expected head, worktree/sandbox, package, configuration, policy, and expected pre-state are independently verified. |
+| Capability enforcement | BLOCKED | Issuer, requester, executor, action class, paths, adapters, tools, network policy, limits, expiry, nonce, replay, revocation, and stop behavior fail closed. |
+| Genome admission | BLOCKED | Repository, commit, path, schema, canonicalization, lineage, immutable policy, and digest are accepted and locally verified. |
+| Observation admission | BLOCKED | Source, subject, provenance, completion, content hash, temporal assessment, Digitalis interpretation, classification, privacy, correction, and revocation are accepted. |
+| Atomic decision | BLOCKED | Parsing and validation complete without state mutation; every rejection preserves prior state and emits bounded evidence. |
+| Execution receipt | BLOCKED | Receipt binds the exact admission, runtime, device, workspace, capability, task, resources, pre/post/rollback state, artifacts, uncertainty, and cleanup result. |
+| Reconciliation | BLOCKED | Repository `1` independently accepts, rejects, quarantines, requests correction, or records recovery; runtime success cannot self-promote. |
+| Revocation propagation | BLOCKED | Capability, device, genome, observation, correction, and emergency-stop changes invalidate runtime, Fabric, Bridge, interface, and cache state where applicable. |
+
+## General acceptance gates
 
 | Gate | Status | Requirement |
 |---|---|---|
@@ -81,13 +99,13 @@ A successful documentation workflow proves only that its named immutable head bu
 | Message and runtime atomicity | REVIEW | Kind, identity, allowlist, shape, digest, replay, capacity, delegated failure, and unchanged-state evidence. |
 | Event, attribution, checkpoint, and rollback evidence | REVIEW | Exact shape, types, ordering, chain, hashes, corrections, revocations, full-capacity rollback, and post-validation. |
 | Hostile-input security | BLOCKED | Issue #8 adversarial matrix, dependency/workflow review, secret scan, exact-head evidence, and independent disposition. |
-| Semantic ownership | BLOCKED | `qsio-kernel`, runtime, Fabric, genomes, Seeker, Bridge, Repository `0`, and Repository `1` responsibilities and migrations are approved. |
+| Semantic ownership | BLOCKED | `qsio-kernel`, runtime, Fabric, genomes, Seeker, temporal/Digitalis, Bridge, Repository `0`, and Repository `1` responsibilities and migrations are approved. |
 | Repository `0`/`1` route | BLOCKED | Proposal, quarantine, capability, task, expected-head, expiry, replay, receipt, revocation, and reconciliation contracts and fixtures are accepted. |
 | Genome compatibility | BLOCKED | Accepted QSO-GENOMES identity, lineage, schema, canonicalization, policy, lifecycle, digest, migration, and fixtures. |
-| Observation/temporal compatibility | BLOCKED | Accepted subject, source, provenance, clocks, freshness, replay, correction, revocation, classification, uncertainty, and fixtures. |
+| Observation/temporal compatibility | BLOCKED | Accepted source, subject, provenance, clocks, freshness, replay, correction, revocation, classification, privacy, uncertainty, interpretation, and fixtures. |
 | Fabric/kernel gluing | BLOCKED | Format, lifecycle, message, resource, ledger, checkpoint, freeze, rollback, and collaboration ownership and triple-overlap fixtures. |
-| Bridge/interface gluing | BLOCKED | Evidence transport, integrity, redaction, correction, privacy, retention, read-only presentation, and approval-separation fixtures. |
-| Local versus canonical state | BLOCKED | Runtime and Fabric success remain distinct from Repository `1` canonical reconciliation and later correction. |
+| Bridge/interface gluing | BLOCKED | Evidence transport, integrity, redaction, correction, privacy, retention, cache invalidation, read-only presentation, and approval-separation fixtures. |
+| Local versus canonical state | BLOCKED | Runtime admission/execution and Fabric success remain distinct from Repository `1` canonical reconciliation and later correction. |
 | Emergency stop and recovery | BLOCKED | Runtime freeze, Fabric stop, capability revocation, evidence preservation, interface invalidation, human recovery, and bounded restart agree. |
 | Determinism and replay | PARTIAL | Repeated fixed-input reports plus clocks, causal order, nonce, expiry, restart, and replay-window evidence. |
 | Documentation source/build | REVIEW | Exact-head content alignment, strict build, generated-site checks, local links, and retained evidence. |
@@ -103,20 +121,21 @@ A successful documentation workflow proves only that its named immutable head bu
 
 ## Required compatibility witnesses
 
-- QSO-GENOMES → QuantumStateObjects producer/consumer fixtures.
-- QSO-SEEKER → temporal owner → QuantumStateObjects freshness, replay, correction, and subject fixtures.
-- Repository `0` → Repository `1` → QuantumStateObjects capability and task fixtures.
-- Genome → runtime → QSO-FABRIC identity, policy, lifecycle, and rollback fixtures.
-- QuantumStateObjects → QSO-FABRIC → Repository `1` execution/collaboration/canonical-state separation fixtures.
-- QuantumStateObjects → Bridge → QSO-STUDIO/AionUi integrity, redaction, correction, and denied-approval-inference fixtures.
-- Runtime freeze → Fabric stop → Repository `1` revocation and human-approved recovery fixtures.
+- Repository `0` → Repository `1` → runtime proposal, capability, admission, and receipt fixtures.
+- QSO-GENOMES → runtime → QSO-FABRIC identity, policy, lifecycle, lineage, and rollback fixtures.
+- QSO-SEEKER → temporal/Digitalis → runtime source, interpretation, freshness, replay, correction, privacy, and subject fixtures.
+- Runtime → QSO-FABRIC → Repository `1` execution/collaboration/canonical-state separation fixtures.
+- Runtime → Bridge → QSO-STUDIO/AionUi integrity, redaction, correction, cache invalidation, and denied-approval-inference fixtures.
+- Capability revocation → runtime freeze → Repository `1` recovery fixtures.
+- Device replacement → workspace re-enrollment → runtime admission fixtures.
+- Correction → downstream invalidation → reconciliation fixtures.
 
 ## Artifact requirements
 
 - Immutable source archive, sdist, and wheel from accepted exact and merged heads.
-- Versioned schemas, configurations, genomes, observations, capabilities, tasks, messages, ledgers, checkpoints, corrections, revocations, receipts, and upstream manifests.
-- Positive, malformed, unsupported-version, stale, replay, wrong-identity, expected-head, expiry, partial-failure, correction, revocation, freeze, rollback, privacy, and recovery fixtures.
-- Exact-head and merged-head clean install, compile, unit, adversarial, deterministic, interruption, recovery, freeze, rollback, and CLI reports.
+- Versioned schemas, configurations, genomes, observations, temporal assessments, interpretations, proposals, quarantine records, capabilities, tasks, admissions, messages, ledgers, checkpoints, corrections, revocations, receipts, resulting-state evidence, dispositions, and upstream manifests.
+- Positive, malformed, unsupported-version, stale, replay, wrong-device, wrong-workspace, wrong-head, wrong-policy, wrong-identity, expiry, broadened-scope, partial-failure, correction, revocation, freeze, rollback, privacy, and recovery fixtures.
+- Exact-head and merged-head clean install, compile, unit, adversarial, admission, deterministic, interruption, recovery, freeze, rollback, and CLI reports.
 - Source, sdist, wheel, documentation-site, fixture, and report SHA-256 values.
 - SBOM where applicable, provenance/attestation, review disposition, privacy/license approval, emergency-stop evidence, and tested rollback instructions.
 
@@ -141,9 +160,9 @@ A successful runtime test or documentation build does not authorize package publ
 
 ## Health, observability, rollback, and post-validation
 
-Health requires exact source/configuration/policy/capability identity, bounded startup/shutdown, fail-closed inputs, valid ledgers and checkpoints, deterministic replay, resource compliance, and absence of denied external capabilities. Observability records non-secret identities, lifecycle transitions, rejections, limits, evidence heads, corrections, revocations, rollback decisions, artifact hashes, cleanup, and post-validation.
+Health requires exact source/configuration/policy/capability/admission identity, bounded startup/shutdown, fail-closed inputs, valid ledgers and checkpoints, deterministic replay, resource compliance, and absence of denied external capabilities. Observability records non-secret identities, lifecycle transitions, admission decisions, rejections, limits, evidence heads, receipts, corrections, revocations, reconciliation, rollback decisions, artifact hashes, cleanup, and post-validation.
 
-Roll back on any identity, schema, hash, type, atomicity, ledger, checkpoint, determinism, replay, resource, security, privacy, contract, documentation, provenance, authority, or approval failure. Preserve failed evidence, revoke applicable capabilities, restore the last accepted checkpoint or clean disposable state, verify no external mutation, and do not resume without a new accepted head and explicit approval.
+Roll back on any identity, schema, hash, type, admission, atomicity, ledger, checkpoint, determinism, replay, resource, security, privacy, contract, documentation, provenance, authority, or approval failure. Preserve failed evidence, revoke applicable capabilities, restore the last accepted checkpoint or clean disposable state, verify no external mutation, and do not resume without a new accepted head and explicit approval.
 
 ## Release log
 
@@ -153,3 +172,4 @@ Roll back on any identity, schema, hash, type, atomicity, ledger, checkpoint, de
 - 2026-07-19 — Added the Pages-ready architecture, design, onboarding, security, operations, and release documentation candidate.
 - 2026-07-20 — Defined QuantumStateObjects as A.L.I.S.T.A.I.R.E.'s bounded local runtime/evidence subsystem.
 - 2026-07-20 — Added portfolio obstruction/gluing analysis, aligned Repositories `0` and `1`, expanded the release punch list, and introduced pairwise and triple-overlap compatibility gates without changing implementation scope.
+- 2026-07-21 — Added the runtime admission and reconciliation contract candidate, new record-separation gates, device/workspace/runtime binding, execution-receipt requirements, and correction/revocation propagation fixtures without changing runtime behavior or authority.

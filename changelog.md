@@ -7,35 +7,39 @@ All notable product, architecture, implementation, documentation, release, and d
 ### Product
 
 - 2026-07-16 — Set the immediate objective to a runnable, locally verifiable QuantumStateObjects package before cross-repository or four-QSO claims.
-- 2026-07-17 — Selected PR #7 as the sole canonical CLI/configuration/runtime candidate and kept Experimenter work outside P0.
-- 2026-07-17 — Advanced P0 from configuration-only evidence to one bounded runtime-primitives slice while retaining fail-closed review gates.
-- 2026-07-19 — Preserved the same bounded implementation scope while adding a complete documentation and Pages-readiness foundation.
-- 2026-07-20 — Positioned QuantumStateObjects explicitly as A.L.I.S.T.A.I.R.E.'s bounded local runtime and evidence subsystem, not its autonomous-development control plane.
+- 2026-07-17 — Selected PR #7 as the sole package/configuration/runtime candidate and kept Experimenter work outside P0.
+- 2026-07-19 — Preserved the bounded implementation scope while adding a complete documentation and Pages-readiness foundation.
+- 2026-07-20 — Positioned QuantumStateObjects as A.L.I.S.T.A.I.R.E.'s bounded local runtime and evidence subsystem.
+- 2026-07-20 — Aligned the repository with the clarified portfolio role of Repository `0` as portable bootstrap/planning/proposal orchestration and Repository `1` as the independent capability/canonical-state/revocation/recovery authority candidate.
 
 ### Architecture
 
-- The accepted dependency order remains: reconciled and accepted PR #7 runtime → accepted QSO-GENOMES contract → accepted QSO-SEEKER contract → local cross-repository validation → bounded four-QSO experiment.
-- Configuration, runtime state, messages, events, attribution, checkpoints, freeze, interruption, recovery, and rollback must share explicit versioned canonicalization and integrity rules.
-- Atlas, Nova, Orion, and Lyra may not be described as running without authorized append-only runtime evidence.
+- The accepted dependency order is now: reconciled and accepted PR #7 runtime → approved semantic ownership → accepted Repository `0`/`1` task route → accepted genome compatibility → accepted observation/temporal compatibility → Fabric/Bridge/interface/Repository `1` gluing → bounded four-QSO experiment.
+- Configuration, runtime state, messages, events, attribution, checkpoints, freeze, interruption, recovery, rollback, correction, revocation, capabilities, tasks, and receipts require explicit versioned canonicalization and integrity rules.
+- Atlas, Nova, Orion, and Lyra may not be described as running without accepted genome identity and authorized append-only runtime evidence.
 - 2026-07-19 — Added component, sequence, lifecycle, trust-zone, failure-boundary, and cross-repository dependency diagrams without changing runtime behavior.
 - 2026-07-20 — Added A.L.I.S.T.A.I.R.E. system-position, evolution-loop, authority-zone, contract-boundary, and capability-progression diagrams.
-- 2026-07-20 — Recorded the unresolved need to designate the autonomous-development control plane that owns task authority, credentials, evidence, merge, release, deployment, incident, emergency-stop, rollback, and final-approval boundaries.
+- 2026-07-20 — Replaced the previously unresolved generic control-plane reference with the current candidate split: Repository `0` proposes and orchestrates; Repository `1` independently issues capabilities and reconciles canonical state.
+- 2026-07-20 — Added an obstruction and gluing ledger covering genome, observation, task authority, runtime/Fabric/kernel ownership, local/canonical state, Bridge/interface evidence, role identity, serialization, hostile input, clocks/replay, stop/recovery, resources, corrections, privacy, draft lineages, and release authority.
+- 2026-07-20 — Added pairwise gluing maps and six required triple-overlap witness groups for genome/runtime/Fabric, Seeker/temporal/runtime, Repository `0`/`1`/runtime, runtime/Fabric/Repository `1`, runtime/Bridge/interface, and freeze/revocation/recovery.
 
 ### Added
 
 - Draft PR #7 provides the candidate installable package, `qso-run` CLI, strict local configuration, genome-file resolution, runtime controller, messages, event and attribution evidence, checkpoints, freeze, interruption, recovery, rollback, and deterministic hashes.
-- 2026-07-18 — Accepted `main` gained the repaired repository-wide policy validator, exact submitted-source controls, pinned workflow actions, focused regression tests, and retained evidence.
+- 2026-07-18 — Accepted `main` gained the repaired repository-wide consent-capacity policy validator, exact submitted-source controls, pinned workflow actions, focused regression tests, and retained evidence.
 - 2026-07-19 — Added `mkdocs.yml` and a pinned documentation toolchain.
 - 2026-07-19 — Added Pages-ready project overview, architecture, design contracts, developer guide, security guide, operations/recovery runbook, and release-status guide.
-- 2026-07-20 — Added an A.L.I.S.T.A.I.R.E. integration guide defining repository responsibility, denied authority, autonomous-development relationship, cross-repository contracts, capability progression, and the required control-plane clarification.
-- 2026-07-20 — Added a read-only `Documentation` workflow that checks out and asserts the exact submitted head, uses pinned actions, installs pinned documentation dependencies, builds MkDocs strictly, validates the generated-site boundary, records dependency/tool/source identities and SHA-256 values, and retains the site evidence artifact.
+- 2026-07-20 — Added the A.L.I.S.T.A.I.R.E. integration guide.
+- 2026-07-20 — Added the portfolio obstruction and gluing analysis.
+- 2026-07-20 — Expanded `punchlist.md` into P0–P5 runtime, security, ownership, Repository `0`/`1`, genome, observation, Fabric/kernel, Bridge/interface, resource/replay, experiment, documentation, release, and recovery workstreams.
+- 2026-07-20 — Added a read-only `Documentation` workflow that checks out and asserts the exact submitted head, uses pinned actions, installs pinned dependencies, builds MkDocs strictly, validates the generated-site boundary, records dependency/tool/source identities and SHA-256 values, and retains the site artifact.
 
 ### Changed
 
 - 2026-07-18 — PR #7 became stale against accepted `main` after the policy-control repair merged; it requires normal reconciliation and fresh exact-head evidence.
 - 2026-07-19 — Expanded the root README with evidence-qualified status, repository responsibilities, architecture, documentation navigation, candidate verification, and contribution boundaries.
-- 2026-07-19 — Updated `taskchain.md` and `release.md` to reflect the accepted policy-control base, the current PR #7 pre-reconciliation state, open candidate findings, and documentation publication gates.
-- 2026-07-20 — Updated the README, task chain, release plan, navigation, and capability order to align with the canonical A.L.I.S.T.A.I.R.E. doctrine without changing runtime scope.
+- 2026-07-19 — Updated `taskchain.md` and `release.md` to reflect the accepted policy-control base, the PR #7 pre-reconciliation state, open candidate findings, and documentation publication gates.
+- 2026-07-20 — Updated README, Pages home, integration guide, navigation, task chain, punch list, release plan, and capability order to reflect the current portfolio authority and gluing model without changing runtime scope.
 
 ### Documentation
 
@@ -45,22 +49,26 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-19 — Added hostile-input and prompt-injection threat modeling, least-privilege rules, security evidence requirements, and vulnerability response guidance.
 - 2026-07-19 — Added local verification, health, observability, incident, cleanup, recovery, rollback, Pages publication, and release stop procedures.
 - 2026-07-20 — Clarified that increasingly autonomous development may consume bounded QSO proposals and evidence, but adoption remains external, authorized, reviewable, and separately governed.
+- 2026-07-20 — Clarified that Repository `0` proposals are non-authoritative, Repository `1` capabilities are narrow and non-transferable, and runtime success is evidence rather than canonical acceptance.
+- 2026-07-20 — Added explicit documentation-only limits around device control, capability issuance, canonical state, transport authority, and publication.
 
 ### Verification
 
-- Historical PR #7 exact-head runs remain evidence for their recorded commits only. The latest candidate description reports a successful Python 3.11/3.13 matrix with 150 tests at a prior immutable head.
+- Historical PR #7 exact-head runs remain evidence for their recorded commits only. Current PR #7 head `40a0c123c271c883356b9315dc213556d4abbb14` remains pre-reconciliation.
 - Accepted `main` policy-control repair passed its exact-head focused tests and repository-wide validator before merge.
-- The documentation candidate now includes an exact-head strict-build workflow and retained evidence path. A passing workflow establishes build evidence only for its named source head and does not complete independent content, link, accessibility, privacy, license, publication, or deployment review.
+- The documentation candidate includes an exact-head strict-build workflow and retained evidence path. A passing workflow establishes build evidence only for its named source head and does not complete content, link, accessibility, privacy, license, contract, publication, or deployment review.
+- New obstruction, task-chain, punch-list, release, README, and Pages changes require fresh exact-head Documentation and Consent Capacity Lock results.
 
 ### Review findings
 
 Current PR #7 work includes:
 
+- reconciliation with accepted `main`;
 - removal of retired runtime review identity dependencies and binding to accepted human final approval;
-- canonical repository-field shape;
+- canonical repository-field and instance identity shape;
 - singleton message allowlists;
 - correct limit/default and exact-type handling;
-- complete configuration enum guards;
+- complete configuration enum and schema guards;
 - message-kind and outgoing-recipient validation;
 - atomic malformed incoming-message rejection;
 - consistent bounded file-read error behavior;
@@ -69,27 +77,28 @@ Current PR #7 work includes:
 - rollback at a full event ceiling;
 - strict persisted-event validation;
 - hostile-input issue #8 acceptance;
-- accepted hash-fixed upstream contracts;
+- accepted hash-fixed upstream and Repository `1` contracts;
 - complete review-thread, exact-head, and merged-head acceptance.
 
-Portfolio architecture review additionally requires designation of the autonomous-development control plane before this repository can accept any task envelope carrying repository, release, deployment, credential, or incident authority.
+Portfolio architecture review additionally requires accepted ownership and compatibility witnesses across `qsio-kernel`, QuantumStateObjects, QSO-FABRIC, QSO-GENOMES, QSO-SEEKER, temporal interpretation, Bridge, interfaces, Repository `0`, and Repository `1`.
 
 ### Security
 
-- Candidate CI uses read-only contents permission, exact submitted-head checkout/assertion, and disabled checkout credential persistence; the accepted policy workflow and documentation workflow pin actions by commit.
-- Runtime and documentation examples remain local, synthetic, credential-free, network-independent, and non-deploying.
-- Complete parser, identity, message, state-atomicity, checkpoint, rollback-capacity, persisted-evidence, dependency, secret, workflow, hostile-input, and adversarial review remains required.
+- Candidate CI uses read-only contents permission, exact submitted-head checkout/assertion, and disabled checkout credential persistence; accepted policy and documentation workflows pin actions by commit.
+- Runtime and documentation examples remain local, synthetic, credential-free, network-independent, host-administration-free, and non-deploying.
+- Complete parser, identity, message, state-atomicity, checkpoint, rollback-capacity, persisted-evidence, capability, replay, dependency, secret, workflow, hostile-input, and adversarial review remains required.
+- Emergency stop and recovery must be independently enforceable and must not depend on the component being stopped.
 
 ### Release
 
 - The first eligible package version remains `0.1.0-alpha.1`.
-- Runtime release remains blocked by reconciliation, open findings, fresh exact-head and merged-head evidence, accepted upstream contracts, source/sdist/wheel/SBOM/provenance, privacy/licensing, rollback drill, and approval.
+- Runtime release remains blocked by reconciliation, open findings, fresh exact-head and merged-head evidence, accepted ownership and contracts, source/sdist/wheel/SBOM/provenance, privacy/licensing, emergency-stop and rollback drills, and approval.
 - Documentation publication remains blocked by content review, exact-head strict build, link/accessibility checks, privacy/license review, site provenance, publication approval, deployment validation, and rollback evidence.
-- Autonomous-development control-plane integration remains blocked until its owner and authority contract are explicitly approved.
+- Repository `0`/`1` integration remains blocked until machine-readable schemas, identical fixtures, key custody, incident ownership, recovery ownership, and explicit approval exist.
 
 ### Deployment
 
-- No runtime, package publication, Pages publication, scheduled execution, four-QSO experiment, autonomous-development integration, external integration, financial path, or production deployment is authorized.
+- No runtime, package publication, Pages publication, scheduled execution, device control, four-QSO experiment, autonomous-development integration, external adapter, financial path, canonical-state mutation, or production deployment is authorized.
 - The only initial target remains a disposable credential-free, network-independent local/CI verification environment after applicable gates pass.
 
 ## Entry format

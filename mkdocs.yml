@@ -18,6 +18,7 @@ nav:
   - Home: index.md
   - Project overview: project-overview.md
   - A.L.I.S.T.A.I.R.E. integration: alistaire-integration.md
+  - Runtime admission and reconciliation: runtime-admission-and-reconciliation-profile.md
   - Architecture: architecture.md
   - Design contracts: design-contracts.md
   - Obstruction and gluing: obstruction-and-gluing.md

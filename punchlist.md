@@ -7,9 +7,10 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [x] PR #7 remains the sole selected package/configuration/runtime candidate.
 - [x] Historical heads passed substantial Python 3.11/3.13 package, CLI, runtime, and artifact checks.
 - [x] Accepted `main` contains the repaired repository-wide consent-capacity policy control.
+- [x] The documentation branch defines a candidate runtime admission and reconciliation profile.
 - [ ] PR #7 head `40a0c123c271c883356b9315dc213556d4abbb14` remains pre-reconciliation against current `main`; its successful runtime run is historical exact-head evidence only.
 - [ ] The prior reconciled-head evidence recorded in earlier punch-list text is superseded by the later accepted `main` policy repair and must not be treated as current acceptance.
-- [ ] No accepted QSO-GENOMES, QSO-SEEKER, Repository `0`/`1`, QSO-FABRIC, Bridge, or `qsio-kernel` compatibility set is active in this runtime.
+- [ ] No accepted QSO-GENOMES, QSO-SEEKER, Digitalis/temporal, Repository `0`/`1`, QSO-FABRIC, Bridge, or `qsio-kernel` compatibility set is active in this runtime.
 
 ## P0 — Canonical runtime lineage
 
@@ -50,20 +51,32 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## P1 — Ownership and gluing decisions
 
-- [ ] Approve the responsibility split among `qsio-kernel`, QuantumStateObjects, QSO-FABRIC, QSO-GENOMES, QSO-SEEKER, Bridge, Repository `0`, and Repository `1`.
-- [ ] Designate the canonical owner of QSO format, canonicalization, lifecycle vocabulary, message types, event/ledger semantics, checkpoint/freeze/rollback semantics, and migrations.
-- [ ] Distinguish local runtime state, Fabric collaboration state, transported evidence, and Repository `1` canonical state.
+- [ ] Approve the responsibility split among `qsio-kernel`, QuantumStateObjects, QSO-FABRIC, QSO-GENOMES, QSO-SEEKER, temporal/Digitalis interpretation, Bridge, Repository `0`, and Repository `1`.
+- [ ] Designate the canonical owner of QSO format, canonicalization, lifecycle vocabulary, message types, event/ledger semantics, checkpoint/freeze/rollback semantics, migrations, and neutral record namespaces.
+- [ ] Distinguish local runtime state, Fabric collaboration state, transported evidence, interface review state, and Repository `1` canonical state.
 - [ ] Approve one cross-repository stop-state lattice covering freeze, Quietus, revocation, emergency stop, recovery, and bounded restart.
 - [ ] Assign human owners for policy, security, credentials, incident response, emergency stop, recovery, release, and rollback.
 
 ## P1 — Repository `0` / Repository `1` task route
 
 - [ ] Accept the canonical route: `0:working → 0:proposal` as local non-authoritative staging, followed by a versioned envelope into `1:quarantine`.
-- [ ] Define runtime task-envelope, capability-reference, expected-head, device/environment, policy, expiry, replay, and receipt schemas.
+- [ ] Define proposal, quarantine, capability, task-envelope, expected-head, device/environment, workspace, policy, expiry, replay, and receipt schemas.
 - [ ] Prove Repository `0` proposals cannot self-authorize execution.
 - [ ] Prove Repository `1` capabilities are narrow, expiring, revocable, identity-bound, and unusable against a different runtime/configuration head.
 - [ ] Prove execution success does not imply Repository `1` canonical acceptance.
 - [ ] Add partial-execution, revocation-during-execution, receipt-rejection, rollback, and recovery fixtures.
+
+## P1 — Runtime admission and reconciliation
+
+- [ ] Preserve separate identifiers and record types for proposal, quarantine admission, capability, accepted task, runtime admission, execution attempt, receipt, resulting-state evidence, correction, revocation, and canonical disposition.
+- [ ] Define a side-effect-free admission validator that completes before runtime state construction or mutation.
+- [ ] Bind device enrollment generation, environment, workspace, repository, base commit, expected head, runtime package/configuration/policy, and expected pre-state independently.
+- [ ] Bind the admitted action class, paths, adapters, tools, network destinations, resources, expiry, retries, stop policy, rollback checkpoint, evidence, privacy, and retention requirements.
+- [ ] Reject unknown, missing, unsupported, stale, replayed, revoked, overbroad, mismatched, or unverifiable fields before mutation.
+- [ ] Prove admission cannot broaden the capability or infer authority from proposal, observation, transport, interface, or model content.
+- [ ] Define receipt and resulting-state evidence profiles with complete resource, partial-failure, cleanup, rollback, uncertainty, and artifact hashes.
+- [ ] Require independent Repository `1` reconciliation; runtime success, deterministic output, Fabric acceptance, Bridge delivery, or interface display cannot substitute.
+- [ ] Add wrong-device, wrong-workspace, wrong-head, wrong-policy, stale enrollment, replay, broadened scope, revoked capability, partial execution, post-state mismatch, privacy, rollback, and recovery fixtures.
 
 ## P2 — Genome compatibility
 
@@ -72,11 +85,12 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [ ] Add producer/consumer fixtures for valid, unsupported-version, digest-mismatch, lineage-mismatch, immutable-field mutation, and rollback cases.
 - [ ] Bind Atlas, Nova, Orion, and Lyra runtime fixtures to accepted genome identities before describing them as instantiated.
 
-## P2 — Observation and temporal compatibility
+## P2 — Observation, temporal, and interpretation compatibility
 
-- [ ] Accept one QSO-SEEKER observation/evidence envelope with subject identity, source identity, provenance, classification, content hash, clocks, freshness, replay, correction, and revocation fields.
-- [ ] Assign temporal interpretation to `datarepo-temporal-invariants` or another approved owner without duplicating runtime responsibility.
-- [ ] Add stale, reordered, ambiguous-clock, replayed, corrected, revoked, wrong-subject, privacy, and retention fixtures.
+- [ ] Accept one QSO-SEEKER source-observation envelope with subject identity, source identity, provenance, classification, content hash, collection completion, clocks, correction, and revocation fields.
+- [ ] Assign temporal freshness/replay interpretation and Digitalis policy projection without duplicating source-record or runtime responsibility.
+- [ ] Preserve source observation, temporal assessment, Digitalis interpretation/projection, runtime admission decision, and consumer result as separate digest-bound records.
+- [ ] Add stale, reordered, ambiguous-clock, replayed, corrected, revoked, wrong-subject, privacy, retention, partial-collection, and interpretation-mismatch fixtures.
 - [ ] Prove rejected records cause no state mutation.
 
 ## P2 — Fabric and kernel compatibility
@@ -85,15 +99,16 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [ ] Approve QSO-FABRIC ownership of collaboration and experiment semantics without duplicating local runtime semantics.
 - [ ] Pin format-registry, envelope, stream/package serialization, lifecycle, resource, and evidence contracts.
 - [ ] Add genome → runtime → Fabric and format → runtime → Fabric triple-overlap fixtures.
-- [ ] Prove Fabric acceptance remains distinct from runtime success and Repository `1` canonical acceptance.
+- [ ] Prove Fabric acceptance remains distinct from runtime admission, runtime success, and Repository `1` canonical acceptance.
 
 ## P3 — Bridge and interface evidence path
 
-- [ ] Define a transport-neutral evidence envelope for runtime events, attribution, checkpoints, proposals, results, corrections, and revocations.
+- [ ] Define a transport-neutral evidence envelope for runtime admissions, events, attribution, checkpoints, proposals, results, corrections, revocations, receipts, and dispositions.
 - [ ] Assign classification, redaction, privacy, retention, correction, publication, and destination-policy ownership.
+- [ ] Preserve source evidence, Digitalis projection, runtime receipt, Bridge artifact, delivery receipt, Studio/AionUi annotation, and Repository `1` disposition identities.
 - [ ] Prove Bridge transport cannot create authority or canonical status.
 - [ ] Prove QSO-STUDIO and AionUi remain read-only unless a separately approved action contract is used.
-- [ ] Add runtime → Bridge → interface fixtures for integrity, redaction, stale/corrected evidence, offline display, and denied approval inference.
+- [ ] Add runtime → Bridge → interface fixtures for integrity, redaction, stale/corrected evidence, offline display, cache invalidation, and denied approval inference.
 
 ## P3 — Resource and replay governance
 
@@ -107,13 +122,13 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [ ] Complete P0–P3 blockers.
 - [ ] Approve deterministic seeds, accepted genome and record fixtures, resource ceilings, stop conditions, and human review gates.
 - [ ] Keep all generated proposals inactive and non-executable.
-- [ ] Produce append-only run, event, attribution, checkpoint, freeze, rollback, and cleanup evidence.
+- [ ] Produce append-only admission, run, event, attribution, checkpoint, freeze, rollback, cleanup, and reconciliation evidence.
 - [ ] Repeat the experiment and prove deterministic or explicitly bounded nondeterministic behavior.
 - [ ] Conduct independent review before any capability claim or reuse.
 
 ## P4 — Documentation and publication
 
-- [ ] Keep README, Pages, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
+- [ ] Keep README, Pages, admission profile, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
 - [ ] Pass exact-head strict MkDocs build and local-link validation.
 - [ ] Review Mermaid rendering, headings, navigation, keyboard access, contrast, tables, code blocks, mobile layout, and reduced motion.
 - [ ] Approve privacy, confidentiality, licensing, attribution, and public-artifact rules.
@@ -123,7 +138,7 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 ## P5 — Release, emergency stop, and recovery
 
 - [ ] Produce one release manifest containing source identities, contract versions, fixtures, tests, artifacts, SBOM where applicable, reviews, approvals, denied capabilities, incident contacts, and rollback.
-- [ ] Run a portfolio tabletop covering runtime freeze, Fabric stop, Repository `1` revocation, Bridge/interface invalidation, evidence preservation, and bounded restart.
+- [ ] Run a portfolio tabletop covering capability revocation, runtime admission rejection, runtime freeze, Fabric stop, Bridge/interface invalidation, evidence preservation, reconciliation rejection, and bounded restart.
 - [ ] Prove emergency stop and recovery do not depend on the component being stopped.
 - [ ] Require a new immutable head and explicit human approval before resumption.
 - [ ] Preserve failed-candidate evidence and never rewrite the incident record.

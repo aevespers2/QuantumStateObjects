@@ -3,7 +3,9 @@ name: Ecosystem Interface Documentation
 on:
   pull_request:
     paths:
-      - 'docs/ecosystem-interface-compatibility.md'
+      - 'contracts/qso-interface-source-tuple-v1.json'
+      - 'fixtures/qso-interface-compatibility-v1.json'
+      - 'docs/fabric-interface-compatibility.md'
       - 'docs/ecosystem-interface-compatibility-v0.json'
       - 'docs/ecosystem-interface-compatibility-review-checklist.md'
       - 'docs/decisions/0001-ecosystem-interface-compatibility-boundary.md'
@@ -21,7 +23,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/ecosystem-interface-compatibility.md'
+      - 'contracts/qso-interface-source-tuple-v1.json'
+      - 'fixtures/qso-interface-compatibility-v1.json'
+      - 'docs/fabric-interface-compatibility.md'
       - 'docs/ecosystem-interface-compatibility-v0.json'
       - 'docs/ecosystem-interface-compatibility-review-checklist.md'
       - 'docs/decisions/0001-ecosystem-interface-compatibility-boundary.md'
@@ -60,6 +64,20 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Verify copied producer fixture identity
+        run: |
+          test "$(git hash-object fixtures/qso-interface-compatibility-v1.json)" = \
+            "143b80448cb4623682669ab8e6a9599239dd5847"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          tuple_record = json.loads(Path('contracts/qso-interface-source-tuple-v1.json').read_text(encoding='utf-8'))
+          assert tuple_record['producer']['head_sha'] == '25036a5cfcea79e204a4660ddd1af09c054935b1'
+          assert tuple_record['producer']['fixture_git_blob'] == '143b80448cb4623682669ab8e6a9599239dd5847'
+          assert tuple_record['authority_effect'] == 'none'
+          PY
+
       - name: Run hostile profile regressions
         env:
           PYTHONDONTWRITEBYTECODE: '1'
@@ -82,7 +100,9 @@ jobs:
           python --version \
             > reports/ecosystem-interface-documentation/python-version.txt 2>&1
           sha256sum \
-            docs/ecosystem-interface-compatibility.md \
+            contracts/qso-interface-source-tuple-v1.json \
+            fixtures/qso-interface-compatibility-v1.json \
+            docs/fabric-interface-compatibility.md \
             docs/ecosystem-interface-compatibility-v0.json \
             docs/ecosystem-interface-compatibility-review-checklist.md \
             docs/decisions/0001-ecosystem-interface-compatibility-boundary.md \

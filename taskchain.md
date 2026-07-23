@@ -2,7 +2,7 @@
 
 ## Repository role
 
-QuantumStateObjects owns bounded local QSO identities, runtime partitions, message handling, deterministic experiments, event and attribution evidence, checkpoints, freeze/interruption/recovery/rollback, local admission decisions, execution receipts, and local validation of accepted genome, observation, capability, and task-envelope artifacts.
+QuantumStateObjects owns bounded local QSO identities, runtime partitions, message handling, deterministic experiments, event and attribution evidence, checkpoints, freeze/interruption/recovery/rollback, local admission decisions, execution receipts, and local validation of accepted genome, observation, capability, task-envelope, event-ledger, and runtime-report artifacts.
 
 Within A.L.I.S.T.A.I.R.E., it is the bounded local execution and evidence subsystem. It is not constitutional governance, Repository `0` portable bootstrap or planning, Repository `1` capability or canonical-state authority, genome authorship, hostile-source retrieval, temporal or Digitalis interpretation, portfolio-wide collaboration, generic evidence transport, credentials, merge/release/deployment, or final approval authority.
 
@@ -21,7 +21,7 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 Accepted `main` includes the repaired repository-wide consent-capacity policy validator and exact-head workflow controls. Draft PR #7 remains open, unmerged, mergeable, and the sole package/configuration/runtime candidate at pre-reconciliation head `40a0c123c271c883356b9315dc213556d4abbb14`. Its successful runs are historical exact-head evidence only; it must be reconciled with current `main` and reverified with the policy control and complete runtime matrix at one new head.
 
-The portfolio direction identifies Repository `0` as the portable bootstrap, planning, proposal, and maintenance-orchestration candidate and Repository `1` as the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. The documentation branch now adds a runtime admission and reconciliation profile that preserves separate proposal, quarantine, capability, admission, execution, receipt, transport, review, and canonical-disposition identities. QuantumStateObjects may consume only a narrow Repository `1` capability and accepted task envelope after the route, schemas, fixtures, and authority owners are approved.
+The documentation candidate now binds the QSO-FABRIC PR #21 interface source tuple and exact 17-case compatibility fixture. This completes source observation only. The planned independent QuantumStateObjects evaluator and final event-ledger/runtime-report payload schemas remain absent, so no interface is accepted or integration-ready.
 
 ## Active chain
 
@@ -40,29 +40,25 @@ The portfolio direction identifies Repository `0` as the portable bootstrap, pla
 | P1-C | Accept runtime admission and reconciliation contract | Portfolio architect / runtime owner | P1-B | BLOCKED | Proposal, quarantine, capability, admission decision, execution attempt, receipt, resulting-state evidence, correction, revocation, and canonical disposition retain separate identities and fail closed. |
 | P2-A | Accept genome compatibility set | Architect / QSOBuilder | P0-H, accepted QSO-GENOMES | BLOCKED | Immutable genome identity, lineage, schema, canonicalization, policy, lifecycle, digest, migration, and producer/consumer fixtures pass. |
 | P2-B | Accept observation, temporal, and interpretation compatibility set | Architect / QSOBuilder | P0-H, accepted QSO-SEEKER and temporal/Digitalis owners | BLOCKED | Source, subject, provenance, classification, clocks, freshness, replay, correction, revocation, privacy, uncertainty, and atomic rejection fixtures pass. |
-| P2-C | Accept Fabric, Bridge, interface, and canonical-state gluing | Portfolio architect | P1-A through P2-B | BLOCKED | Pairwise and triple-overlap fixtures prove separation of local admission/execution, collaboration, transport, display, and canonical acceptance. |
-| P3 | Build bounded four-QSO experiment runner | QSOBuilder | P2-C | PROPOSED | Atlas, Nova, Orion, and Lyra run from accepted identities and deterministic seeds within limits; proposals remain inactive; complete evidence verifies. |
+| P2-C | Independently validate QSO-FABRIC interface generation | Runtime owner / independent reviewer | P0-H, P1-A | BLOCKED | Exact producer tuple is current; an independently implemented consumer derives all 17 case outcomes and 14 ordered reasons without importing producer validation code. |
+| P2-D | Accept event-ledger and runtime-report payload contracts | Runtime owner / Fabric owner / portfolio architect | P2-C | BLOCKED | Namespace, producer, subject, run, ordering, idempotency, replay, correction, revocation, privacy, report linkage, migration, rollback, and shared payload fixtures are approved. |
+| P2-E | Accept Fabric, Bridge, interface, and canonical-state gluing | Portfolio architect | P1-A through P2-D | BLOCKED | Pairwise and triple-overlap fixtures prove separation of local admission/execution, collaboration, transport, display, and canonical acceptance. |
+| P3 | Build bounded four-QSO experiment runner | QSOBuilder | P2-E | PROPOSED | Atlas, Nova, Orion, and Lyra run from accepted identities and deterministic seeds within limits; proposals remain inactive; complete evidence verifies. |
 | P4 | Resolve public privacy, confidentiality, licensing, and attribution | Architect | User approval | BLOCKED | Public source, docs, samples, reports, and artifacts use approved notices and contain no unintended sensitive data. |
 | P5 | Validate and publish documentation | Documentation reviewer | Contract accuracy, P4 | REVIEW | Exact-head strict build, links, accessibility, privacy/license, artifact retention, publication approval, public validation, and rollback pass. |
-| P6 | Integrate governed autonomous-development tasks | Portfolio architect | P1-C, P2-C, accepted Repository `0`/`1` implementation | BLOCKED | Task authority, capabilities, credentials, admission, evidence, incident, emergency-stop, recovery, and human approval are explicit and versioned. |
+| P6 | Integrate governed autonomous-development tasks | Portfolio architect | P1-C, P2-E, accepted Repository `0`/`1` implementation | BLOCKED | Task authority, capabilities, credentials, admission, evidence, incident, emergency-stop, recovery, and human approval are explicit and versioned. |
 | P7 | Add simulated payment-intent records | Builder | P3 and approved payment policy | BLOCKED | Simulation distinguishes intent, authorization, allocation, receipt, dispute, and settlement adapter without moving funds. |
 
-## Runtime admission milestone
+## Interface documentation milestone
 
-The documentation branch now defines:
+The documentation lineage now preserves one human-readable interface route, one machine-readable profile, one review checklist, one ADR, the exact producer source tuple, the byte-identical producer fixture, and a read-only documentation validator. The disposition remains `PRODUCER_CORPUS_BOUND_CONSUMER_AND_PAYLOAD_PENDING`.
 
-- a candidate admission envelope independently binding runtime head, configuration, policy, device/environment, workspace, task, capability, genome, observations, temporal assessments, limits, stop/recovery, and evidence requirements;
-- a deterministic side-effect-free admission sequence that rejects before state mutation;
-- execution and receipt boundaries that cannot broaden authority;
-- independent Repository `1` reconciliation after execution;
-- eight triple-overlap witness groups covering task authority, genomes, source interpretation, Fabric, Bridge/interfaces, revocation/recovery, device replacement, and correction propagation.
-
-This milestone is documentation-only. It does not change runtime behavior, accept PR #7, select schema owners, activate capabilities or adapters, publish Pages, run the four-QSO experiment, or authorize merge, release, deployment, credentials, device control, payment, or canonical-state mutation.
+This milestone does not implement the planned runtime consumer, accept payload schemas, activate adapters, publish Pages, run the four-QSO experiment, or authorize merge, release, deployment, credentials, payment, or canonical-state mutation.
 
 ## Portfolio dependency order
 
-Reconcile and accept PR #7 → approve semantic ownership and stop/recovery vocabulary → accept Repository `0`/`1` route → accept runtime admission/reconciliation profile → accept genome compatibility → accept observation/temporal/Digitalis compatibility → validate Fabric, Bridge, interface, and Repository `1` gluing → run bounded four-QSO experiment → review evidence → consider governed autonomous-development integration → optional later scopes.
+Reconcile and accept PR #7 → approve semantic ownership and stop/recovery vocabulary → accept Repository `0`/`1` route → accept runtime admission/reconciliation profile → accept genome and observation compatibility → independently validate Fabric interface generation → accept event-ledger/runtime-report payload contracts → validate Fabric, Bridge, interface, and Repository `1` gluing → run bounded four-QSO experiment → review evidence → consider governed autonomous-development integration → optional later scopes.
 
 ## Builder log requirements
 
-Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, proposal/quarantine/capability/admission/task/receipt/disposition identities, retained reports, review dispositions, hostile-input fixtures, atomic-failure evidence, pairwise/triple-overlap witnesses, checkpoint/freeze/revocation/recovery evidence, privacy/license review, documentation/site hashes, publication result, residual risks, and follow-ups.
+Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, producer source tuples, compatibility fixture identities, ordered reasons and dispositions, proposal/quarantine/capability/admission/task/receipt/disposition identities, retained reports, review dispositions, hostile-input fixtures, atomic-failure evidence, pairwise/triple-overlap witnesses, checkpoint/freeze/revocation/recovery evidence, privacy/license review, documentation/site hashes, publication result, residual risks, and follow-ups.

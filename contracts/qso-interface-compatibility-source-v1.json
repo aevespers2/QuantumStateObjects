@@ -1,0 +1,27 @@
+{
+  "tuple_id": "QUANTUMSTATEOBJECTS-QSO-INTERFACE-COMPATIBILITY-SOURCE-v1",
+  "producer": {
+    "repository": "aevespers2/QSO-FABRIC",
+    "pull_request": 21,
+    "commit": "25036a5cfcea79e204a4660ddd1af09c054935b1",
+    "path": "fixtures/qso-interface-compatibility-v1.json",
+    "git_blob_sha1": "143b80448cb4623682669ab8e6a9599239dd5847",
+    "sha256": "baac67caaa6b213e5a50019c8cad011be1e1906699c7903391313b11677ac5d4"
+  },
+  "consumer": {
+    "repository": "aevespers2/QuantumStateObjects",
+    "branch": "health/interface-compatibility-consumer-20260723",
+    "validator": "tools/validate_interface_compatibility_consumer.py",
+    "tests": "tests/test_interface_compatibility_consumer.py",
+    "workflow": ".github/workflows/interface-compatibility-consumer.yml"
+  },
+  "contract_id": "QSO-INTERFACE-COMPATIBILITY-001",
+  "contract_version": "1.0.0",
+  "case_count": 17,
+  "expected_interfaces": ["qso-event-ledger", "qso-runtime-report"],
+  "authority_effect": "none",
+  "ecosystem_admission": false,
+  "execution_authority": false,
+  "merge_authority": false,
+  "publication_authority": false
+}

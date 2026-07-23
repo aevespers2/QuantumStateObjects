@@ -8,6 +8,10 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [x] Historical heads passed substantial Python 3.11/3.13 package, CLI, runtime, and artifact checks.
 - [x] Accepted `main` contains the repaired repository-wide consent-capacity policy control.
 - [x] The documentation branch defines a candidate runtime admission and reconciliation profile.
+- [x] QSO-FABRIC PR #21 producer tuple and byte-identical 17-case interface fixture are present in this documentation lineage.
+- [x] One human-readable interface route, machine-readable profile, review checklist, ADR, and strict documentation validator are reconciled.
+- [ ] The planned independent QuantumStateObjects interface evaluator, tests, and exact-head consumer workflow are not implemented.
+- [ ] Final `qso-event-ledger` and `qso-runtime-report` payload schemas are not accepted.
 - [ ] PR #7 head `40a0c123c271c883356b9315dc213556d4abbb14` remains pre-reconciliation against current `main`; its successful runtime run is historical exact-head evidence only.
 - [ ] The prior reconciled-head evidence recorded in earlier punch-list text is superseded by the later accepted `main` policy repair and must not be treated as current acceptance.
 - [ ] No accepted QSO-GENOMES, QSO-SEEKER, Digitalis/temporal, Repository `0`/`1`, QSO-FABRIC, Bridge, or `qsio-kernel` compatibility set is active in this runtime.
@@ -93,6 +97,20 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [ ] Add stale, reordered, ambiguous-clock, replayed, corrected, revoked, wrong-subject, privacy, retention, partial-collection, and interpretation-mismatch fixtures.
 - [ ] Prove rejected records cause no state mutation.
 
+## P2 — QSO-FABRIC interface compatibility
+
+- [x] Bind QSO-FABRIC PR #21 head, fixture path, Git blob, workflow run, artifact digest, and evidence expiration in a machine-readable source tuple.
+- [x] Preserve the producer fixture byte-identically without importing or executing producer validation code.
+- [x] Document the 17-case, 14-fact, 14-reason compatibility surface and its authority boundary.
+- [x] Add a strict documentation-profile validator and hostile regressions for source drift, type ambiguity, reason-order drift, status promotion, unknown fields, duplicate keys, non-finite values, and skill-map drift.
+- [ ] Implement an independent evaluator at `tools/validate_fabric_interface_compatibility.py`.
+- [ ] Add independent tests deriving every expected case disposition and ordered reason list.
+- [ ] Add an exact-head consumer workflow with retained evidence and source-tuple expiration handling.
+- [ ] Define payload schemas for runtime-local events, Fabric collaboration events, runtime execution reports, and Fabric aggregate reports.
+- [ ] Define producer, consumer, subject, run, sequence, causal-order, idempotency, retry, correction, revocation, supersession, withdrawal, privacy, retention, and report-to-ledger identities.
+- [ ] Prove runtime success and Fabric acceptance cannot create Repository `1` canonical status.
+- [ ] Add mixed-version, migration, consumer-rebinding, correction propagation, cache invalidation, rollback, and recovery fixtures.
+
 ## P2 — Fabric and kernel compatibility
 
 - [ ] Approve whether `qsio-kernel` is the canonical low-level semantic kernel, a conformance implementation, a migration source, or an independent prototype.
@@ -128,11 +146,11 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## P4 — Documentation and publication
 
-- [ ] Keep README, Pages, admission profile, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
-- [ ] Pass exact-head strict MkDocs build and local-link validation.
+- [ ] Keep README, Pages, admission profile, Fabric interface page/profile/checklist/ADR, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
+- [ ] Pass exact-head strict MkDocs build, machine-readable profile validation, and local-link validation.
 - [ ] Review Mermaid rendering, headings, navigation, keyboard access, contrast, tables, code blocks, mobile layout, and reduced motion.
 - [ ] Approve privacy, confidentiality, licensing, attribution, and public-artifact rules.
-- [ ] Retain source, dependency, built-site, manifest, and SHA-256 evidence.
+- [ ] Retain source, dependency, built-site, fixture, tuple, profile, manifest, and SHA-256 evidence.
 - [ ] Publish Pages only after explicit approval and test public rollback.
 
 ## P5 — Release, emergency stop, and recovery
@@ -145,4 +163,4 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## Scope boundary
 
-This punch list is documentation and planning. It does not alter runtime code, schemas, tests, credentials, adapters, network access, device control, repository permissions, canonical state, package publication, Pages publication, experiment activation, release, or deployment authority.
+This punch list is documentation and planning. It does not alter runtime code, accepted schemas, credentials, adapters, network access, device control, repository permissions, canonical state, package publication, Pages publication, experiment activation, release, or deployment authority.

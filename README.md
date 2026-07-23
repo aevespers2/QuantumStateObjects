@@ -62,6 +62,8 @@ Every accepted QSO design:
 | Repository-wide consent-capacity policy validator and exact-head workflow controls | Accepted on current `main` |
 | Installable package, `qso-run` CLI, strict configuration, runtime controller, ledgers, and recovery controls | Draft PR #7 candidate |
 | A.L.I.S.T.A.I.R.E. subsystem and denied-authority contract | Documentation candidate |
+| Runtime admission and reconciliation profile | Documentation candidate; implementation unaccepted |
+| QSO-FABRIC interface producer corpus and source tuple | Bound documentation input; independent consumer and payload schemas pending |
 | Repository `0`/`1` governed task route | Documented direction; schemas, fixtures, owners, and implementation blocked |
 | Accepted QSO-GENOMES integration | Blocked |
 | Accepted QSO-SEEKER and temporal integration | Blocked |
@@ -71,7 +73,7 @@ Every accepted QSO design:
 | GitHub Pages publication | Not authorized or verified |
 | Package release or deployment | Blocked |
 
-A branch, passing historical workflow, local execution, or documentation build is evidence for that exact state only. It does not imply acceptance, canonical status, release, deployment, or authorization.
+A branch, passing historical workflow, copied fixture, local execution, synthetic compatibility result, or documentation build is evidence for that exact state only. It does not imply payload compatibility, acceptance, canonical status, release, deployment, or authorization.
 
 ## Architecture
 
@@ -97,6 +99,10 @@ The Pages-ready documentation candidate is in `docs/`:
 
 - [Project overview](docs/project-overview.md)
 - [A.L.I.S.T.A.I.R.E. integration](docs/alistaire-integration.md)
+- [Runtime admission and reconciliation profile](docs/runtime-admission-and-reconciliation-profile.md)
+- [QSO-FABRIC interface compatibility](docs/fabric-interface-compatibility.md)
+- [Ecosystem interface review checklist](docs/ecosystem-interface-compatibility-review-checklist.md)
+- [ADR-0001: ecosystem interface compatibility](docs/decisions/0001-ecosystem-interface-compatibility-boundary.md)
 - [Architecture](docs/architecture.md)
 - [Design contracts](docs/design-contracts.md)
 - [Obstruction and gluing analysis](docs/obstruction-and-gluing.md)
@@ -123,7 +129,7 @@ mkdocs build --strict
 mkdocs serve
 ```
 
-The `Documentation` workflow repeats the strict build from the exact submitted head with read-only permissions, disabled credential persistence, pinned actions, generated-site boundary checks, dependency capture, SHA-256 evidence, and a retained site artifact. A successful build does not publish the site or approve content, contracts, privacy, licensing, accessibility, release, or deployment.
+The documentation workflows repeat strict checks from the exact submitted head with read-only permissions, disabled credential persistence, pinned actions, generated-site or profile-boundary checks, dependency and source capture, SHA-256 evidence, and retained artifacts. Successful validation does not publish the site or approve content, contracts, privacy, licensing, accessibility, release, or deployment.
 
 ## Candidate package verification
 
@@ -150,12 +156,13 @@ Record the exact checked-out SHA and do not use credentials, network-dependent i
 2. Resolve parser, identity, message, atomicity, ledger, checkpoint, freeze, interruption, recovery, rollback, hostile-input, replay, correction, and evidence findings.
 3. Approve ownership among `qsio-kernel`, QuantumStateObjects, QSO-FABRIC, genomes, Seeker, Bridge, and Repository `1`.
 4. Accept the Repository `0` → Repository `1` → runtime task and capability route.
-5. Accept one hash-fixed QSO-GENOMES compatibility set.
-6. Accept one QSO-SEEKER observation and temporal compatibility set.
-7. Validate pairwise and triple-overlap fixtures without importing or executing external code.
-8. Run a bounded four-QSO experiment only after explicit approval.
-9. Consider governed autonomous-development integration only after authority, credentials, incident, emergency-stop, recovery, and human-approval contracts are accepted.
-10. Consider later scope only from reviewed experiment evidence.
+5. Independently reproduce the QSO-FABRIC interface corpus and approve payload schemas, namespaces, correction, migration, and rollback semantics.
+6. Accept one hash-fixed QSO-GENOMES compatibility set.
+7. Accept one QSO-SEEKER observation and temporal compatibility set.
+8. Validate pairwise and triple-overlap fixtures without importing or executing external code.
+9. Run a bounded four-QSO experiment only after explicit approval.
+10. Consider governed autonomous-development integration only after authority, credentials, incident, emergency-stop, recovery, and human-approval contracts are accepted.
+11. Consider later scope only from reviewed experiment evidence.
 
 ## Contribution boundary
 

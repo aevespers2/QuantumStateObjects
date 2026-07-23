@@ -46,10 +46,11 @@ These are local role definitions and fixtures, not claims that four autonomous s
 | Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current integrated-head acceptance is absent |
 | A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit |
 | Runtime admission and reconciliation profile | Documentation candidate | Separates proposal, quarantine, capability, admission, execution, receipt, and canonical reconciliation |
+| QSO-FABRIC declaration-level compatibility corpus | Independently reproduced candidate | Exact producer fixture is consumed by a separate evaluator; real namespace and payload compatibility remain blocked |
 | Repository `0`/`1` governed task input | Blocked | Route is documented; schemas, shared fixtures, authority owners, and implementation are unaccepted |
 | QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed identities and hashes |
 | QSO-SEEKER and temporal/Digitalis integration | Blocked | Requires accepted source, interpretation, freshness, replay, correction, privacy, and revocation contracts |
-| QSO-FABRIC and `qsio-kernel` gluing | Blocked | Lifecycle, message, format, ledger, checkpoint, freeze, and rollback ownership unresolved |
+| QSO-FABRIC and `qsio-kernel` gluing | Blocked | Lifecycle, message, format, ledger, checkpoint, freeze, namespace, and rollback ownership unresolved |
 | Bridge and interface evidence path | Blocked | Requires transport, redaction, correction, privacy, retention, and read-only presentation fixtures |
 | Four-QSO experiment | Proposed | Must not run before prerequisite gates pass |
 | Package publication or persistent deployment | Blocked | Requires runtime, contract, security, privacy, licensing, provenance, recovery, and approval evidence |
@@ -76,15 +77,18 @@ flowchart LR
 
 ## Material obstruction summary
 
-The portfolio now has candidate records for proposals, quarantine admissions, capabilities, source observations, interpretations, execution receipts, transports, review projections, and reconciliation, but it still lacks one accepted namespace and schema set proving those records cannot collapse into a single misleading status. Pairwise agreement is insufficient: Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, Seeker → temporal/Digitalis → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
+The portfolio now has candidate records for proposals, quarantine admissions, capabilities, source observations, interpretations, execution receipts, transports, review projections, and reconciliation, but it still lacks one accepted namespace and schema set proving those records cannot collapse into a single misleading status.
 
-See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md) for the candidate admission boundary and [Obstruction and gluing analysis](obstruction-and-gluing.md) for the broader ledger and repair order.
+The QSO-FABRIC declaration-level corpus has been reproduced independently, but the names `qso-event-ledger` and `qso-runtime-report` still overlap runtime-local and Fabric-level semantics. Byte identity and matching synthetic outcomes do not resolve payload ownership. Pairwise agreement is insufficient: Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, Seeker → temporal/Digitalis → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
+
+See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md), [Ecosystem interface compatibility](ecosystem-interface-compatibility.md), and [Obstruction and gluing analysis](obstruction-and-gluing.md).
 
 ## Documentation map
 
 - [Project overview](project-overview.md)
 - [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
 - [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md)
+- [Ecosystem interface compatibility](ecosystem-interface-compatibility.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)
 - [Obstruction and gluing analysis](obstruction-and-gluing.md)

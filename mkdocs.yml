@@ -19,7 +19,7 @@ nav:
   - Project overview: project-overview.md
   - A.L.I.S.T.A.I.R.E. integration: alistaire-integration.md
   - Runtime admission and reconciliation: runtime-admission-and-reconciliation-profile.md
-  - Fabric interface compatibility: fabric-interface-compatibility.md
+  - Ecosystem interface compatibility: ecosystem-interface-compatibility.md
   - Architecture: architecture.md
   - Design contracts: design-contracts.md
   - Obstruction and gluing: obstruction-and-gluing.md

@@ -31,7 +31,7 @@ EXPECTED_TOP_LEVEL = {
 
 EXPECTED_SOURCE = {
     "repository": "aevespers2/QSO-FABRIC",
-    "commit": "738cf25aec9b2bae0b71c50374585bab36934ef3",
+    "commit": "25036a5cfcea79e204a4660ddd1af09c054935b1",
     "path": "qso.manifest.json",
     "git_blob_sha1": "5070ac6615b8127b14a9f230678f58a081c6c2c4",
     "sha256": "c5e6d2e42fdbe9703d9f28c7f65ffff02208bff52fa96ee7090bfcbcb5dea728",
@@ -341,11 +341,11 @@ def main() -> int:
         errors = [str(exc)]
 
     report = build_report(path, profile, errors)
-    rendered = json.dumps(report, indent=2, sort_keys=True)
-    print(rendered)
+    text = json.dumps(report, indent=2, sort_keys=True) + "\n"
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
-        args.report.write_text(rendered + "\n", encoding="utf-8")
+        args.report.write_text(text, encoding="utf-8")
+    print(text, end="")
     return 0 if not errors else 1
 
 

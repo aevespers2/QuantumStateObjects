@@ -1,11 +1,13 @@
 # QSO-FABRIC interface compatibility review
 
-Status: **producer corpus available; independent runtime consumer not yet implemented**
+Status: **independent runtime consumer candidate implemented; architecture acceptance remains blocked**
 
-QuantumStateObjects is the candidate local runtime and evidence producer/consumer boundary. QSO-FABRIC draft PR #21 now publishes a synthetic compatibility profile for the two interfaces declared in its ecosystem manifest:
+QuantumStateObjects is the candidate local runtime and evidence producer/consumer boundary. QSO-FABRIC draft PR #21 publishes a synthetic compatibility profile for the two interfaces declared in its ecosystem manifest:
 
 - `qso-event-ledger` using `append-only-json`, schema generation `1.0.0`, idempotent operation, and retry limit `0`;
 - `qso-runtime-report` using `json-file`, schema generation `1.0.0`, idempotent operation, and retry limit `0`.
+
+QuantumStateObjects now carries a byte-identical fixture and an independently implemented evaluator. It does not import the QSO-FABRIC validator.
 
 ## Immutable producer observation
 
@@ -23,6 +25,18 @@ QuantumStateObjects is the candidate local runtime and evidence producer/consume
 | Evidence expiry | October 21, 2026 |
 
 This tuple is an observation of one draft producer generation. It is not an accepted source registry, payload-schema approval, or ecosystem-admission decision.
+
+## Consumer implementation
+
+The candidate adds:
+
+- `contracts/qso-interface-source-tuple-v1.json`;
+- a byte-identical local copy of the 17-case producer fixture;
+- `tools/validate_fabric_interface_compatibility.py`, implemented independently;
+- hostile regression coverage for source-tuple drift, parser ambiguity, closed fields, Boolean typing, case identity, order, disposition, reason, fixture-byte, and authority boundaries;
+- a SHA-pinned, read-only exact-head workflow with retained evidence.
+
+The bounded disposition is `EVIDENCE_SATISFIED_AT_RECORDED_SYNTHETIC_TUPLE` only after all exact-head workflow gates pass. Any producer head, fixture blob, contract generation, local fixture, validator, test, workflow, or evidence-binding change reopens the gate.
 
 ## Compatibility graph
 
@@ -43,22 +57,22 @@ flowchart LR
     E --> A
 ```
 
-Equivalent prose: the Fabric manifest declares the interface names and coarse protocol properties. The producer corpus expresses a closed synthetic compatibility fact surface. QuantumStateObjects must implement its own evaluator without importing the producer validator, bind the exact producer bytes, and connect the result to the local runtime-admission profile and exact-head evidence. Only a separately governed architecture decision may accept a real interface generation.
+Equivalent prose: the Fabric manifest declares the interface names and coarse protocol properties. The producer corpus expresses a closed synthetic compatibility fact surface. QuantumStateObjects independently evaluates the exact producer bytes, connects the result to its local runtime-admission documentation, and retains exact-head evidence. Only a separately governed architecture decision may accept a real interface generation.
 
-## Required independent-consumer behavior
+## Independent-consumer behavior
 
-The runtime consumer must:
+The runtime consumer:
 
-1. verify the producer repository, pull request, exact head, fixture path, Git blob, and contract generation before semantic parsing;
-2. use strict UTF-8 and JSON parsing with duplicate-key and non-finite-number rejection;
-3. independently derive all 17 expected case outcomes and the 14 ordered obstruction reasons;
-4. reject unknown fields, missing facts, non-Boolean facts, duplicate case identifiers, fact/reason-order drift, and disposition drift;
-5. preserve the separation between a compatible synthetic case and runtime admission, Fabric acceptance, Repository `1` reconciliation, merge, release, publication, deployment, or operational authority;
-6. retain exact-head evidence and fail closed if the producer tuple moves or expires.
+1. verifies the producer repository, pull request, exact head, fixture path, Git blob, and contract generation before semantic parsing;
+2. uses strict UTF-8 and JSON parsing with duplicate-key and non-finite-number rejection;
+3. independently derives all 17 expected case outcomes and the 14 ordered obstruction reasons;
+4. rejects unknown fields, missing facts, non-Boolean facts, duplicate case identifiers, fact/reason-order drift, disposition drift, source-tuple drift, and changed fixture bytes;
+5. preserves the separation between a compatible synthetic case and runtime admission, Fabric acceptance, Repository `1` reconciliation, merge, release, publication, deployment, or operational authority;
+6. retains exact-head evidence and fails closed if the producer tuple moves or expires.
 
 ## Unresolved payload-contract obstruction
 
-The producer profile proves compatibility only over declaration-level facts. The portfolio still lacks accepted payload schemas and canonical bytes for:
+The profile proves compatibility only over declaration-level facts. The portfolio still lacks accepted payload schemas and canonical bytes for:
 
 - event identities, sequence and causal order;
 - producer, object, run, policy, genome, capability, and source identities;
@@ -72,7 +86,7 @@ Until those fields are accepted, the runtime must not represent either interface
 
 ## Gluing witnesses required
 
-A later implementation must provide at least these witnesses:
+A later payload implementation must provide at least these witnesses:
 
 - genome identity → runtime admission → event-ledger record;
 - event-ledger record → runtime report → Fabric receipt;
@@ -89,6 +103,7 @@ Applied FYSA-120 capabilities:
 - `CAT-031` — independent conformance implementation and regression testing;
 - `CAT-032` — distributed interface composition;
 - `CAT-040` — correction, migration, rollback, and recovery planning;
+- `CAT-044` — hostile and adversarial validation;
 - `CAT-052` — Git-blob and digest provenance;
 - `CAT-054` — cross-repository supply-chain verification;
 - `CAT-059` — exact-head attestation and retained evidence.
@@ -98,12 +113,12 @@ Proposed subdivision: **cross-repository interface differential conformance**, c
 ## Authority boundary
 
 ```text
-producer corpus available
-!= independent consumer complete
+independent synthetic agreement
 != payload schema accepted
 != runtime admission approved
 != Fabric integration approved
 != Repository 1 canonical acceptance
+!= merge, release, publication, or deployment authority
 ```
 
-This page changes no runtime code, accepted schemas, credentials, network access, repository permissions, canonical state, release status, or deployment authority.
+This candidate changes no runtime code, accepted schemas, credentials, network access, repository permissions, canonical state, release status, or deployment authority.

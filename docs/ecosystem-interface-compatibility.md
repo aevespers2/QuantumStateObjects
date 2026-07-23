@@ -2,29 +2,50 @@
 
 ## Status
 
-This is a documentation and synthetic-validation candidate. It does not change runtime behavior, accept the QSO-FABRIC ecosystem contract, admit a component, grant a capability, publish an interface, merge a pull request, release a package, or authorize deployment.
+This is the canonical QuantumStateObjects architecture record for the `qso-event-ledger` and `qso-runtime-report` interface family.
 
-The source observation is pinned to:
+The branch now contains an independently implemented consumer of QSO-FABRIC's exact 17-case synthetic compatibility corpus. That closes one evidence sub-gate at the recorded generation only. It does not change runtime behavior, accept payload schemas, resolve the namespace collision, admit a component, grant a capability, publish an interface, merge a pull request, release a package, or authorize deployment.
+
+The governing disposition remains **`BLOCKED_ROLE_COLLISION`**.
+
+## Immutable source and evidence tuple
+
+The observed producer generation is pinned to:
 
 | Field | Value |
 |---|---|
 | Producer repository | `aevespers2/QSO-FABRIC` |
-| Producer commit | `738cf25aec9b2bae0b71c50374585bab36934ef3` |
+| Producer pull request | `#21` |
+| Producer commit | `25036a5cfcea79e204a4660ddd1af09c054935b1` |
 | Manifest path | `qso.manifest.json` |
-| Git blob | `5070ac6615b8127b14a9f230678f58a081c6c2c4` |
-| SHA-256 | `c5e6d2e42fdbe9703d9f28c7f65ffff02208bff52fa96ee7090bfcbcb5dea728` |
-| Byte size | `1564` |
+| Manifest Git blob | `5070ac6615b8127b14a9f230678f58a081c6c2c4` |
+| Manifest SHA-256 | `c5e6d2e42fdbe9703d9f28c7f65ffff02208bff52fa96ee7090bfcbcb5dea728` |
+| Manifest byte size | `1564` |
+| Compatibility corpus | `fixtures/qso-interface-compatibility-v1.json` |
+| Corpus Git blob | `143b80448cb4623682669ab8e6a9599239dd5847` |
+| Producer workflow | Interface Compatibility Conformance `29986841042` |
+| Producer artifact | `8555344357` |
+| Artifact digest | `sha256:09be1df24f4ab8b08708dd521c6720f4c95195d3e4379cecaad6d1a4b026a238` |
+| Evidence expiry | October 21, 2026 |
 
-The observed manifest declares two producer interfaces:
+QuantumStateObjects binds that tuple in `contracts/qso-interface-source-tuple-v1.json`, carries the exact corpus bytes, and evaluates them through `tools/validate_fabric_interface_compatibility.py` without importing the producer validator.
 
-- `qso-event-ledger` using `append-only-json`, schema `1.0.0`, idempotent, retry limit `0`;
-- `qso-runtime-report` using `json-file`, schema `1.0.0`, idempotent, retry limit `0`.
+Any change to the producer commit, manifest, corpus, contract generation, local fixture, consumer implementation, tests, workflow, artifact, or evidence availability reopens the synthetic-conformance gate.
+
+## Observed declarations
+
+The producer manifest declares two interfaces:
+
+- `qso-event-ledger` using `append-only-json`, schema `1.0.0`, idempotent operation, and retry limit `0`;
+- `qso-runtime-report` using `json-file`, schema `1.0.0`, idempotent operation, and retry limit `0`.
+
+The synthetic corpus tests source currency, interface identity, producer and consumer roles, protocol, schema generation, idempotency, retry policy, default-deny behavior, correction, rollback, evidence binding, and authority non-promotion.
+
+Its positive disposition is `COMPATIBLE_PENDING_ARCHITECTURE_APPROVAL`. This does not override the semantic ownership obstruction described below.
 
 ## Material obstruction
 
-QuantumStateObjects already documents local ownership of runtime events, attribution, checkpoints, execution receipts, and resulting-state evidence. QSO-FABRIC independently declares itself a producer of `qso-event-ledger` and `qso-runtime-report`. The shared names therefore do not yet identify one unambiguous semantic object.
-
-The current obstruction is:
+QuantumStateObjects documents local ownership of runtime events, attribution, checkpoints, execution receipts, and resulting-state evidence. QSO-FABRIC independently declares itself a producer of `qso-event-ledger` and `qso-runtime-report`. The shared names therefore do not yet identify one unambiguous semantic object.
 
 ```text
 same interface name
@@ -34,11 +55,9 @@ same interface name
 = role and semantic collision
 ```
 
-The collision is not repaired by byte-identical manifests, matching schema versions, or successful local tests. A consumer cannot safely determine whether a record is a runtime-local ledger entry, a Fabric collaboration event, a Fabric aggregate report, a runtime execution report, or a later canonical disposition merely from the current interface name.
+Byte-identical fixtures and independent agreement prove that two implementations understand the proposed declaration-level obstruction corpus. They do **not** prove that a runtime-local event, Fabric collaboration event, runtime execution report, Fabric aggregate report, or Repository `1` disposition can be safely represented by the current interface names.
 
-## Candidate separation
-
-The lowest-coupling interpretation keeps each state distinct:
+## Candidate semantic separation
 
 | Record class | Candidate owner | Required identity |
 |---|---|---|
@@ -67,7 +86,6 @@ Three designs remain possible:
    - `qso-runtime-report/fabric-aggregate`
 
 3. **Shared envelope with mandatory semantic partitioning**
-   - one interface family;
    - exact `producer_component`;
    - exact `semantic_class`;
    - exact `subject_id` and `run_id`;
@@ -76,6 +94,34 @@ Three designs remain possible:
    - correction, supersession, revocation, and rollback references.
 
 No option is accepted by this document. Architectural review must choose one and assign migration ownership.
+
+## Evidence and authority graph
+
+```mermaid
+flowchart LR
+    Manifest[QSO-FABRIC manifest declaration]
+    Corpus[Producer compatibility corpus]
+    Consumer[Independent QuantumStateObjects evaluator]
+    Local[Runtime-local ledger and report semantics]
+    Fabric[Fabric collaboration ledger and report semantics]
+    Envelope[Qualified evidence envelope candidate]
+    Bridge[Bridge transport]
+    UI[QSO-STUDIO / AionUi]
+    One[Repository 1 reconciliation]
+    Decision[Separate architecture decision]
+
+    Manifest --> Corpus
+    Corpus --> Consumer
+    Consumer --> Decision
+    Local --> Envelope
+    Fabric --> Envelope
+    Envelope --> Bridge
+    Bridge --> UI
+    Envelope --> One
+    One --> Decision
+```
+
+Prose alternative: QSO-FABRIC's manifest and synthetic corpus are independently evaluated by QuantumStateObjects. Separately, runtime-local records and Fabric-level records remain distinct semantic sources that may later enter a qualified evidence envelope. Bridge may transport evidence to read-only interfaces, and Repository `1` may reconcile it. None of those paths accepts the namespace or creates authority; a separate architecture decision remains required.
 
 ## Compatibility invariants
 
@@ -92,29 +138,24 @@ Every accepted compatibility profile must prove:
 9. runtime success and Fabric acceptance remain distinct from Repository `1` canonical reconciliation;
 10. migration and rollback preserve old evidence and identify every affected consumer.
 
-## Architecture diagram
+## Independent synthetic-conformance boundary
 
-```mermaid
-flowchart LR
-    Runtime[QuantumStateObjects\nlocal runtime] --> RLedger[Runtime event ledger]
-    Runtime --> RReport[Runtime execution report]
-    Fabric[QSO-FABRIC\ncollaboration] --> FLedger[Fabric collaboration ledger]
-    Fabric --> FReport[Fabric aggregate report]
-    RLedger --> Envelope[Qualified evidence envelope]
-    RReport --> Envelope
-    FLedger --> Envelope
-    FReport --> Envelope
-    Envelope --> Bridge[Bridge transport]
-    Envelope --> One[Repository 1 reconciliation]
-    Bridge --> UI[QSO-STUDIO / AionUi]
-    One --> Disposition[Canonical disposition candidate]
-```
+The local consumer must continue to:
 
-### Prose alternative
+- verify producer repository, pull request, exact head, fixture path, Git blob, workflow, artifact, digest, and evidence expiry before semantic use;
+- use strict UTF-8 and JSON parsing with duplicate-key, non-finite, overflow, closed-field, and exact-Boolean controls;
+- independently derive all 17 dispositions and 14 ordered obstruction reasons;
+- reject source-tuple, fixture-byte, fact-order, reason-order, case-identity, disposition, and reason drift;
+- preserve `authority_effect: none`;
+- retain exact-head evidence.
 
-QuantumStateObjects produces local runtime events and execution reports. QSO-FABRIC produces collaboration events and aggregate run reports. Each record enters a qualified evidence envelope that preserves its producer and semantic class. Bridge may transport the envelope to read-only interfaces, while Repository `1` may independently reconcile the evidence. Neither transport nor display creates canonical status.
+The bounded synthetic disposition is:
 
-## Required pairwise fixtures
+`EVIDENCE_SATISFIED_AT_RECORDED_SYNTHETIC_TUPLE`
+
+It does not change `BLOCKED_ROLE_COLLISION` for real payload integration.
+
+## Required payload fixtures
 
 ### `qso-event-ledger`
 
@@ -195,8 +236,10 @@ The work uses the FYSA-120 taxonomy only as a planning map:
 | `CAT-031 / 031-A` | invariants, contract design, state-machine boundaries, and threat-aware criteria |
 | `CAT-031 / 031-D` | integration, fuzz, differential, and runtime-verification planning |
 | `CAT-031 / 031-E` | change-impact analysis, regression prevention, and assurance maintenance |
+| `CAT-032` | distributed interface composition and failure containment |
 | `CAT-040 / 040-D` | compatibility layers, parallel-run validation, and migration planning |
 | `CAT-040 / 040-E` | behavioral equivalence, rollback planning, and post-migration monitoring |
+| `CAT-044` | hostile independent evaluation and reason/disposition convergence |
 | `CAT-054 / 054-A` | asset, trust, identity, attack-surface, and risk modeling |
 | `CAT-054 / 054-E` | control validation, audit evidence, and continuous assurance |
 | `CAT-059 / 059-B` | secure attestation architecture and least-privilege transport |
@@ -211,6 +254,7 @@ These are non-authoritative proposals for later taxonomy review:
 - `012-I` — cross-repository API and interface lifecycle documentation;
 - `017-H` — multi-producer semantic provenance and namespace lineage;
 - `031-H` — independent interface differential-conformance testing;
+- `032-F` — semantic partitioning and distributed interface gluing;
 - `040-F` — portfolio contract migration and consumer-rebinding assurance;
 - `059-G` — evidence-envelope semantic partitioning and attestation rebinding.
 
@@ -227,10 +271,11 @@ Before implementation or acceptance, appoint owners and decide:
 7. privacy, licensing, security, accessibility, release, publication, and resulting-default-branch approval.
 
 ```text
-interface documented
-!= interface accepted
+independent synthetic agreement
+!= namespace resolved
+!= payload schema accepted
 != producer registered
-!= consumer compatible
+!= consumer integration accepted
 != ecosystem admission
 != capability or execution authority
 != merge, release, publication, or deployment approval

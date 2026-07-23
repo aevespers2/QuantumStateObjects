@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import copy
 import importlib.util
-import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -27,15 +26,25 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
     def test_current_profile_passes(self) -> None:
         self.assertEqual(self.validate(copy.deepcopy(self.profile)), [])
 
-    def test_source_digest_drift_fails(self) -> None:
+    def test_source_head_drift_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
-        profile["producer_source"]["sha256"] = "0" * 64
-        self.assertTrue(any("sha256" in error for error in self.validate(profile)))
+        profile["producer_source"]["head_sha"] = "0" * 40
+        self.assertTrue(any("head_sha" in error for error in self.validate(profile)))
+
+    def test_source_artifact_digest_drift_fails(self) -> None:
+        profile = copy.deepcopy(self.profile)
+        profile["producer_source"]["artifact_digest"] = "sha256:" + "0" * 64
+        self.assertTrue(any("artifact_digest" in error for error in self.validate(profile)))
 
     def test_boolean_does_not_satisfy_retry_limit(self) -> None:
         profile = copy.deepcopy(self.profile)
         profile["interfaces"][0]["retry_limit"] = False
         self.assertTrue(any("retry_limit" in error for error in self.validate(profile)))
+
+    def test_boolean_does_not_satisfy_case_count(self) -> None:
+        profile = copy.deepcopy(self.profile)
+        profile["producer_corpus"]["case_count"] = True
+        self.assertTrue(any("case_count" in error for error in self.validate(profile)))
 
     def test_missing_interface_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
@@ -45,8 +54,17 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
     def test_duplicate_interface_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
         profile["interfaces"][1] = copy.deepcopy(profile["interfaces"][0])
-        errors = self.validate(profile)
-        self.assertTrue(any("duplicate interface" in error for error in errors))
+        self.assertTrue(any("duplicate interface" in error for error in self.validate(profile)))
+
+    def test_reason_order_drift_fails(self) -> None:
+        profile = copy.deepcopy(self.profile)
+        profile["producer_corpus"]["reason_order"].reverse()
+        self.assertTrue(any("reason order" in error for error in self.validate(profile)))
+
+    def test_consumer_implementation_promotion_fails(self) -> None:
+        profile = copy.deepcopy(self.profile)
+        profile["consumer_candidate"]["implementation_status"] = "complete"
+        self.assertTrue(any("implementation_status" in error for error in self.validate(profile)))
 
     def test_authority_promotion_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
@@ -56,7 +74,7 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
     def test_status_promotion_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
         profile["status"] = "ACCEPTED"
-        self.assertTrue(any("BLOCKED_ROLE_COLLISION" in error for error in self.validate(profile)))
+        self.assertTrue(any("status" in error for error in self.validate(profile)))
 
     def test_unknown_field_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
@@ -71,14 +89,13 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
     def test_denied_inference_removal_fails(self) -> None:
         profile = copy.deepcopy(self.profile)
         profile["denied_inferences"].pop()
-        errors = self.validate(profile)
-        self.assertTrue(any("denied_inferences" in error for error in errors))
+        self.assertTrue(any("denied_inferences" in error for error in self.validate(profile)))
 
     def test_duplicate_json_key_is_rejected(self) -> None:
         text = PROFILE_PATH.read_text(encoding="utf-8")
         hostile = text.replace(
-            '"profile_id": "QSO-INTERFACE-COMPATIBILITY-001",',
-            '"profile_id": "QSO-INTERFACE-COMPATIBILITY-001",\n  "profile_id": "duplicate",',
+            '"profile_id": "QSO-INTERFACE-COMPATIBILITY-DOCUMENTATION-001",',
+            '"profile_id": "QSO-INTERFACE-COMPATIBILITY-DOCUMENTATION-001",\n  "profile_id": "duplicate",',
             1,
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -89,7 +106,7 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
 
     def test_nonfinite_json_number_is_rejected(self) -> None:
         text = PROFILE_PATH.read_text(encoding="utf-8")
-        hostile = text.replace('"size_bytes": 1564', '"size_bytes": NaN', 1)
+        hostile = text.replace('"case_count": 17', '"case_count": NaN', 1)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "profile.json"
             path.write_text(hostile, encoding="utf-8")
@@ -109,7 +126,9 @@ class InterfaceCompatibilityProfileTests(unittest.TestCase):
         second = validator.build_report(PROFILE_PATH, profile, [])
         self.assertEqual(first, second)
         self.assertEqual(first["validation_status"], "passed")
-        self.assertEqual(first["disposition"], "BLOCKED_ROLE_COLLISION")
+        self.assertEqual(first["producer_case_count"], 17)
+        self.assertEqual(first["consumer_implementation_status"], "not_implemented")
+        self.assertEqual(first["disposition"], "PRODUCER_CORPUS_BOUND_CONSUMER_AND_PAYLOAD_PENDING")
         self.assertEqual(first["authority_effect"], "none")
 
 

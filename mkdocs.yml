@@ -19,6 +19,8 @@ nav:
   - Project overview: project-overview.md
   - A.L.I.S.T.A.I.R.E. integration: alistaire-integration.md
   - Runtime admission and reconciliation: runtime-admission-and-reconciliation-profile.md
+  - Interface compatibility boundary: ecosystem-interface-compatibility.md
+  - Independent compatibility consumer: interface-compatibility-consumer.md
   - Architecture: architecture.md
   - Design contracts: design-contracts.md
   - Obstruction and gluing: obstruction-and-gluing.md

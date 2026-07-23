@@ -2,10 +2,22 @@
 
 Use this checklist before accepting, implementing, consuming, migrating, publishing, or releasing either `qso-event-ledger` or `qso-runtime-report`.
 
+## Recorded synthetic evidence
+
+- [x] QSO-FABRIC producer head is `25036a5cfcea79e204a4660ddd1af09c054935b1`.
+- [x] Producer compatibility corpus Git blob is `143b80448cb4623682669ab8e6a9599239dd5847`.
+- [x] Producer Interface Compatibility Conformance run `29986841042` passed.
+- [x] Producer artifact `8555344357` is retained with digest `sha256:09be1df24f4ab8b08708dd521c6720f4c95195d3e4379cecaad6d1a4b026a238` through October 21, 2026.
+- [x] QuantumStateObjects carries the byte-identical corpus and a separately implemented evaluator.
+- [ ] QuantumStateObjects exact-head consumer workflow and resulting artifact are recorded for the final candidate head.
+
+These checks close only the declaration-level synthetic reproduction sub-gate. They do not resolve namespace ownership or payload compatibility.
+
 ## Source identity
 
-- [ ] QSO-FABRIC producer repository, commit, path, Git blob, SHA-256, and byte size match the recorded source tuple.
-- [ ] The observed manifest is parsed as strict UTF-8 JSON with duplicate-key and non-finite-number rejection.
+- [ ] QSO-FABRIC producer repository, commit, path, Git blob, SHA-256, and byte size match the recorded manifest source tuple.
+- [ ] The producer corpus repository, pull request, commit, path, Git blob, workflow, artifact, digest, and expiry match the consumer source tuple.
+- [ ] The observed manifest, source tuple, and corpus are parsed as strict UTF-8 JSON with duplicate-key and non-finite-number rejection.
 - [ ] Any superseding source tuple identifies the prior tuple and correction reason.
 - [ ] Producer and consumer evidence are retained independently.
 
@@ -27,7 +39,15 @@ Use this checklist before accepting, implementing, consuming, migrating, publish
 - [ ] Boolean values do not satisfy integer fields.
 - [ ] Duplicate keys, non-finite numbers, lone surrogates, unknown fields, unsupported versions, malformed hashes, and ambiguous identities fail closed.
 
-## Compatibility fixtures
+## Declaration-level corpus
+
+- [x] Both declared interfaces have positive synthetic cases.
+- [x] All 14 ordered obstruction reasons are covered.
+- [x] Source-tuple, interface, role, protocol, schema, idempotency, retry, default-deny, correction, rollback, evidence, and authority facts fail closed.
+- [x] The local consumer rejects fixture-byte, order, field, type, case-identity, disposition, and reason drift.
+- [ ] A second independent consumer outside QSO-FABRIC and QuantumStateObjects reproduces the same generation.
+
+## Payload compatibility fixtures
 
 - [ ] Runtime-local event-ledger positive fixture passes.
 - [ ] Fabric collaboration-ledger positive fixture passes.
@@ -69,11 +89,11 @@ Use this checklist before accepting, implementing, consuming, migrating, publish
 
 - [ ] Namespace and schema owners are appointed.
 - [ ] Canonicalization, signing, key custody, trusted time, migration, correction, revocation, retention, incident, recovery, and rollback owners are appointed.
-- [ ] Independent producer and consumer conformance evidence exists.
+- [ ] Independent producer and consumer conformance evidence exists for the accepted payload generation.
 - [ ] Security, privacy, licensing, legal, and accessibility review is complete.
 - [ ] Resulting default branches and generated documentation artifacts are independently verified.
 - [ ] Architecture, merge, release, publication, and deployment approvals are separately recorded.
 
 ## Fail-closed conclusion
 
-Until every applicable item is satisfied, the disposition remains `BLOCKED_ROLE_COLLISION`. Documentation or synthetic validation alone grants no interface acceptance, producer registration, ecosystem admission, capability, execution authority, merge, release, publication, or deployment approval.
+Until every applicable acceptance item is satisfied, the disposition remains `BLOCKED_ROLE_COLLISION`. Documentation or synthetic validation alone grants no interface acceptance, producer registration, ecosystem admission, capability, execution authority, merge, release, publication, or deployment approval.

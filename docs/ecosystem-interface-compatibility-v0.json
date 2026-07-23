@@ -1,0 +1,133 @@
+{
+  "profile_id": "QSO-INTERFACE-COMPATIBILITY-001",
+  "profile_version": "0.1.0",
+  "status": "BLOCKED_ROLE_COLLISION",
+  "scope": "documentation-and-synthetic-validation-only",
+  "producer_source": {
+    "repository": "aevespers2/QSO-FABRIC",
+    "commit": "738cf25aec9b2bae0b71c50374585bab36934ef3",
+    "path": "qso.manifest.json",
+    "git_blob_sha1": "5070ac6615b8127b14a9f230678f58a081c6c2c4",
+    "sha256": "c5e6d2e42fdbe9703d9f28c7f65ffff02208bff52fa96ee7090bfcbcb5dea728",
+    "size_bytes": 1564
+  },
+  "consumer_context": {
+    "repository": "aevespers2/QuantumStateObjects",
+    "branch": "docs/pages-architecture-onboarding",
+    "role": "bounded-local-runtime-and-evidence-subsystem",
+    "exact_head_binding": "workflow-runtime"
+  },
+  "interfaces": [
+    {
+      "name": "qso-event-ledger",
+      "manifest_role": "producer",
+      "protocol": "append-only-json",
+      "schema_version": "1.0.0",
+      "idempotent": true,
+      "retry_limit": 0,
+      "local_semantic_overlap": "QuantumStateObjects runtime-local event ledger",
+      "obstruction": "ROLE_AND_NAMESPACE_COLLISION",
+      "required_resolution": [
+        "accepted namespace profile",
+        "accepted producer and semantic-class fields",
+        "separate runtime and Fabric sequence spaces",
+        "canonicalization and hash-input ownership",
+        "correction revocation and rollback semantics"
+      ]
+    },
+    {
+      "name": "qso-runtime-report",
+      "manifest_role": "producer",
+      "protocol": "json-file",
+      "schema_version": "1.0.0",
+      "idempotent": true,
+      "retry_limit": 0,
+      "local_semantic_overlap": "QuantumStateObjects runtime execution report",
+      "obstruction": "ROLE_AND_SEMANTIC_CLASS_COLLISION",
+      "required_resolution": [
+        "accepted local-execution and Fabric-aggregate distinction",
+        "accepted producer subject run and report-class identities",
+        "partial-failure cleanup uncertainty and rollback fields",
+        "Repository 1 disposition separation",
+        "mixed-version migration and rollback policy"
+      ]
+    }
+  ],
+  "compatibility_invariants": [
+    "interface names and semantic classes are unambiguous within one registry generation",
+    "producer consumer subject run schema canonicalization and payload identities are explicit",
+    "duplicate keys non-finite values unknown fields and unsupported versions fail closed",
+    "Boolean values do not satisfy integer fields",
+    "idempotency keys and duplicate outcomes are defined",
+    "retry_limit zero creates no automatic replay authority",
+    "rejected records cause no downstream mutation",
+    "corrections revocations and supersession append evidence and invalidate affected projections",
+    "runtime success and Fabric acceptance do not imply Repository 1 canonical acceptance",
+    "migration and rollback preserve old evidence and identify every affected consumer"
+  ],
+  "gluing_witnesses": [
+    "runtime event ledger to Fabric collaboration ledger to Repository 1 reconciliation",
+    "runtime execution report to Fabric aggregate report to Repository 1 disposition",
+    "runtime evidence to Bridge transport to QSO-STUDIO or AionUi display",
+    "correction or revocation to downstream invalidation to bounded recovery",
+    "schema migration to mixed-version consumers to rollback"
+  ],
+  "denied_inferences": [
+    "documentation is not contract acceptance",
+    "byte identity is not semantic compatibility",
+    "schema version equality is not namespace agreement",
+    "successful validation is not ecosystem admission",
+    "transport or display is not canonical status",
+    "runtime or Fabric success is not authority",
+    "this profile grants no merge release publication or deployment approval"
+  ],
+  "skill_tree_mapping": [
+    {
+      "category_id": "CAT-012",
+      "subdivision_ids": ["012-A", "012-B", "012-D", "012-E"],
+      "application": "documentation architecture API exposition quality controls and lifecycle alignment"
+    },
+    {
+      "category_id": "CAT-017",
+      "subdivision_ids": ["017-C", "017-E"],
+      "application": "semantic provenance source hashing audit packaging and correction propagation"
+    },
+    {
+      "category_id": "CAT-031",
+      "subdivision_ids": ["031-A", "031-D", "031-E"],
+      "application": "contract invariants differential validation change impact and assurance maintenance"
+    },
+    {
+      "category_id": "CAT-040",
+      "subdivision_ids": ["040-D", "040-E"],
+      "application": "compatibility layers mixed-version validation migration and rollback"
+    },
+    {
+      "category_id": "CAT-054",
+      "subdivision_ids": ["054-A", "054-E"],
+      "application": "trust modeling interface risk control validation and continuous assurance"
+    },
+    {
+      "category_id": "CAT-059",
+      "subdivision_ids": ["059-B", "059-E"],
+      "application": "secure attestation architecture evidence transport and audit validation"
+    }
+  ],
+  "proposed_subdivisions": [
+    "012-I cross-repository API and interface lifecycle documentation",
+    "017-H multi-producer semantic provenance and namespace lineage",
+    "031-H independent interface differential-conformance testing",
+    "040-F portfolio contract migration and consumer-rebinding assurance",
+    "059-G evidence-envelope semantic partitioning and attestation rebinding"
+  ],
+  "decisions_required": [
+    "interface naming and namespace model",
+    "ledger and report schema ownership",
+    "producer subject run semantic-class and idempotency identities",
+    "correction revocation supersession replay retention and rollback semantics",
+    "registry schema canonicalization signing key trusted-time and migration custody",
+    "controlled consumer registration and independent conformance",
+    "privacy licensing security accessibility release publication and resulting-default-branch approval"
+  ],
+  "authority_effect": "none"
+}

@@ -14,7 +14,10 @@ on:
       - 'fixtures/qso-interface-compatibility-v1.json'
       - 'tools/validate_fabric_interface_compatibility.py'
       - 'tests/test_fabric_interface_compatibility.py'
+      - 'scripts/check_ecosystem_interface_compatibility.py'
+      - 'tests/test_check_ecosystem_interface_compatibility.py'
       - '.github/workflows/fabric-interface-compatibility.yml'
+      - '.github/workflows/ecosystem-interface-documentation.yml'
       - '.github/workflows/documentation.yml'
   push:
     branches: [main]
@@ -30,7 +33,10 @@ on:
       - 'fixtures/qso-interface-compatibility-v1.json'
       - 'tools/validate_fabric_interface_compatibility.py'
       - 'tests/test_fabric_interface_compatibility.py'
+      - 'scripts/check_ecosystem_interface_compatibility.py'
+      - 'tests/test_check_ecosystem_interface_compatibility.py'
       - '.github/workflows/fabric-interface-compatibility.yml'
+      - '.github/workflows/ecosystem-interface-documentation.yml'
       - '.github/workflows/documentation.yml'
   workflow_dispatch:
 
@@ -65,6 +71,12 @@ jobs:
           python-version: '3.13'
           cache: pip
           cache-dependency-path: docs/requirements.txt
+
+      - name: Validate canonical interface architecture profile
+        run: |
+          python -m unittest -v tests/test_check_ecosystem_interface_compatibility.py
+          python scripts/check_ecosystem_interface_compatibility.py \
+            --report ecosystem-interface-profile-validation.json
 
       - name: Run independent Fabric interface regressions
         run: python -m unittest -v tests/test_fabric_interface_compatibility.py
@@ -110,16 +122,23 @@ jobs:
           python --version > reports/documentation/python-version.txt 2>&1
           python -m mkdocs --version > reports/documentation/mkdocs-version.txt 2>&1 || true
           cp documentation-dependencies.txt reports/documentation/dependencies.txt 2>/dev/null || true
+          cp ecosystem-interface-profile-validation.json reports/documentation/ecosystem-interface-profile-validation.json 2>/dev/null || true
           cp fabric-interface-validation.json reports/documentation/fabric-interface-validation.json 2>/dev/null || true
           sha256sum \
+            docs/ecosystem-interface-compatibility.md \
+            docs/ecosystem-interface-compatibility-v0.json \
+            docs/ecosystem-interface-compatibility-review-checklist.md \
+            docs/decisions/0001-ecosystem-interface-compatibility-boundary.md \
             contracts/qso-interface-source-tuple-v1.json \
             fixtures/qso-interface-compatibility-v1.json \
+            scripts/check_ecosystem_interface_compatibility.py \
+            tests/test_check_ecosystem_interface_compatibility.py \
             tools/validate_fabric_interface_compatibility.py \
             tests/test_fabric_interface_compatibility.py \
-            docs/fabric-interface-compatibility.md \
             .github/workflows/fabric-interface-compatibility.yml \
+            .github/workflows/ecosystem-interface-documentation.yml \
             .github/workflows/documentation.yml \
-            > reports/documentation/fabric-interface-source-sha256.txt
+            > reports/documentation/interface-source-sha256.txt
           find reports/documentation -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > reports/documentation/SHA256SUMS
 
       - name: Upload documentation evidence

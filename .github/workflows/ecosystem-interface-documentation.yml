@@ -1,0 +1,109 @@
+name: Ecosystem Interface Documentation
+
+on:
+  pull_request:
+    paths:
+      - 'docs/ecosystem-interface-compatibility.md'
+      - 'docs/ecosystem-interface-compatibility-v0.json'
+      - 'docs/ecosystem-interface-compatibility-review-checklist.md'
+      - 'docs/decisions/0001-ecosystem-interface-compatibility-boundary.md'
+      - 'scripts/check_ecosystem_interface_compatibility.py'
+      - 'tests/test_check_ecosystem_interface_compatibility.py'
+      - '.github/workflows/ecosystem-interface-documentation.yml'
+      - 'README.md'
+      - 'mkdocs.yml'
+      - 'docs/index.md'
+      - 'docs/design-contracts.md'
+      - 'taskchain.md'
+      - 'punchlist.md'
+      - 'release.md'
+      - 'changelog.md'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/ecosystem-interface-compatibility.md'
+      - 'docs/ecosystem-interface-compatibility-v0.json'
+      - 'docs/ecosystem-interface-compatibility-review-checklist.md'
+      - 'docs/decisions/0001-ecosystem-interface-compatibility-boundary.md'
+      - 'scripts/check_ecosystem_interface_compatibility.py'
+      - 'tests/test_check_ecosystem_interface_compatibility.py'
+      - '.github/workflows/ecosystem-interface-documentation.yml'
+      - 'README.md'
+      - 'mkdocs.yml'
+      - 'docs/index.md'
+      - 'docs/design-contracts.md'
+      - 'taskchain.md'
+      - 'punchlist.md'
+      - 'release.md'
+      - 'changelog.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-interface-documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact submitted source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Assert exact source
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.13'
+
+      - name: Run hostile profile regressions
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python -m unittest -v tests/test_check_ecosystem_interface_compatibility.py
+
+      - name: Validate machine-readable profile
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          mkdir -p reports/ecosystem-interface-documentation
+          python scripts/check_ecosystem_interface_compatibility.py \
+            --report reports/ecosystem-interface-documentation/validation-report.json
+
+      - name: Record immutable evidence
+        if: always()
+        run: |
+          mkdir -p reports/ecosystem-interface-documentation
+          printf '%s\n' "${{ github.event.pull_request.head.sha || github.sha }}" \
+            > reports/ecosystem-interface-documentation/exact-head.txt
+          python --version \
+            > reports/ecosystem-interface-documentation/python-version.txt 2>&1
+          sha256sum \
+            docs/ecosystem-interface-compatibility.md \
+            docs/ecosystem-interface-compatibility-v0.json \
+            docs/ecosystem-interface-compatibility-review-checklist.md \
+            docs/decisions/0001-ecosystem-interface-compatibility-boundary.md \
+            scripts/check_ecosystem_interface_compatibility.py \
+            tests/test_check_ecosystem_interface_compatibility.py \
+            > reports/ecosystem-interface-documentation/input-sha256.txt
+          find reports/ecosystem-interface-documentation -type f ! -name SHA256SUMS -print0 \
+            | sort -z \
+            | xargs -0 sha256sum \
+            > reports/ecosystem-interface-documentation/SHA256SUMS
+
+      - name: Upload interface documentation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ecosystem-interface-documentation-${{ github.event.pull_request.head.sha || github.sha }}
+          path: reports/ecosystem-interface-documentation
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Fail closed on source mutation
+        run: |
+          test -z "$(git status --porcelain --untracked-files=no)"
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"

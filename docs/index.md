@@ -20,7 +20,7 @@ The portfolio direction is now clearer:
 
 ## Repository purpose
 
-The repository owns QSO identity declarations, local runtime partitions, bounded messages, integrity ledgers, checkpoints, freeze and rollback primitives, deterministic local verification, and the local compatibility boundary for accepted genome, observation, capability, and task-envelope artifacts.
+The repository owns QSO identity declarations, local runtime partitions, bounded messages, integrity ledgers, checkpoints, freeze and rollback primitives, deterministic local verification, and the local compatibility boundary for accepted genome, observation, capability, task-envelope, event-ledger, and runtime-report artifacts.
 
 The repository does not own genome authoring, external retrieval and sanitization, temporal interpretation, portable device security, portfolio-wide collaboration, generic evidence transport, canonical-state reconciliation, production deployment, or unrestricted multi-agent operation.
 
@@ -46,10 +46,11 @@ These are local role definitions and fixtures, not claims that four autonomous s
 | Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current integrated-head acceptance is absent |
 | A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit |
 | Runtime admission and reconciliation profile | Documentation candidate | Separates proposal, quarantine, capability, admission, execution, receipt, and canonical reconciliation |
+| QSO-FABRIC producer interface corpus | Source-bound documentation input | Exact tuple and fixture are present; independent consumer and payload schemas remain unimplemented |
 | Repository `0`/`1` governed task input | Blocked | Route is documented; schemas, shared fixtures, authority owners, and implementation are unaccepted |
 | QSO-GENOMES integration | Blocked | Requires an accepted compatibility set with fixed identities and hashes |
 | QSO-SEEKER and temporal/Digitalis integration | Blocked | Requires accepted source, interpretation, freshness, replay, correction, privacy, and revocation contracts |
-| QSO-FABRIC and `qsio-kernel` gluing | Blocked | Lifecycle, message, format, ledger, checkpoint, freeze, and rollback ownership unresolved |
+| QSO-FABRIC and `qsio-kernel` gluing | Blocked | Namespace, payload, lifecycle, resource, checkpoint, correction, migration, and rollback ownership unresolved |
 | Bridge and interface evidence path | Blocked | Requires transport, redaction, correction, privacy, retention, and read-only presentation fixtures |
 | Four-QSO experiment | Proposed | Must not run before prerequisite gates pass |
 | Package publication or persistent deployment | Blocked | Requires runtime, contract, security, privacy, licensing, provenance, recovery, and approval evidence |
@@ -76,15 +77,20 @@ flowchart LR
 
 ## Material obstruction summary
 
-The portfolio now has candidate records for proposals, quarantine admissions, capabilities, source observations, interpretations, execution receipts, transports, review projections, and reconciliation, but it still lacks one accepted namespace and schema set proving those records cannot collapse into a single misleading status. Pairwise agreement is insufficient: Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, Seeker → temporal/Digitalis → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
+The QSO-FABRIC producer corpus and immutable source tuple are now bound into this documentation candidate, but the independent QuantumStateObjects consumer and payload schemas remain absent. The names `qso-event-ledger` and `qso-runtime-report` cover runtime-local and Fabric-level semantic candidates without an accepted namespace owner or record partition. Pairwise declaration agreement therefore remains insufficient.
 
-See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md) for the candidate admission boundary and [Obstruction and gluing analysis](obstruction-and-gluing.md) for the broader ledger and repair order.
+The broader portfolio also lacks one accepted namespace and schema set proving proposal, quarantine, capability, source observation, interpretation, admission, execution, receipt, collaboration, transport, review, correction, revocation, recovery, and canonical disposition cannot collapse into a single misleading status. Required triple-overlap witnesses include Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, source → temporal/Digitalis → runtime, runtime evidence → Fabric → Repository `1`, runtime evidence → Bridge → interface, correction → invalidation → corrected report, and freeze → revocation → recovery.
+
+See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md), [QSO-FABRIC interface compatibility](fabric-interface-compatibility.md), and [Obstruction and gluing analysis](obstruction-and-gluing.md).
 
 ## Documentation map
 
 - [Project overview](project-overview.md)
 - [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
 - [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md)
+- [QSO-FABRIC interface compatibility](fabric-interface-compatibility.md)
+- [Ecosystem interface review checklist](ecosystem-interface-compatibility-review-checklist.md)
+- [ADR-0001: ecosystem interface compatibility](decisions/0001-ecosystem-interface-compatibility-boundary.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)
 - [Obstruction and gluing analysis](obstruction-and-gluing.md)
@@ -105,6 +111,7 @@ Repository planning and evidence documents:
 
 - **Implemented** means present in a specific commit or branch.
 - **Tested** means a named test or workflow passed at a named immutable head.
+- **Source-bound** means exact external bytes and evidence identity are recorded; it does not mean semantic acceptance.
 - **Accepted** means review findings are resolved and approval is recorded.
 - **Released** means reproducible artifacts, provenance, security, rollback, and publication gates passed.
 - **Deployed** means an approved target was changed and post-deployment evidence exists.

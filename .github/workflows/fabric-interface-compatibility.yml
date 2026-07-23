@@ -8,7 +8,10 @@ on:
       - fixtures/qso-interface-compatibility-v1.json
       - tools/validate_fabric_interface_compatibility.py
       - tests/test_fabric_interface_compatibility.py
-      - docs/fabric-interface-compatibility.md
+      - docs/ecosystem-interface-compatibility.md
+      - docs/ecosystem-interface-compatibility-v0.json
+      - docs/ecosystem-interface-compatibility-review-checklist.md
+      - docs/decisions/0001-ecosystem-interface-compatibility-boundary.md
       - mkdocs.yml
       - .github/workflows/fabric-interface-compatibility.yml
   pull_request:
@@ -17,7 +20,10 @@ on:
       - fixtures/qso-interface-compatibility-v1.json
       - tools/validate_fabric_interface_compatibility.py
       - tests/test_fabric_interface_compatibility.py
-      - docs/fabric-interface-compatibility.md
+      - docs/ecosystem-interface-compatibility.md
+      - docs/ecosystem-interface-compatibility-v0.json
+      - docs/ecosystem-interface-compatibility-review-checklist.md
+      - docs/decisions/0001-ecosystem-interface-compatibility-boundary.md
       - mkdocs.yml
       - .github/workflows/fabric-interface-compatibility.yml
   workflow_dispatch:
@@ -127,7 +133,10 @@ jobs:
             fixtures/qso-interface-compatibility-v1.json \
             tools/validate_fabric_interface_compatibility.py \
             tests/test_fabric_interface_compatibility.py \
-            docs/fabric-interface-compatibility.md \
+            docs/ecosystem-interface-compatibility.md \
+            docs/ecosystem-interface-compatibility-v0.json \
+            docs/ecosystem-interface-compatibility-review-checklist.md \
+            docs/decisions/0001-ecosystem-interface-compatibility-boundary.md \
             mkdocs.yml \
             .github/workflows/fabric-interface-compatibility.yml \
             > "$evidence/source-sha256.txt"
@@ -145,6 +154,7 @@ jobs:
               "validator_status": int(os.environ.get("VALIDATOR_STATUS") or 1),
               "compile_status": int(os.environ.get("COMPILE_STATUS") or 1),
               "bounded_disposition": "EVIDENCE_SATISFIED_AT_RECORDED_SYNTHETIC_TUPLE",
+              "real_interface_disposition": "BLOCKED_ROLE_COLLISION",
               "authority_effect": "none",
               "runtime_admission": False,
               "ecosystem_admission": False,

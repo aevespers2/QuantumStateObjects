@@ -13,6 +13,7 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-20 — Aligned the repository with Repository `0` as portable bootstrap/planning/proposal orchestration and Repository `1` as independent quarantine/capability/canonical-state/revocation/recovery authority candidate.
 - 2026-07-21 — Defined runtime admission and execution as bounded local evidence-producing stages that remain separate from proposal review, capability issuance, transport, interface display, and Repository `1` canonical reconciliation.
 - 2026-07-23 — Bound and independently evaluated the QSO-FABRIC interface compatibility corpus while keeping payload-schema, namespace, architecture, release, and authority gates blocked.
+- 2026-07-24 — Defined configuration and message validation as a fail-closed pre-commit boundary; documenting findings or passing historical tests does not repair or accept the runtime candidate.
 
 ### Architecture
 
@@ -27,6 +28,7 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-21 — Added a candidate admission envelope independently binding runtime head, configuration, policy, device/environment, workspace, task, capability, genome, observations, temporal assessments, resource limits, stop/recovery, and evidence requirements.
 - 2026-07-21 — Added eight triple-overlap witness groups covering task authority, genome collaboration, source interpretation, canonical reconciliation, transport/display, revocation/recovery, device replacement, and correction propagation.
 - 2026-07-23 — Preserved runtime-local ledgers/reports, Fabric collaboration ledgers/aggregate reports, Bridge/interface projections, and Repository `1` dispositions as separate semantic classes pending a namespace and payload decision.
+- 2026-07-24 — Added a configuration/message boundary model separating decode, shape/type, identity, limits/replay/integrity, candidate mutation, atomic commit, and evidence stages.
 
 ### Added
 
@@ -41,6 +43,7 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-21 — Added `docs/runtime-admission-and-reconciliation-profile.md` with record separation, candidate route, admission envelope, deterministic admission algorithm, execution boundaries, receipt requirements, reconciliation, stop/revocation/recovery semantics, gluing obstructions, fixtures, and ownership questions.
 - 2026-07-23 — Added the exact QSO-FABRIC PR #21 source tuple, byte-identical 17-case fixture, separately implemented consumer, 20 hostile regressions, and retained-evidence workflow.
 - 2026-07-23 — Added the canonical interface architecture page, machine-readable profile, review checklist, ADR-0001, and integrated documentation/consumer validation workflow.
+- 2026-07-24 — Added `docs/configuration-and-message-boundaries.md` and `docs/configuration-message-boundary-v1.json`, covering six current PR #7 findings, candidate failure classes, atomic state domains, bounded rejection evidence, reviewer onboarding, cross-repository boundaries, and FYSA-120 mapping.
 
 ### Changed
 
@@ -51,6 +54,7 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-21 — Updated Pages navigation, home, task chain, punch list, release gates, witness requirements, artifact requirements, and status language around runtime admission and canonical reconciliation.
 - 2026-07-23 — Replaced the obsolete pre-corpus compatibility observation with the current producer tuple and independent-consumer evidence.
 - 2026-07-23 — Unified architecture-profile and independent-consumer validation so both exact-source gates run from one evidence workflow without changing runtime scope.
+- 2026-07-24 — Rebound task-chain, punch-list, release, and changelog currentness from stale PR #7 head `40a0c123...` to observed current head `cee0bad3...`, while preserving acceptance blockers.
 
 ### Documentation
 
@@ -64,12 +68,13 @@ All notable product, architecture, implementation, documentation, release, and d
 - 2026-07-20 — Added explicit documentation-only limits around device control, capability issuance, canonical state, transport authority, and publication.
 - 2026-07-21 — Clarified that admission decisions, execution attempts, receipts, resulting-state evidence, Fabric records, Bridge artifacts, interface annotations, and Repository `1` dispositions must retain independent identities.
 - 2026-07-23 — Documented source-tuple currency, independent synthetic conformance, semantic record separation, payload gaps, migration, rollback, and FYSA-120 capability mapping.
+- 2026-07-24 — Documented exact-type validation order, object-before-field-access, canonical identity checks, limit materialization, pre-commit rejection, state-before/state-after evidence, and accessible failure explanations.
 
 ### Verification
 
-- Historical PR #7 exact-head runs remain evidence for their recorded commits only. Current PR #7 head `40a0c123c271c883356b9315dc213556d4abbb14` remains pre-reconciliation.
+- Current PR #7 exact head is `cee0bad3baacde97c99251ae6be0f0e733a381a7`; CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that immutable source.
 - Accepted `main` policy-control repair passed its exact-head focused tests and repository-wide validator before merge.
-- The documentation candidate includes exact-head strict-build, architecture-profile, and independent interface-consumer workflows with retained evidence. Passing workflows establish evidence only for named immutable sources and do not complete payload, accessibility, privacy, license, architecture, publication, or deployment review.
+- The documentation candidate includes exact-head strict-build, architecture-profile, independent interface-consumer, and configuration/message documentation surfaces. Passing workflows establish evidence only for named immutable sources and do not complete implementation, payload, accessibility, privacy, license, architecture, publication, or deployment review.
 - The QSO-FABRIC fixture is checked for exact Git-blob identity before semantic evaluation.
 - Independent synthetic agreement remains distinct from namespace resolution and final payload acceptance.
 
@@ -117,11 +122,3 @@ Portfolio architecture review additionally requires accepted ownership and compa
 
 - No runtime, package publication, Pages publication, scheduled execution, device control, four-QSO experiment, autonomous-development integration, external adapter, financial path, canonical-state mutation, or production deployment is authorized.
 - The only initial target remains a disposable credential-free, network-independent local/CI verification environment after applicable gates pass.
-
-## Entry format
-
-- Date
-- Category: Product / Architecture / Added / Changed / Fixed / Documentation / Verification / Security / Release / Deployment
-- Summary
-- Evidence: issue, PR, commit, workflow, artifact, or deployment record
-- Impact and migration notes where applicable

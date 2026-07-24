@@ -1,101 +1,177 @@
 # Release Plan
 
-## Current Decision
+## Current decision
 
-Status: `BLOCKED — PR #7 EXACT-HEAD RUNTIME SLICE PASSED; EIGHT P2 FINDINGS, MERGED-HEAD, UPSTREAM CONTRACTS, AND PUBLICATION GATES REQUIRED`
+Status: `BLOCKED — DOCUMENTATION, RUNTIME-ADMISSION, AND CONFIGURATION/MESSAGE BOUNDARY MODELS READY FOR EXACT-HEAD REVIEW; RUNTIME AND CROSS-REPOSITORY CONTRACTS UNACCEPTED`
 
-QuantumStateObjects contains package metadata at version `0.1.0`, a working candidate CLI/configuration loader, declarative QSO manifests, runtime primitives, event and attribution ledgers, and freeze/rollback controls. No runtime release is eligible. PR #7 remains the sole canonical P0 candidate and is open, unmerged, mergeable, and reconciled with current `main` at normal two-parent head `395915b60510e9a62c53ad128cf23d151e73eb1f` without force-rewriting reviewed history.
+QuantumStateObjects contains an accepted bounded prototype and repository-wide consent-capacity policy controls on `main`, plus draft package/runtime candidate PR #7. No package release, GitHub Pages publication, experiment activation, Repository `0`/`1` integration, external adapter, canonical-state mutation, or deployment is authorized.
 
-Workflow run `29617877793` completed successfully on Python 3.11 and 3.13. Both jobs checked out and asserted the exact submitted head, installed and compiled the package/tests, passed 22 unit and smoke tests with JUnit evidence, ran installed default and configuration CLI smoke, built wheels, generated SHA-256 values, and uploaded retained artifacts. Artifact digests are `c53ecc7692716519be67c92e4e51cc04695187437790c784d8b42f78d70a76fd` and `cf2290f7469b71ebb92cc7b1cb7eb86a64ee9ff56df8b89203fa157bd6b65816`; wheel SHA-256 values are `97c6ec287e2eb1b23776dc232a16641f566202f1aacf792755a992930adf5dc3` and `b074c2328f90585c2fe8fb7a83d023ef34ea7374b6ee9915c57209d589e678cc`.
+Draft PR #7 remains the sole package/configuration/runtime candidate at exact head `cee0bad3baacde97c99251ae6be0f0e733a381a7`. CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that source. Six configuration/message findings, normal reconciliation, complete review disposition, and resulting integrated-head validation remain open. Historical runs remain evidence only for their named immutable sources.
 
-The bounded runtime-primitives slice now exercises active/frozen/interrupted lifecycle states, message validation, hash-linked event and attribution ledgers, resource-limit prechecks, freeze/resume, interruption/recovery, rollback/checkpoint restoration, and repeatable state/event hashes using synthetic local fixtures. This is candidate test evidence, not evidence that Atlas, Nova, Orion, or Lyra are actively running.
-
-PR #7 remains unaccepted because eight current P2 review threads identify fail-closed defects: non-UTF-8 JSON can bypass the declared contract; manifests missing required identity/development/review/status blocks can be accepted; Booleans can pass as numeric schema versions; invalid instance IDs can bypass the schema pattern; delegated ingest exceptions can leave unledgered partial state; freeze certificates can diverge from controller checkpoints and drop messages; rollback can fail when the event limit is full; and persisted event ledgers can accept malformed entry shapes or Boolean sequences. All require repair, negative fixtures, review disposition, and exact-head reverification.
-
-Atlas continues to fail closed while its QSO-GENOMES reference lacks an accepted SHA-256. QSO-GENOMES PR #2 remains unaccepted and non-mergeable. QSO-SEEKER has no accepted canonical-record/attribution contract. Privacy, confidentiality, licensing, attribution, source artifact, SBOM/provenance, merged-head, rollback-drill, and approval gates remain incomplete.
+Within A.L.I.S.T.A.I.R.E., this repository is the bounded local runtime and evidence subsystem. Repository `0` is the portable bootstrap, planning, proposal, and maintenance-orchestration candidate; Repository `1` is the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. QuantumStateObjects may consume their outputs only after versioned contracts, shared fixtures, authority ownership, and explicit approval exist.
 
 ## Versioning
 
 - Scheme: Semantic Versioning.
-- Existing metadata is `0.1.0`; the first eligible candidate remains `0.1.0-alpha.1` until runnable, contract, test, security, provenance, and publication gates pass.
-- Instance, message, event-ledger, attribution-ledger, checkpoint, freeze/rollback, evidence, configuration, and upstream-contract versions must be explicit.
-- Incompatible schema, canonicalization, state-hash, or rollback changes require migrations and coordinated consumer fixtures.
-- Experimenter object-model work requires a separate later scope/version after the runnable baseline is accepted.
+- Existing package metadata is `0.1.0`; the first eligible candidate remains `0.1.0-alpha.1` until every blocking gate passes.
+- Identity, configuration, genome, observation, temporal assessment, interpretation, proposal, quarantine, capability, task, runtime admission, message, event, attribution, checkpoint, freeze, interruption, recovery, rollback, correction, revocation, execution receipt, resulting-state evidence, reconciliation, and upstream-contract versions must be explicit.
+- Incompatible schema, canonicalization, hash-input, namespace, lifecycle, clock, replay, checkpoint, ledger, rollback, authority, privacy, or cross-repository changes require migrations and coordinated consumer fixtures.
+- Experimenter work, four-QSO execution, autonomous-development integration, device administration, and payment behavior remain separate later scopes.
 
-## Release Scope
+## First candidate scope
 
-- Working package and CLI with strict-UTF-8, schema-parity, integer-only, canonical-ID/name/repository/path/hash local configuration validation.
-- Atomic instance lifecycle and mutation behavior; validated message, event, attribution, limit, freeze, interruption, recovery, rollback, checkpoint, and deterministic-hash primitives.
-- Positive, negative, adversarial, and repeated deterministic tests with exact-head and merged-head identity assertions and retained evidence.
-- Later hash-fixed validation of accepted QSO-GENOMES and QSO-SEEKER artifacts without importing or executing external code.
-- Approved privacy, confidentiality, licensing, attribution, and public-artifact boundaries.
-- Reproducible source archive, sdist, wheel, reports, SBOM where applicable, checksums, provenance, rollback bundle, and approval.
+- Installable local package and `qso-run` CLI on supported Python versions.
+- Strict, bounded, local-only configuration and artifact validation.
+- Canonical local fixture identities for Atlas, Nova, Orion, and Lyra.
+- Isolated QSO partitions and inactive generated proposals.
+- Atomic canonical-record, admission-envelope, and message handling.
+- Versioned event and attribution evidence.
+- Canonical checkpoints, freeze, interruption, recovery, and rollback.
+- Deterministic local replay with fixed inputs and recorded hashes.
+- Accepted hash-fixed genome, observation, capability, and task-envelope validation without importing or executing producer code.
+- Admission decisions and execution receipts that remain distinct from Repository `1` canonical reconciliation.
+- Reproducible source, sdist, wheel, checksums, test reports, provenance, rollback bundle, and approved documentation.
 
-### Explicitly excluded from the first candidate
+### Explicitly excluded
 
-- Draft PR #3 Experimenter object-model scaffold and materializer.
-- Superseded PR #2, PR #4, PR #5, and PR #6 branches.
-- Materialized placeholder trees presented as implemented capability.
-- Atlas/Nova/Orion/Lyra execution claims without authorized append-only runtime evidence.
-- Autonomous learning, generated-code execution, network access, credentials, repository mutation, payment authority, scheduled execution, or production orchestration.
+- Autonomous internet learning or background retrieval.
+- Host-security collection, device administration, or remote remediation.
+- Executing generated or retrieved code.
+- Credential, cookie, session, or production-secret access.
+- External repository or system writes.
+- Scheduled, persistent, remote, concurrent, or distributed execution.
+- Production payment, custody, settlement, or investment behavior.
+- Portfolio-wide planning, merge, release, deployment, incident, emergency-stop, recovery, capability issuance, or canonical-state authority.
+- Claims that Atlas, Nova, Orion, or Lyra are active without authorized append-only runtime evidence.
 
-## Selected Candidate Work
+## Selected candidate work
 
-PR #7 is the sole canonical P0 candidate. Its current head includes the CLI/configuration baseline plus the bounded runtime-primitives test slice and exact-head Python 3.11/3.13 retained evidence. It remains in review until all eight findings are repaired, all material threads are resolved, a new immutable head passes the complete suite, and an explicitly authorized merged head passes clean installation, tests, artifacts, security, provenance, and rollback verification.
+Before acceptance, PR #7 must:
 
-## Planned Changelog Entries
+1. reconcile current accepted `main` without rewriting reviewed history;
+2. remove retired review-identity dependencies and preserve explicit human final approval;
+3. resolve strict parser, repository-field, schema, identity, limits, enum, message, bounded-file, and canonicalization findings;
+4. complete atomic ingestion, message-inclusive checkpoints, freeze parity, rollback at full capacity, and persisted-evidence validation;
+5. close hostile-input and prompt-injection issue #8;
+6. consume only accepted immutable upstream and Repository `1` contracts;
+7. implement or explicitly defer the approved runtime-admission contract without implying that documentation is runtime behavior;
+8. resolve every material review thread;
+9. pass fresh exact-head and approved merged-head acceptance with retained evidence.
 
-- `Added`: accepted CLI/configuration loader, runtime controller, message validation, event/attribution ledgers, checkpoints, tests/CI, deterministic evidence formats, and later upstream contract validators.
-- `Security`: strict UTF-8, complete schema parity, canonical IDs/sources/hashes, atomic mutation failures, rollback capacity, checkpoint parity, strict persisted-ledger validation, inert proposals, least privilege, and credential/network/repository-write denial.
-- `Fixed`: CLI/package discovery, schema/hash-pin agreement, configuration contract enforcement, resource-limit/freeze/rollback/ordering/attribution defects, and accepted Atlas reference behavior.
-- `Documentation`: installation, CLI, supported Python versions, trust boundaries, evidence semantics, limitations, privacy/license model, operations, and recovery.
-- `Release`: source/sdist/wheel artifacts, reports, SBOM, checksums, provenance, review disposition, rollback evidence, and approval.
+## Documentation and gluing candidate
 
-## Acceptance Gates
+The `docs/pages-architecture-onboarding` branch adds:
+
+- Pages-ready MkDocs configuration and pinned documentation tooling;
+- project overview, architecture, design contracts, onboarding, security, operations, and release guidance;
+- an updated A.L.I.S.T.A.I.R.E. integration model reflecting Repositories `0` and `1`;
+- a runtime admission and reconciliation profile separating proposal, quarantine, capability, admission, execution, receipt, transport, review, correction, revocation, and canonical disposition;
+- a configuration and message boundary profile defining validation order, six current findings, failure classes, mutation-prevention evidence, atomic state domains, reviewer onboarding, and cross-repository non-authorities;
+- an obstruction ledger covering active compatibility and authority failures;
+- pairwise gluing maps and required triple-overlap witnesses;
+- a release punch list spanning runtime acceptance, security, semantic ownership, Repository `0`/`1`, admission, genomes, observations, Digitalis/temporal interpretation, Fabric/kernel, Bridge/interfaces, resources/replay, experiment readiness, publication, and recovery;
+- a read-only exact-submitted-head Documentation workflow with strict build validation, generated-site checks, dependency capture, SHA-256 manifests, and retained artifacts.
+
+A successful documentation workflow proves only that its named immutable head built under the recorded environment. It does not select canonical owners, accept contracts, complete accessibility/privacy/license review, publish Pages, activate adapters, approve PR #7, or authorize release or deployment.
+
+## Runtime admission acceptance gates
 
 | Gate | Status | Requirement |
 |---|---|---|
-| Canonical candidate | REVIEW | PR #7 is sole selected path, mergeable and current-main reconciled; repair and resolve all eight P2 findings at one final immutable head. |
-| Runnable package/CLI | PARTIAL | Run `29617877793` passed exact-head Python 3.11/3.13 installation and smoke with retained artifacts; repaired final-head and merged-head acceptance remain. |
-| Runtime primitives | REVIEW | Twenty-two tests cover the bounded slice, but atomic ingest, checkpoint parity, rollback capacity, strict event shape, and complete configuration fail-closed behavior remain unaccepted. |
-| Tests/determinism | PARTIAL | Repeatability evidence exists for synthetic fixtures; complete negative/adversarial matrix and accepted-head deterministic reports remain required. |
-| Freeze/rollback | PARTIAL | Basic paths are tested; canonical message-inclusive checkpoints and rollback at event capacity must pass. |
-| Upstream contracts | BLOCKED | Accepted QSO-GENOMES manifest/hash set and QSO-SEEKER canonical-record/attribution fixtures are required. |
-| Scope integrity | PASS | Draft Experimenter work and superseded branches remain excluded; no four-QSO execution claim is made. |
-| Security | PARTIAL | Exact-head/read-only/no-persisted-credentials candidate CI exists; complete parser, state-atomicity, persisted-evidence, dependency, secret, workflow, and adversarial review remains. |
-| Documentation | PARTIAL | Architecture and candidate behavior are documented; accepted operations, limitations, evidence contracts, and recovery remain incomplete. |
-| Privacy/licensing | BLOCKED | Public notice/license and handling of personal/confidential identifiers require approval. |
-| Provenance | PARTIAL | PR/head/run/job/artifact/wheel identities are recorded; source/sdist, SBOM, attestation, merged-head, review disposition, and rollback bundle remain absent. |
-| Deployment readiness | BLOCKED | `deploy.md` defines the fail-closed target, health, observability, rollback, and post-validation controls; no target is approved. |
-| Approval | PENDING | Explicit merge/release approval only after every blocking gate passes. |
+| Record separation | BLOCKED | Proposal, quarantine, capability, task, admission, execution, receipt, resulting-state, reconciliation, annotation, correction, revocation, and recovery records have distinct types and identities. |
+| Device/environment binding | BLOCKED | Device identity, enrollment generation, ownership scope, platform profile, and revocation lifecycle are accepted. |
+| Workspace/runtime binding | BLOCKED | Repository, base commit, expected head, worktree/sandbox, package, configuration, policy, and expected pre-state are independently verified. |
+| Capability enforcement | BLOCKED | Issuer, requester, executor, action class, paths, adapters, tools, network policy, limits, expiry, nonce, replay, revocation, and stop behavior fail closed. |
+| Genome admission | BLOCKED | Repository, commit, path, schema, canonicalization, lineage, immutable policy, and digest are accepted and locally verified. |
+| Observation admission | BLOCKED | Source, subject, provenance, completion, content hash, temporal assessment, Digitalis interpretation, classification, privacy, correction, and revocation are accepted. |
+| Atomic decision | BLOCKED | Parsing and validation complete without state mutation; every rejection preserves prior state and emits bounded evidence. |
+| Execution receipt | BLOCKED | Receipt binds the exact admission, runtime, device, workspace, capability, task, resources, pre/post/rollback state, artifacts, uncertainty, and cleanup result. |
+| Reconciliation | BLOCKED | Repository `1` independently accepts, rejects, quarantines, requests correction, or records recovery; runtime success cannot self-promote. |
+| Revocation propagation | BLOCKED | Capability, device, genome, observation, correction, and emergency-stop changes invalidate runtime, Fabric, Bridge, interface, and cache state where applicable. |
 
-## Artifact Requirements
+## General acceptance gates
 
-- Reproducible source archive, sdist, and wheel from the accepted immutable and merged heads.
-- Versioned schemas, configurations, manifests, event/attribution ledgers, checkpoint/freeze/rollback records, and later fixed upstream fixtures.
-- Exact-head and merged-head clean-checkout build, CLI smoke, unit, deterministic, resource-limit, interruption, recovery, freeze/rollback, security, and documentation reports.
-- Strict-UTF-8, missing-required-block, Boolean-version, invalid-instance-ID, delegated-ingest-failure, full-event-capacity rollback, message-inclusive-freeze, malformed-ledger, mismatched-hash, wrong-source/path/name, and generated-content-inertness fixtures.
-- Retained CI evidence with checked-out SHA, tool versions, commands/results, JUnit, artifact hashes, and expiry.
-- SBOM where applicable, checksums, provenance manifest/attestation, review disposition, and tested rollback instructions.
+| Gate | Status | Requirement |
+|---|---|---|
+| Canonical implementation candidate | REVIEW | PR #7 remains the sole path and is reconciled normally with current `main`. |
+| Repository-wide policy control | PASS ON CURRENT PR HEAD | Consent-capacity tests and workflow passed at `cee0bad3...`; resulting integrated-head revalidation remains required. |
+| Runnable package and CLI | PARTIAL | Fresh clean install, smoke, build, and error-path evidence at repaired exact and merged heads. |
+| Parser/configuration/identity contract | REVIEW | Strict UTF-8, duplicate-key, exact-type, canonical identity, schema, limits, paths, hashes, and complete negative fixtures. |
+| Message and runtime atomicity | REVIEW | Kind, identity, allowlist, shape, digest, replay, capacity, delegated failure, and unchanged-state evidence. |
+| Event, attribution, checkpoint, and rollback evidence | REVIEW | Exact shape, types, ordering, chain, hashes, corrections, revocations, full-capacity rollback, and post-validation. |
+| Hostile-input security | BLOCKED | Issue #8 adversarial matrix, dependency/workflow review, secret scan, exact-head evidence, and independent disposition. |
+| Semantic ownership | BLOCKED | `qsio-kernel`, runtime, Fabric, genomes, Seeker, temporal/Digitalis, Bridge, Repository `0`, and Repository `1` responsibilities and migrations are approved. |
+| Repository `0`/`1` route | BLOCKED | Proposal, quarantine, capability, task, expected-head, expiry, replay, receipt, revocation, and reconciliation contracts and fixtures are accepted. |
+| Genome compatibility | BLOCKED | Accepted QSO-GENOMES identity, lineage, schema, canonicalization, policy, lifecycle, digest, migration, and fixtures. |
+| Observation/temporal compatibility | BLOCKED | Accepted source, subject, provenance, clocks, freshness, replay, correction, revocation, classification, privacy, uncertainty, interpretation, and fixtures. |
+| Fabric/kernel gluing | BLOCKED | Format, lifecycle, message, resource, ledger, checkpoint, freeze, rollback, and collaboration ownership and triple-overlap fixtures. |
+| Bridge/interface gluing | BLOCKED | Evidence transport, integrity, redaction, correction, privacy, retention, cache invalidation, read-only presentation, and approval-separation fixtures. |
+| Local versus canonical state | BLOCKED | Runtime admission/execution and Fabric success remain distinct from Repository `1` canonical reconciliation and later correction. |
+| Emergency stop and recovery | BLOCKED | Runtime freeze, Fabric stop, capability revocation, evidence preservation, interface invalidation, human recovery, and bounded restart agree. |
+| Determinism and replay | PARTIAL | Repeated fixed-input reports plus clocks, causal order, nonce, expiry, restart, and replay-window evidence. |
+| Documentation source/build | REVIEW | Exact-head content alignment, strict build, generated-site checks, local links, and retained evidence. |
+| Accessibility | PENDING | Keyboard, headings, landmarks, contrast, reduced motion, tables, code, diagrams, and mobile review. |
+| Privacy/confidentiality | BLOCKED | Approved classification, minimization, redaction, retention, deletion, and public-artifact rules. |
+| License/attribution | BLOCKED | Approved repository, dependency, artifact, contributor, and documentation notices. |
+| Provenance | PARTIAL | Source/sdist/wheel/site hashes, SBOM where applicable, attestations, reviews, approvals, and retention. |
+| Rollback | PARTIAL | Runtime, integration, and Pages rollback drills with post-validation evidence. |
+| Pages publication | BLOCKED | Approved source/workflow, exact-head build, deployment artifact, public validation, explicit approval, and rollback. |
+| Package publication | BLOCKED | Every runtime, contract, artifact, security, documentation, policy, recovery, and approval gate passes. |
+| Deployment | BLOCKED | Approved target, capability, health checks, observability, emergency stop, rollback, and post-deployment validation. |
+| Final approval | PENDING | Explicit human approval after every blocking gate passes. |
 
-## Deployment Readiness
+## Required compatibility witnesses
 
-No deployment is authorized. The first permitted target remains a disposable local or CI verification environment with no credentials, no network-dependent inputs, no external repository writes, no generated-code execution, no sensitive data, bounded resources, explicit human controls, and hash-bound evidence. A successful test run does not authorize package publication, persistent hosting, scheduling, external integration, or a four-QSO experiment.
+- Repository `0` → Repository `1` → runtime proposal, capability, admission, and receipt fixtures.
+- QSO-GENOMES → runtime → QSO-FABRIC identity, policy, lifecycle, lineage, and rollback fixtures.
+- QSO-SEEKER → temporal/Digitalis → runtime source, interpretation, freshness, replay, correction, privacy, and subject fixtures.
+- Runtime → QSO-FABRIC → Repository `1` execution/collaboration/canonical-state separation fixtures.
+- Runtime → Bridge → QSO-STUDIO/AionUi integrity, redaction, correction, cache invalidation, and denied-approval-inference fixtures.
+- Capability revocation → runtime freeze → Repository `1` recovery fixtures.
+- Device replacement → workspace re-enrollment → runtime admission fixtures.
+- Correction → downstream invalidation → reconciliation fixtures.
 
-## Health Checks, Observability, Rollback, and Post-Validation
+## Artifact requirements
 
-Health requires exact source/configuration identity, successful startup/shutdown, strict fail-closed input handling, valid canonical ledger/checkpoint heads, deterministic replay, resource compliance, and absence of network, credential, external-write, generated-execution, payment, or sensitive-data activity. Observability must record structured non-secret source/configuration identities, lifecycle transitions, rejections, limits, event/attribution/checkpoint heads, rollback triggers/results, artifact hashes, cleanup, and post-validation. Roll back on any identity/hash/schema/type/atomicity/ledger/checkpoint/determinism/limit/security/privacy failure; preserve failed evidence, restore the last accepted checkpoint or clean disposable state, verify no external mutation, and do not resume without a new accepted head. Post-validation must repeat smoke and deterministic replay, verify final ledger/checkpoint hashes and cleanup, compare resource use with bounds, archive evidence, and return the environment to a known clean state.
+- Immutable source archive, sdist, and wheel from accepted exact and merged heads.
+- Versioned schemas, configurations, genomes, observations, temporal assessments, interpretations, proposals, quarantine records, capabilities, tasks, admissions, messages, ledgers, checkpoints, corrections, revocations, receipts, resulting-state evidence, dispositions, and upstream manifests.
+- Positive, malformed, unsupported-version, stale, replay, wrong-device, wrong-workspace, wrong-head, wrong-policy, wrong-identity, expiry, broadened-scope, partial-failure, correction, revocation, freeze, rollback, privacy, and recovery fixtures.
+- Exact-head and merged-head clean install, compile, unit, adversarial, admission, deterministic, interruption, recovery, freeze, rollback, and CLI reports.
+- Source, sdist, wheel, documentation-site, fixture, and report SHA-256 values.
+- SBOM where applicable, provenance/attestation, review disposition, privacy/license approval, emergency-stop evidence, and tested rollback instructions.
 
-## Unresolved Blockers
+## Pages publication requirements
 
-- Eight unresolved PR #7 P2 findings: strict UTF-8; complete required blocks; integer-only versions; instance-ID pattern; atomic delegated ingest; canonical message-inclusive freeze checkpoint; rollback under a full event ceiling; strict persisted event-entry shape/type validation.
-- Final repaired exact head and any merged head require complete retained evidence and review disposition.
-- Accepted upstream QSO-GENOMES and QSO-SEEKER contracts remain absent.
-- Source/sdist checksum set, SBOM, complete security review, public notice/license approval, provenance attestation, rollback drill, and approval remain absent.
+1. Build from an approved immutable source SHA in a clean environment.
+2. Pin and record documentation, Python, and workflow versions.
+3. Assert the exact submitted source before building.
+4. Run `mkdocs build --strict`, generated-site checks, and independent link review.
+5. Review rendered diagrams, navigation, headings, tables, code, search, keyboard access, contrast, mobile layout, and reduced motion.
+6. Verify all status claims against accepted repository and portfolio evidence.
+7. Confirm no sensitive or unintended personal data appears in source or built artifacts.
+8. Hash and retain the built site, dependency inventory, manifest, and logs.
+9. Publish only after explicit approval.
+10. Validate the public URL, content identity, navigation, and rollback procedure.
 
-## Release Log
+## Deployment readiness
 
-- 2026-07-16 — Aligned the repository with the runnable local-package priority.
-- 2026-07-17 — Consolidated superseded CLI candidates into PR #7 and recorded exact-head configuration evidence.
-- 2026-07-17 — Reconciled PR #7 with current `main` at head `395915b60510e9a62c53ad128cf23d151e73eb1f`; run `29617877793` passed 22 tests on Python 3.11/3.13 and retained artifacts.
-- 2026-07-17 — Advanced the bounded runtime-primitives slice to review, then recorded five new runtime/evidence findings in addition to the three existing configuration findings. Release and deployment remain blocked.
+No runtime or persistent deployment is authorized. The first permitted environment remains a disposable local or CI verification context with no credentials, external writes, network-dependent inputs, generated-code execution, production data, or device-administration authority; bounded resources and explicit human controls remain mandatory.
+
+A successful runtime test or documentation build does not authorize package publication, Pages publication, hosting, scheduling, external integration, autonomous-development integration, a four-QSO experiment, or production use.
+
+## Health, observability, rollback, and post-validation
+
+Health requires exact source/configuration/policy/capability/admission identity, bounded startup/shutdown, fail-closed inputs, valid ledgers and checkpoints, deterministic replay, resource compliance, and absence of denied external capabilities. Observability records non-secret identities, lifecycle transitions, admission decisions, rejections, limits, evidence heads, receipts, corrections, revocations, reconciliation, rollback decisions, artifact hashes, cleanup, and post-validation.
+
+Roll back on any identity, schema, hash, type, admission, atomicity, ledger, checkpoint, determinism, replay, resource, security, privacy, contract, documentation, provenance, authority, or approval failure. Preserve failed evidence, revoke applicable capabilities, restore the last accepted checkpoint or clean disposable state, verify no external mutation, and do not resume without a new accepted head and explicit approval.
+
+## Release log
+
+- 2026-07-16 — Set runnable local-package acceptance ahead of cross-repository and four-QSO claims.
+- 2026-07-17 — Selected PR #7 as the sole package/configuration/runtime candidate.
+- 2026-07-18 — Merged the repaired repository-wide policy validator to `main`; PR #7 requires reconciliation and fresh evidence.
+- 2026-07-19 — Added the Pages-ready architecture, design, onboarding, security, operations, and release documentation candidate.
+- 2026-07-20 — Defined QuantumStateObjects as A.L.I.S.T.A.I.R.E.'s bounded local runtime/evidence subsystem.
+- 2026-07-20 — Added portfolio obstruction/gluing analysis, aligned Repositories `0` and `1`, expanded the release punch list, and introduced pairwise and triple-overlap compatibility gates without changing implementation scope.
+- 2026-07-21 — Added the runtime admission and reconciliation contract candidate, new record-separation gates, device/workspace/runtime binding, execution-receipt requirements, and correction/revocation propagation fixtures without changing runtime behavior or authority.
+- 2026-07-24 — Added configuration/message failure-boundary documentation, machine-readable review profile, six exact-head finding records, mutation-prevention evidence requirements, and synchronized lifecycle routes without changing runtime behavior or authority.

@@ -61,6 +61,7 @@ Every accepted QSO design:
 | Prototype roles, partitions, inactive proposals, messages, snapshots, freeze, and rollback | Present on accepted `main` |
 | Repository-wide consent-capacity policy validator and exact-head workflow controls | Accepted on current `main` |
 | Installable package, `qso-run` CLI, strict configuration, runtime controller, ledgers, and recovery controls | Draft PR #7 candidate |
+| Configuration and message validation/failure boundary | Documentation candidate; implementation findings remain open |
 | A.L.I.S.T.A.I.R.E. subsystem and denied-authority contract | Documentation candidate |
 | Repository `0`/`1` governed task route | Documented direction; schemas, fixtures, owners, and implementation blocked |
 | Accepted QSO-GENOMES integration | Blocked |
@@ -99,6 +100,8 @@ The Pages-ready documentation candidate is in `docs/`:
 - [A.L.I.S.T.A.I.R.E. integration](docs/alistaire-integration.md)
 - [Architecture](docs/architecture.md)
 - [Design contracts](docs/design-contracts.md)
+- [Configuration and message boundaries](docs/configuration-and-message-boundaries.md)
+- [Machine-readable configuration/message profile](docs/configuration-message-boundary-v1.json)
 - [Obstruction and gluing analysis](docs/obstruction-and-gluing.md)
 - [Developer guide](docs/developer-guide.md)
 - [Security and trust](docs/security.md)

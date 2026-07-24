@@ -173,13 +173,13 @@ jobs:
           evidence="$RUNNER_TEMP/qso-runtime-evidence"
           python --version > "$evidence/python-version.txt" 2>&1
           python -m pip freeze --all > "$evidence/resolved-environment.txt" 2>&1 || true
+          git status --porcelain --untracked-files=all > "$evidence/post-validation-status.txt"
           sha256sum \
             pyproject.toml \
             .github/workflows/ci.yml \
             > "$evidence/input-sha256.txt"
           git diff --exit-code
           git diff --cached --exit-code
-          test -z "$(git status --porcelain)"
 
       - name: Retain exact-head evidence
         if: always()

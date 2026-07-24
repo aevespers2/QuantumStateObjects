@@ -1,0 +1,123 @@
+{
+  "schema": "quantumstateobjects.configuration-message-boundary.v1",
+  "status": "DOCUMENTED_NOT_IMPLEMENTED",
+  "authority_effect": "NONE",
+  "observed_runtime_candidate": {
+    "repository": "aevespers2/QuantumStateObjects",
+    "pull_request": 7,
+    "head": "cee0bad3baacde97c99251ae6be0f0e733a381a7",
+    "merged_to_main": false,
+    "accepted": false,
+    "workflow_evidence": [
+      {"name": "CI", "run_id": 30066794450, "conclusion": "success"},
+      {"name": "Consent Capacity Lock", "run_id": 30066794742, "conclusion": "success"}
+    ]
+  },
+  "boundary_invariant": "REJECT_BEFORE_MUTATION_OR_PROVE_COMPLETE_RESTORATION",
+  "configuration_requirements": [
+    "STRICT_UTF8",
+    "DUPLICATE_KEY_REJECTION",
+    "NON_FINITE_NUMBER_REJECTION",
+    "EXACT_ROOT_AND_FIELD_TYPES",
+    "SUPPORTED_VERSION_ONLY",
+    "UNKNOWN_FIELD_REJECTION",
+    "CANONICAL_REPOSITORY_IDENTITY",
+    "CANONICAL_OBJECT_AND_ROLE_IDENTITY",
+    "EXACT_LIFECYCLE_ENUMS",
+    "MATERIALIZED_OR_REQUIRED_LIMITS",
+    "WORKSPACE_CONTAINED_PATHS",
+    "BOUNDED_HASH_FIXED_ARTIFACTS",
+    "ACCEPTED_POLICY_IDENTITY_AND_DIGEST"
+  ],
+  "message_validation_order": [
+    "OBJECT_BEFORE_FIELD_ACCESS",
+    "SCHEMA_AND_UNKNOWN_FIELDS",
+    "EXACT_STRING_TYPES",
+    "CANONICAL_SENDER_AND_RECIPIENT",
+    "COLLECTION_TYPES_NOT_SINGLETON_STRINGS",
+    "SUPPORTED_KIND_AND_AUTHORITY_SCOPE",
+    "DIGEST_ORDER_NONCE_EXPIRY_REPLAY_CAPACITY",
+    "PREPARE_COMPLETE_CANDIDATE_STATE",
+    "ATOMIC_COMMIT_OR_NO_COMMIT",
+    "BOUNDED_EVIDENCE"
+  ],
+  "open_findings": [
+    {
+      "id": "CFG-REPOSITORY-SHAPE",
+      "summary": "Canonical repository-field shape",
+      "required_evidence": ["positive_fixture", "hostile_fixtures", "unchanged_state_digest"]
+    },
+    {
+      "id": "MSG-ALLOWLIST-TYPE",
+      "summary": "Reject singleton strings for message allowlists",
+      "required_evidence": ["wrong_type_fixture", "deterministic_reason"]
+    },
+    {
+      "id": "CFG-MAX-RECORDS",
+      "summary": "Materialize or require max_records before delegated ingest",
+      "required_evidence": ["missing", "default", "zero", "negative", "overflow", "boolean"]
+    },
+    {
+      "id": "MSG-KIND-TYPE",
+      "summary": "Reject non-string message kinds before membership checks",
+      "required_evidence": ["list", "object", "number", "boolean", "null"]
+    },
+    {
+      "id": "MSG-RECIPIENT-IDENTITY",
+      "summary": "Canonicalize and validate outgoing recipient before hashing",
+      "required_evidence": ["invalid_recipient", "alias_recipient", "unchanged_state_digest"]
+    },
+    {
+      "id": "MSG-INCOMING-SHAPE",
+      "summary": "Reject malformed incoming messages before field access or inbox mutation",
+      "required_evidence": ["scalar", "list", "partial_object", "unknown_field", "atomicity"]
+    }
+  ],
+  "candidate_failure_classes": [
+    "DECODE_REJECTED",
+    "SHAPE_REJECTED",
+    "TYPE_REJECTED",
+    "VERSION_UNSUPPORTED",
+    "IDENTITY_REJECTED",
+    "LIMIT_REJECTED",
+    "PATH_REJECTED",
+    "INTEGRITY_REJECTED",
+    "REPLAY_REJECTED",
+    "CAPACITY_REJECTED",
+    "AUTHORITY_REJECTED",
+    "INTERNAL_FAILURE"
+  ],
+  "atomic_state_domains": [
+    "configuration",
+    "identity_registry",
+    "inbox",
+    "outbox",
+    "event_ledger",
+    "attribution_ledger",
+    "resource_counters",
+    "checkpoints",
+    "freeze_interruption_recovery_rollback",
+    "execution_receipts",
+    "downstream_projections"
+  ],
+  "cross_repository_non_authorities": {
+    "QSO-GENOMES": "DECLARATIVE_IDENTITY_AND_POLICY_ONLY",
+    "QSO-SEEKER": "OBSERVATION_DATA_NOT_INSTRUCTIONS_OR_CAPABILITIES",
+    "datarepo-temporal-invariants_and_QSO-DIGITALIS": "INTERPRETATION_NOT_RUNTIME_AUTHORITY",
+    "Repository_1": "INDEPENDENT_CAPABILITY_AND_RECONCILIATION_CANDIDATE",
+    "QSO-FABRIC": "PROJECTION_AND_AGGREGATION_NOT_RUNTIME_IDENTITY",
+    "Bridge_QSO-STUDIO_AionUi": "TRANSPORT_OR_PRESENTATION_NOT_APPROVAL",
+    "qsio-kernel": "UNRESOLVED_SEMANTIC_OR_CONFORMANCE_ROLE"
+  },
+  "skills": [
+    "011-B", "011-E",
+    "012-A", "012-B", "012-C", "012-D", "012-E",
+    "017-C", "017-D", "017-E",
+    "018-B", "018-D", "018-E",
+    "019-B", "019-C", "019-D",
+    "031-A", "031-D", "031-E",
+    "032-A", "032-D", "032-E",
+    "040-D", "040-E"
+  ],
+  "proposed_skill_subdivision": "031-U Fail-closed configuration and message boundary documentation with mutation-prevention evidence"
+}

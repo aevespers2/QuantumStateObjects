@@ -2,11 +2,11 @@
 
 ## Current decision
 
-Status: `BLOCKED — DOCUMENTATION AND RUNTIME-ADMISSION MODEL READY FOR EXACT-HEAD REVIEW; RUNTIME AND CROSS-REPOSITORY CONTRACTS UNACCEPTED`
+Status: `BLOCKED — DOCUMENTATION, RUNTIME-ADMISSION, AND CONFIGURATION/MESSAGE BOUNDARY MODELS READY FOR EXACT-HEAD REVIEW; RUNTIME AND CROSS-REPOSITORY CONTRACTS UNACCEPTED`
 
 QuantumStateObjects contains an accepted bounded prototype and repository-wide consent-capacity policy controls on `main`, plus draft package/runtime candidate PR #7. No package release, GitHub Pages publication, experiment activation, Repository `0`/`1` integration, external adapter, canonical-state mutation, or deployment is authorized.
 
-Draft PR #7 remains the sole package/configuration/runtime candidate at pre-reconciliation head `40a0c123c271c883356b9315dc213556d4abbb14`. It must be reconciled with current `main` and pass the repaired policy control plus the complete runtime matrix at one new exact head. Historical successful runs remain evidence only for their named immutable sources.
+Draft PR #7 remains the sole package/configuration/runtime candidate at exact head `cee0bad3baacde97c99251ae6be0f0e733a381a7`. CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that source. Six configuration/message findings, normal reconciliation, complete review disposition, and resulting integrated-head validation remain open. Historical runs remain evidence only for their named immutable sources.
 
 Within A.L.I.S.T.A.I.R.E., this repository is the bounded local runtime and evidence subsystem. Repository `0` is the portable bootstrap, planning, proposal, and maintenance-orchestration candidate; Repository `1` is the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. QuantumStateObjects may consume their outputs only after versioned contracts, shared fixtures, authority ownership, and explicit approval exist.
 
@@ -66,6 +66,7 @@ The `docs/pages-architecture-onboarding` branch adds:
 - project overview, architecture, design contracts, onboarding, security, operations, and release guidance;
 - an updated A.L.I.S.T.A.I.R.E. integration model reflecting Repositories `0` and `1`;
 - a runtime admission and reconciliation profile separating proposal, quarantine, capability, admission, execution, receipt, transport, review, correction, revocation, and canonical disposition;
+- a configuration and message boundary profile defining validation order, six current findings, failure classes, mutation-prevention evidence, atomic state domains, reviewer onboarding, and cross-repository non-authorities;
 - an obstruction ledger covering active compatibility and authority failures;
 - pairwise gluing maps and required triple-overlap witnesses;
 - a release punch list spanning runtime acceptance, security, semantic ownership, Repository `0`/`1`, admission, genomes, observations, Digitalis/temporal interpretation, Fabric/kernel, Bridge/interfaces, resources/replay, experiment readiness, publication, and recovery;
@@ -93,7 +94,7 @@ A successful documentation workflow proves only that its named immutable head bu
 | Gate | Status | Requirement |
 |---|---|---|
 | Canonical implementation candidate | REVIEW | PR #7 remains the sole path and is reconciled normally with current `main`. |
-| Repository-wide policy control | PASS ON MAIN | Accepted consent-capacity tests, validator report, workflow controls, and retained evidence remain intact. |
+| Repository-wide policy control | PASS ON CURRENT PR HEAD | Consent-capacity tests and workflow passed at `cee0bad3...`; resulting integrated-head revalidation remains required. |
 | Runnable package and CLI | PARTIAL | Fresh clean install, smoke, build, and error-path evidence at repaired exact and merged heads. |
 | Parser/configuration/identity contract | REVIEW | Strict UTF-8, duplicate-key, exact-type, canonical identity, schema, limits, paths, hashes, and complete negative fixtures. |
 | Message and runtime atomicity | REVIEW | Kind, identity, allowlist, shape, digest, replay, capacity, delegated failure, and unchanged-state evidence. |
@@ -173,3 +174,4 @@ Roll back on any identity, schema, hash, type, admission, atomicity, ledger, che
 - 2026-07-20 — Defined QuantumStateObjects as A.L.I.S.T.A.I.R.E.'s bounded local runtime/evidence subsystem.
 - 2026-07-20 — Added portfolio obstruction/gluing analysis, aligned Repositories `0` and `1`, expanded the release punch list, and introduced pairwise and triple-overlap compatibility gates without changing implementation scope.
 - 2026-07-21 — Added the runtime admission and reconciliation contract candidate, new record-separation gates, device/workspace/runtime binding, execution-receipt requirements, and correction/revocation propagation fixtures without changing runtime behavior or authority.
+- 2026-07-24 — Added configuration/message failure-boundary documentation, machine-readable review profile, six exact-head finding records, mutation-prevention evidence requirements, and synchronized lifecycle routes without changing runtime behavior or authority.

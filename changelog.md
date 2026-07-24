@@ -122,3 +122,11 @@ Portfolio architecture review additionally requires accepted ownership and compa
 
 - No runtime, package publication, Pages publication, scheduled execution, device control, four-QSO experiment, autonomous-development integration, external adapter, financial path, canonical-state mutation, or production deployment is authorized.
 - The only initial target remains a disposable credential-free, network-independent local/CI verification environment after applicable gates pass.
+
+## Entry format
+
+- Date
+- Category: Product / Architecture / Added / Changed / Fixed / Documentation / Verification / Security / Release / Deployment
+- Summary
+- Evidence: issue, PR, commit, workflow, artifact, or deployment record
+- Impact and migration notes where applicable

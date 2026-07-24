@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -10,6 +11,34 @@ from typing import Any
 def digest(value: Any) -> str:
     raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()
+
+
+def validate_canonical_json_value(value: Any, *, label: str = "value") -> None:
+    """Reject values that cannot be represented as deterministic canonical JSON."""
+    if value is None or isinstance(value, (bool, int)):
+        return
+    if isinstance(value, str):
+        try:
+            value.encode("utf-8")
+        except UnicodeEncodeError as exc:
+            raise ValueError(f"{label} must contain only UTF-8 encodable strings") from exc
+        return
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError(f"{label} must contain only finite JSON numbers")
+        return
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            validate_canonical_json_value(item, label=f"{label}[{index}]")
+        return
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise ValueError(f"{label} must contain only string object keys")
+            validate_canonical_json_value(key, label=f"{label} object key")
+            validate_canonical_json_value(item, label=f"{label}.{key}")
+        return
+    raise ValueError(f"{label} must contain only canonical JSON values")
 
 
 @dataclass(frozen=True)
@@ -24,8 +53,17 @@ class MCPMessage:
     def build(cls, sender: str, recipient: str, kind: str, payload: dict[str, Any]) -> "MCPMessage":
         if kind not in {"proposal", "critique", "annotation", "vote"}:
             raise ValueError("unsupported message kind")
-        body = {"sender": sender, "recipient": recipient, "kind": kind, "payload": payload}
-        return cls(sender, recipient, kind, copy.deepcopy(payload), digest(body))
+        if not isinstance(payload, dict):
+            raise ValueError("message payload must be an object")
+        stored_payload = copy.deepcopy(payload)
+        validate_canonical_json_value(stored_payload, label="message payload")
+        body = {
+            "sender": sender,
+            "recipient": recipient,
+            "kind": kind,
+            "payload": stored_payload,
+        }
+        return cls(sender, recipient, kind, stored_payload, digest(body))
 
 
 @dataclass
@@ -141,6 +179,9 @@ class QSO:
     def receive(self, message: MCPMessage) -> None:
         if message.recipient != self.genome_id:
             raise ValueError("recipient mismatch")
+        if not isinstance(message.payload, dict):
+            raise ValueError("message payload must be an object")
+        validate_canonical_json_value(message.payload, label="message payload")
         expected = digest({"sender": message.sender, "recipient": message.recipient, "kind": message.kind, "payload": message.payload})
         if expected != message.sha256:
             raise ValueError("message integrity failure")
@@ -168,6 +209,20 @@ class QSO:
         return {"identity": copy.deepcopy(self.p.identity), "records": copy.deepcopy(self.p.records), "proposals": copy.deepcopy(self.p.proposals)}
 
     def record_event(self, kind: str, payload: dict[str, Any]) -> None:
-        event = {"sequence": len(self.p.events), "qso": self.p.identity.get("declared_name"), "kind": kind, "payload": copy.deepcopy(payload)}
+        if not isinstance(kind, str) or not kind:
+            raise ValueError("event kind must be a non-empty string")
+        validate_canonical_json_value(kind, label="event kind")
+        if not isinstance(payload, dict):
+            raise ValueError("event payload must be an object")
+        stored_payload = copy.deepcopy(payload)
+        validate_canonical_json_value(stored_payload, label="event payload")
+        previous_event_sha256 = self.p.events[-1]["sha256"] if self.p.events else None
+        event = {
+            "sequence": len(self.p.events),
+            "qso": self.p.identity.get("declared_name"),
+            "kind": kind,
+            "payload": stored_payload,
+            "previous_event_sha256": previous_event_sha256,
+        }
         event["sha256"] = digest(event)
         self.p.events.append(event)

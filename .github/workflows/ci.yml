@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: qso-runtime-ci-${{ github.event.pull_request.head.sha || github.sha }}-${{ matrix.python-version || 'matrix' }}
+  group: qso-runtime-ci-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -121,9 +121,10 @@ jobs:
             qso-run --config config/instances.json > "$evidence/qso-config.json" &&
             python - <<'PY'
           import json
+          import os
           from pathlib import Path
 
-          evidence = Path(__import__("os").environ["RUNNER_TEMP"]) / "qso-runtime-evidence"
+          evidence = Path(os.environ["RUNNER_TEMP"]) / "qso-runtime-evidence"
           payload = json.loads((evidence / "qso-run.json").read_text(encoding="utf-8"))
           assert payload["status"] == "ok"
           assert payload["boundaries"] == {

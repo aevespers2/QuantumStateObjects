@@ -19,9 +19,9 @@ States: `PROPOSED` · `READY` · `IN PROGRESS` · `BLOCKED` · `REVIEW` · `DONE
 
 ## Current status
 
-Accepted `main` includes the repaired repository-wide consent-capacity policy validator and exact-head workflow controls. Draft PR #7 remains open, unmerged, mergeable, and the sole package/configuration/runtime candidate at pre-reconciliation head `40a0c123c271c883356b9315dc213556d4abbb14`. Its successful runs are historical exact-head evidence only; it must be reconciled with current `main` and reverified with the policy control and complete runtime matrix at one new head.
+Accepted `main` includes the repaired repository-wide consent-capacity policy validator and exact-head workflow controls. Draft PR #7 remains open, draft, mergeable, unmerged, and the sole package/configuration/runtime candidate at exact head `cee0bad3baacde97c99251ae6be0f0e733a381a7`. CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that exact head. Those runs are current evidence for their immutable source only; six configuration and message findings, reconciliation, complete review disposition, and resulting integrated-head validation remain open.
 
-The portfolio direction identifies Repository `0` as the portable bootstrap, planning, proposal, and maintenance-orchestration candidate and Repository `1` as the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. The documentation branch now adds a runtime admission and reconciliation profile that preserves separate proposal, quarantine, capability, admission, execution, receipt, transport, review, and canonical-disposition identities. QuantumStateObjects may consume only a narrow Repository `1` capability and accepted task envelope after the route, schemas, fixtures, and authority owners are approved.
+The portfolio direction identifies Repository `0` as the portable bootstrap, planning, proposal, and maintenance-orchestration candidate and Repository `1` as the independent quarantine, capability, canonical-state, revocation, and recovery authority candidate. The documentation branch adds runtime admission and reconciliation plus a configuration/message failure-boundary profile that preserve separate proposal, quarantine, capability, configuration, admission, message, execution, receipt, transport, review, and canonical-disposition identities. QuantumStateObjects may consume only a narrow Repository `1` capability and accepted task envelope after the route, schemas, fixtures, and authority owners are approved.
 
 ## Active chain
 
@@ -49,7 +49,7 @@ The portfolio direction identifies Repository `0` as the portable bootstrap, pla
 
 ## Runtime admission milestone
 
-The documentation branch now defines:
+The documentation branch defines:
 
 - a candidate admission envelope independently binding runtime head, configuration, policy, device/environment, workspace, task, capability, genome, observations, temporal assessments, limits, stop/recovery, and evidence requirements;
 - a deterministic side-effect-free admission sequence that rejects before state mutation;
@@ -57,7 +57,18 @@ The documentation branch now defines:
 - independent Repository `1` reconciliation after execution;
 - eight triple-overlap witness groups covering task authority, genomes, source interpretation, Fabric, Bridge/interfaces, revocation/recovery, device replacement, and correction propagation.
 
-This milestone is documentation-only. It does not change runtime behavior, accept PR #7, select schema owners, activate capabilities or adapters, publish Pages, run the four-QSO experiment, or authorize merge, release, deployment, credentials, device control, payment, or canonical-state mutation.
+## Configuration and message boundary milestone
+
+The documentation branch also defines:
+
+- strict configuration decoding, exact-type, identity, limit, path, artifact, and policy review order;
+- message-shape, sender/recipient, semantic-kind, digest, ordering, replay, expiry, capacity, and authority checks before mutation;
+- six current PR #7 findings bound to required evidence;
+- candidate failure classes and bounded rejection evidence;
+- complete state domains that must commit atomically or remain unchanged;
+- reviewer onboarding, accessibility, cross-repository non-authorities, and FYSA-120 mapping.
+
+These milestones are documentation-only. They do not change runtime behavior, accept PR #7, select schema owners, activate capabilities or adapters, publish Pages, run the four-QSO experiment, or authorize merge, release, deployment, credentials, device control, payment, or canonical-state mutation.
 
 ## Portfolio dependency order
 
@@ -65,4 +76,4 @@ Reconcile and accept PR #7 → approve semantic ownership and stop/recovery voca
 
 ## Builder log requirements
 
-Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, proposal/quarantine/capability/admission/task/receipt/disposition identities, retained reports, review dispositions, hostile-input fixtures, atomic-failure evidence, pairwise/triple-overlap witnesses, checkpoint/freeze/revocation/recovery evidence, privacy/license review, documentation/site hashes, publication result, residual risks, and follow-ups.
+Record commits, base and head SHAs, install/build/test commands, workflow runs, supported Python versions, deterministic seeds, schema/canonicalization and artifact hashes, proposal/quarantine/capability/admission/task/receipt/disposition identities, configuration/message rejection stage and reason class, state-before/state-after digests, retained reports, review dispositions, hostile-input fixtures, atomic-failure evidence, pairwise/triple-overlap witnesses, checkpoint/freeze/revocation/recovery evidence, privacy/license review, documentation/site hashes, publication result, residual risks, and follow-ups.

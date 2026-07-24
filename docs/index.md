@@ -8,7 +8,9 @@ The project separates declarative identity and genome material from runtime stat
 
 ## Current status
 
-The repository is not release-ready or deployment-ready. Accepted `main` contains the repository-wide consent-capacity policy validator and the earlier bounded prototype. Draft PR #7 remains the sole candidate path for the hardened package, CLI, configuration parser, runtime controller, ledgers, checkpoints, freeze, interruption, recovery, and rollback behavior. Its current head remains pre-reconciliation against accepted `main`; historical passing runs do not accept a future integrated or merged head.
+The repository is not release-ready or deployment-ready. Accepted `main` contains the repository-wide consent-capacity policy validator and the earlier bounded prototype. Draft PR #7 remains the sole candidate path for the hardened package, CLI, configuration parser, runtime controller, ledgers, checkpoints, freeze, interruption, recovery, and rollback behavior.
+
+Current observed PR #7 head: `cee0bad3baacde97c99251ae6be0f0e733a381a7`. CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that exact source. Six configuration/message findings, reconciliation, complete review disposition, and resulting integrated-head validation remain open. Passing evidence does not accept the candidate.
 
 The portfolio direction is now clearer:
 
@@ -43,7 +45,8 @@ These are local role definitions and fixtures, not claims that four autonomous s
 | Repository-wide consent-capacity policy validator | Accepted on `main` | Exact-head tested and merged before this documentation branch |
 | Installable package and `qso-run` CLI | Candidate in PR #7 | Draft, unmerged, and not release-authorized |
 | Strict local configuration validation | Candidate in PR #7 | Under active correctness review |
-| Runtime controller and integrity ledgers | Candidate in PR #7 | Tested historically; current integrated-head acceptance is absent |
+| Configuration/message failure-boundary profile | Documentation candidate | Defines validation order, six open findings, failure evidence, and atomicity without changing runtime behavior |
+| Runtime controller and integrity ledgers | Candidate in PR #7 | Current exact-head evidence exists; integrated-head acceptance is absent |
 | A.L.I.S.T.A.I.R.E. subsystem contract | Documentation candidate | Runtime/evidence role and denied authority are explicit |
 | Runtime admission and reconciliation profile | Documentation candidate | Separates proposal, quarantine, capability, admission, execution, receipt, and canonical reconciliation |
 | QSO-FABRIC declaration-level compatibility corpus | Independently reproduced candidate | Exact producer fixture is consumed by a separate evaluator; real namespace and payload compatibility remain blocked |
@@ -79,15 +82,19 @@ flowchart LR
 
 The portfolio now has candidate records for proposals, quarantine admissions, capabilities, source observations, interpretations, execution receipts, transports, review projections, and reconciliation, but it still lacks one accepted namespace and schema set proving those records cannot collapse into a single misleading status.
 
+At the local boundary, malformed configuration or messages can compose safely only when decode, exact shape/type, canonical identity, limit, integrity, replay, capacity, and authority checks complete before state mutation—or when complete restoration is independently proven. The current six PR #7 findings remain explicit rather than being inferred away by successful historical runs.
+
 The QSO-FABRIC declaration-level corpus has been reproduced independently, but the names `qso-event-ledger` and `qso-runtime-report` still overlap runtime-local and Fabric-level semantics. Byte identity and matching synthetic outcomes do not resolve payload ownership. Pairwise agreement is insufficient: Repository `0` → Repository `1` → runtime, genome → runtime → Fabric, Seeker → temporal/Digitalis → runtime, runtime → Fabric → Repository `1`, runtime → Bridge → interface, and freeze → revocation → recovery all require deterministic triple-overlap witnesses.
 
-See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md), [Ecosystem interface compatibility](ecosystem-interface-compatibility.md), and [Obstruction and gluing analysis](obstruction-and-gluing.md).
+See [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md), [Configuration and message boundaries](configuration-and-message-boundaries.md), [Ecosystem interface compatibility](ecosystem-interface-compatibility.md), and [Obstruction and gluing analysis](obstruction-and-gluing.md).
 
 ## Documentation map
 
 - [Project overview](project-overview.md)
 - [A.L.I.S.T.A.I.R.E. integration](alistaire-integration.md)
 - [Runtime admission and reconciliation profile](runtime-admission-and-reconciliation-profile.md)
+- [Configuration and message boundaries](configuration-and-message-boundaries.md)
+- [Machine-readable configuration/message profile](configuration-message-boundary-v1.json)
 - [Ecosystem interface compatibility](ecosystem-interface-compatibility.md)
 - [Architecture](architecture.md)
 - [Design contracts](design-contracts.md)

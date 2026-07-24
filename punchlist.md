@@ -7,9 +7,9 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 - [x] PR #7 remains the sole selected package/configuration/runtime candidate.
 - [x] Historical heads passed substantial Python 3.11/3.13 package, CLI, runtime, and artifact checks.
 - [x] Accepted `main` contains the repaired repository-wide consent-capacity policy control.
-- [x] The documentation branch defines a candidate runtime admission and reconciliation profile.
-- [ ] PR #7 head `40a0c123c271c883356b9315dc213556d4abbb14` remains pre-reconciliation against current `main`; its successful runtime run is historical exact-head evidence only.
-- [ ] The prior reconciled-head evidence recorded in earlier punch-list text is superseded by the later accepted `main` policy repair and must not be treated as current acceptance.
+- [x] The documentation branch defines candidate runtime-admission/reconciliation and configuration/message failure-boundary profiles.
+- [x] Current PR #7 head is `cee0bad3baacde97c99251ae6be0f0e733a381a7`; CI run `30066794450` and Consent Capacity Lock run `30066794742` passed for that exact source.
+- [ ] Six configuration/message findings, normal reconciliation, complete review disposition, and resulting integrated-head validation remain open.
 - [ ] No accepted QSO-GENOMES, QSO-SEEKER, Digitalis/temporal, Repository `0`/`1`, QSO-FABRIC, Bridge, or `qsio-kernel` compatibility set is active in this runtime.
 
 ## P0 — Canonical runtime lineage
@@ -24,6 +24,7 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## P0 — Parser, identity, and configuration invariants
 
+- [x] Document the candidate validation order, failure classes, atomicity rule, bounded rejection evidence, and six current configuration/message findings.
 - [ ] Reject invalid UTF-8, UTF-16/32 input, duplicate JSON keys, non-finite values, lone surrogates, Boolean-as-integer values, unknown fields, and unsupported versions.
 - [ ] Pin canonical repository, path, package, object, role, schema, policy, and content identity rules.
 - [ ] Enforce all schema-required identity, development, review, status, and repository fields before constructing accepted runtime state.
@@ -33,6 +34,7 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## P0 — Message, runtime atomicity, and evidence
 
+- [x] Document object-before-field-access, exact-type, canonical sender/recipient, supported-kind, digest/order/replay/capacity, pre-commit, and bounded-evidence review steps.
 - [ ] Reject unknown kinds, malformed shapes, unauthorized senders or recipients, aliases, digest mismatches, replay, and capacity failures before any mutation.
 - [ ] Normalize limits before delegation or restore complete prior state on every delegated ingest exception.
 - [ ] Use one message-inclusive canonical checkpoint for freeze, interruption, recovery, and rollback.
@@ -128,7 +130,7 @@ The Architect sets dependency order in `taskchain.md`. Execute one bounded, test
 
 ## P4 — Documentation and publication
 
-- [ ] Keep README, Pages, admission profile, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
+- [ ] Keep README, Pages, admission profile, configuration/message boundary profile, architecture, design contracts, obstruction ledger, task chain, release plan, deployment plan, and changelog aligned.
 - [ ] Pass exact-head strict MkDocs build and local-link validation.
 - [ ] Review Mermaid rendering, headings, navigation, keyboard access, contrast, tables, code blocks, mobile layout, and reduced motion.
 - [ ] Approve privacy, confidentiality, licensing, attribution, and public-artifact rules.

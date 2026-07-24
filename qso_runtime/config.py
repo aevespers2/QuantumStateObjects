@@ -23,6 +23,7 @@ _INSTANCE_ID_PATTERN = re.compile(r"^[a-z][a-z0-9-]{2,127}$")
 _SECONDARY_NAME_PATTERN = re.compile(r"^[A-Z][A-Za-z0-9]{1,31}$")
 _VERSION_PATTERN = re.compile(r"^0\.[0-9]+\.[0-9]+$")
 _PROPOSAL_LOG_PATTERN = re.compile(r"^proposals/[a-z0-9-]+\.jsonl$")
+
 _INSTANCE_KEYS = frozenset(
     {
         "schema_version",
@@ -94,15 +95,21 @@ def _sha256_bytes(payload: bytes) -> str:
 
 
 def _read_bounded_file(path: Path, *, max_bytes: int, label: str) -> bytes:
-    if not path.exists():
-        raise ConfigurationError(f"{label} is missing: {path}")
-    if path.is_symlink():
-        raise ConfigurationError(f"{label} must not be a symbolic link: {path}")
-    if not path.is_file():
-        raise ConfigurationError(f"{label} is not a regular file: {path}")
-    if path.stat().st_size > max_bytes:
-        raise ConfigurationError(f"{label} exceeds the {max_bytes}-byte limit: {path}")
-    return path.read_bytes()
+    """Read a bounded regular file while normalizing filesystem failures."""
+    try:
+        if not path.exists():
+            raise ConfigurationError(f"{label} is missing: {path}")
+        if path.is_symlink():
+            raise ConfigurationError(f"{label} must not be a symbolic link: {path}")
+        if not path.is_file():
+            raise ConfigurationError(f"{label} is not a regular file: {path}")
+        if path.stat().st_size > max_bytes:
+            raise ConfigurationError(f"{label} exceeds the {max_bytes}-byte limit: {path}")
+        return path.read_bytes()
+    except ConfigurationError:
+        raise
+    except OSError as exc:
+        raise ConfigurationError(f"{label} could not be read safely: {path}") from exc
 
 
 def _reject_nonstandard_json_constant(value: str) -> object:
@@ -169,6 +176,19 @@ def _require_nonempty_string(value: object, *, label: str) -> str:
     return value
 
 
+def _require_enum_string(
+    value: object,
+    *,
+    allowed: frozenset[str],
+    label: str,
+) -> str:
+    if not isinstance(value, str):
+        raise ConfigurationError(f"{label} must be a string")
+    if value not in allowed:
+        raise ConfigurationError(f"{label} is unsupported")
+    return value
+
+
 def _require_exact_version(value: object, *, label: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value != 1:
         raise ConfigurationError(f"{label} must equal integer 1")
@@ -203,34 +223,45 @@ def _validate_relative_json_path(value: object, *, label: str) -> str:
 
 
 def _validate_instance_contract(
-    instance: Mapping[str, object], *, label: str
+    instance: Mapping[str, object],
+    *,
+    label: str,
 ) -> tuple[str, str, int, str, GenomeReference]:
     _require_exact_keys(instance, required=_INSTANCE_KEYS, allowed=_INSTANCE_KEYS, label=label)
 
-    instance_id = _require_nonempty_string(instance.get("instance_id"), label=f"{label}.instance_id")
+    instance_id = _require_nonempty_string(
+        instance.get("instance_id"), label=f"{label}.instance_id"
+    )
     if _INSTANCE_ID_PATTERN.fullmatch(instance_id) is None:
         raise ConfigurationError(
             f"{label}.instance_id must match ^[a-z][a-z0-9-]{{2,127}}$"
         )
 
-    primary_name = _require_nonempty_string(instance.get("primary_name"), label=f"{label}.primary_name")
+    primary_name = _require_nonempty_string(
+        instance.get("primary_name"), label=f"{label}.primary_name"
+    )
     if primary_name not in REQUIRED_QSOS:
         raise ConfigurationError(
-            f"{label}.primary_name must be one of the canonical names: {', '.join(REQUIRED_QSOS)}"
+            f"{label}.primary_name must be one of the canonical names: "
+            + ", ".join(REQUIRED_QSOS)
         )
 
     secondary_name = _require_nonempty_string(
         instance.get("secondary_name"), label=f"{label}.secondary_name"
     )
     if _SECONDARY_NAME_PATTERN.fullmatch(secondary_name) is None:
-        raise ConfigurationError(f"{label}.secondary_name does not match the published schema")
+        raise ConfigurationError(
+            f"{label}.secondary_name does not match the published schema"
+        )
 
     declared_name = _require_nonempty_string(
         instance.get("declared_name"), label=f"{label}.declared_name"
     )
     expected_declared_name = f"{primary_name}-{secondary_name}-Vespers"
     if declared_name != expected_declared_name:
-        raise ConfigurationError(f"{label}.declared_name must equal {expected_declared_name}")
+        raise ConfigurationError(
+            f"{label}.declared_name must equal {expected_declared_name}"
+        )
     if instance.get("lineage_suffix") != "Vespers":
         raise ConfigurationError(f"{label}.lineage_suffix must equal Vespers")
 
@@ -266,12 +297,15 @@ def _validate_instance_contract(
     genome_schema_version = _require_exact_version(
         genome_value.get("schema_version"), label=f"{label}.genome.schema_version"
     )
-    if "sha256" in genome_value:
-        expected_hash = _validate_sha256(
-            genome_value["sha256"], label=f"{label}.genome.sha256", required=True
+    expected_hash = (
+        _validate_sha256(
+            genome_value["sha256"],
+            label=f"{label}.genome.sha256",
+            required=True,
         )
-    else:
-        expected_hash = None
+        if "sha256" in genome_value
+        else None
+    )
 
     identity_declaration = _require_mapping(
         instance.get("identity_declaration"), label=f"{label}.identity_declaration"
@@ -282,14 +316,17 @@ def _validate_instance_contract(
         allowed=_IDENTITY_DECLARATION_KEYS,
         label=f"{label}.identity_declaration",
     )
-    if identity_declaration.get("secondary_name_basis") not in {
-        "declared_intent",
-        "secondary_focus",
-        "demonstrated_specialization",
-    }:
-        raise ConfigurationError(
-            f"{label}.identity_declaration.secondary_name_basis is unsupported"
-        )
+    _require_enum_string(
+        identity_declaration.get("secondary_name_basis"),
+        allowed=frozenset(
+            {
+                "declared_intent",
+                "secondary_focus",
+                "demonstrated_specialization",
+            }
+        ),
+        label=f"{label}.identity_declaration.secondary_name_basis",
+    )
     secondary_focus = _require_nonempty_string(
         identity_declaration.get("secondary_focus"),
         label=f"{label}.identity_declaration.secondary_focus",
@@ -307,19 +344,29 @@ def _validate_instance_contract(
         label=f"{label}.identity_declaration.human_review_required",
     )
 
-    development = _require_mapping(instance.get("development"), label=f"{label}.development")
+    development = _require_mapping(
+        instance.get("development"), label=f"{label}.development"
+    )
     _require_exact_keys(
         development,
         required=_DEVELOPMENT_KEYS,
         allowed=_DEVELOPMENT_KEYS,
         label=f"{label}.development",
     )
-    for field in ("interpretation_enabled", "self_reflection_enabled", "immutable_fields_locked"):
+    for field in (
+        "interpretation_enabled",
+        "self_reflection_enabled",
+        "immutable_fields_locked",
+    ):
         _require_true(development.get(field), label=f"{label}.development.{field}")
-    if development.get("self_edit_mode") != "proposal_only":
-        raise ConfigurationError(f"{label}.development.self_edit_mode must equal proposal_only")
+    _require_enum_string(
+        development.get("self_edit_mode"),
+        allowed=frozenset({"proposal_only"}),
+        label=f"{label}.development.self_edit_mode",
+    )
     proposal_log = _require_nonempty_string(
-        development.get("proposal_log"), label=f"{label}.development.proposal_log"
+        development.get("proposal_log"),
+        label=f"{label}.development.proposal_log",
     )
     if _PROPOSAL_LOG_PATTERN.fullmatch(proposal_log) is None:
         raise ConfigurationError(
@@ -335,21 +382,33 @@ def _validate_instance_contract(
             f"{label}.development.max_proposals_per_run must be an integer from 1 to 20"
         )
 
-    sprite_review = _require_mapping(instance.get("sprite_review"), label=f"{label}.sprite_review")
+    sprite_review = _require_mapping(
+        instance.get("sprite_review"), label=f"{label}.sprite_review"
+    )
     _require_exact_keys(
         sprite_review,
         required=_SPRITE_REVIEW_KEYS,
         allowed=_SPRITE_REVIEW_KEYS,
         label=f"{label}.sprite_review",
     )
-    _require_true(sprite_review.get("required"), label=f"{label}.sprite_review.required")
-    if sprite_review.get("sprite") != "aequitas":
-        raise ConfigurationError(f"{label}.sprite_review.sprite must equal aequitas")
-    if sprite_review.get("activation_rule") != "pending_until_sprite_and_human_review":
-        raise ConfigurationError(f"{label}.sprite_review.activation_rule is unsupported")
-
-    if instance.get("status") not in {"draft", "pending_review", "active", "frozen", "retired"}:
-        raise ConfigurationError(f"{label}.status is unsupported")
+    _require_true(
+        sprite_review.get("required"), label=f"{label}.sprite_review.required"
+    )
+    _require_enum_string(
+        sprite_review.get("sprite"),
+        allowed=frozenset({"aequitas"}),
+        label=f"{label}.sprite_review.sprite",
+    )
+    _require_enum_string(
+        sprite_review.get("activation_rule"),
+        allowed=frozenset({"pending_until_sprite_and_human_review"}),
+        label=f"{label}.sprite_review.activation_rule",
+    )
+    _require_enum_string(
+        instance.get("status"),
+        allowed=frozenset({"draft", "pending_review", "active", "frozen", "retired"}),
+        label=f"{label}.status",
+    )
 
     return (
         instance_id,
@@ -372,7 +431,11 @@ def load_runtime_config(
 ) -> RuntimeConfig:
     """Load and structurally validate local instance metadata without resolving genomes."""
     source = Path(path)
-    payload = _read_bounded_file(source, max_bytes=MAX_CONFIG_BYTES, label="configuration file")
+    payload = _read_bounded_file(
+        source,
+        max_bytes=MAX_CONFIG_BYTES,
+        label="configuration file",
+    )
     document = _decode_json(payload, label=f"configuration file: {source}")
     root = _require_mapping(document, label="configuration root")
     raw_instances = root.get("instances")
@@ -385,9 +448,13 @@ def load_runtime_config(
     for index, raw_instance in enumerate(raw_instances):
         label = f"instances[{index}]"
         instance = _require_mapping(raw_instance, label=label)
-        instance_id, primary_name, schema_version, version, genome = _validate_instance_contract(
-            instance, label=label
-        )
+        (
+            instance_id,
+            primary_name,
+            schema_version,
+            version,
+            genome,
+        ) = _validate_instance_contract(instance, label=label)
         if instance_id in instance_ids:
             raise ConfigurationError(f"duplicate instance_id: {instance_id}")
         if primary_name in primary_names:
@@ -414,17 +481,33 @@ def load_runtime_config(
                 f"configuration QSO set mismatch; missing={missing}, unexpected={unexpected}"
             )
 
-    return RuntimeConfig(source=source, sha256=_sha256_bytes(payload), instances=tuple(instances))
+    return RuntimeConfig(
+        source=source,
+        sha256=_sha256_bytes(payload),
+        instances=tuple(instances),
+    )
 
 
-def resolve_local_genomes(config: RuntimeConfig, genome_root: str | Path) -> dict[str, str]:
+def resolve_local_genomes(
+    config: RuntimeConfig,
+    genome_root: str | Path,
+) -> dict[str, str]:
     """Resolve only hash-pinned local genome JSON files and fail closed on any mismatch."""
     root = Path(genome_root)
-    if not root.exists() or not root.is_dir() or root.is_symlink():
-        raise ConfigurationError(f"genome root must be an existing non-symlink directory: {root}")
-    root_resolved = root.resolve()
-    resolved: dict[str, str] = {}
+    try:
+        if not root.exists() or not root.is_dir() or root.is_symlink():
+            raise ConfigurationError(
+                f"genome root must be an existing non-symlink directory: {root}"
+            )
+        root_resolved = root.resolve()
+    except ConfigurationError:
+        raise
+    except OSError as exc:
+        raise ConfigurationError(
+            f"genome root could not be inspected safely: {root}"
+        ) from exc
 
+    resolved: dict[str, str] = {}
     for instance in config.instances:
         reference = instance.genome
         expected_hash = _validate_sha256(
@@ -433,9 +516,19 @@ def resolve_local_genomes(config: RuntimeConfig, genome_root: str | Path) -> dic
             required=True,
         )
         candidate = root / Path(*PurePosixPath(reference.path).parts)
-        candidate_resolved = candidate.resolve(strict=False)
-        if candidate_resolved != root_resolved and root_resolved not in candidate_resolved.parents:
-            raise ConfigurationError(f"{instance.primary_name} genome escapes the configured root")
+        try:
+            candidate_resolved = candidate.resolve(strict=False)
+        except OSError as exc:
+            raise ConfigurationError(
+                f"{instance.primary_name} genome path could not be resolved safely"
+            ) from exc
+        if (
+            candidate_resolved != root_resolved
+            and root_resolved not in candidate_resolved.parents
+        ):
+            raise ConfigurationError(
+                f"{instance.primary_name} genome escapes the configured root"
+            )
         payload = _read_bounded_file(
             candidate,
             max_bytes=MAX_GENOME_BYTES,
@@ -444,17 +537,25 @@ def resolve_local_genomes(config: RuntimeConfig, genome_root: str | Path) -> dic
         actual_hash = _sha256_bytes(payload)
         if actual_hash != expected_hash:
             raise ConfigurationError(
-                f"{instance.primary_name} genome hash mismatch: expected {expected_hash}, got {actual_hash}"
+                f"{instance.primary_name} genome hash mismatch: "
+                f"expected {expected_hash}, got {actual_hash}"
             )
-        genome_document = _decode_json(payload, label=f"{instance.primary_name} genome")
-        genome_object = _require_mapping(genome_document, label=f"{instance.primary_name} genome")
+        genome_document = _decode_json(
+            payload,
+            label=f"{instance.primary_name} genome",
+        )
+        genome_object = _require_mapping(
+            genome_document,
+            label=f"{instance.primary_name} genome",
+        )
         genome_schema_version = _require_exact_version(
             genome_object.get("schema_version"),
             label=f"{instance.primary_name} genome.schema_version",
         )
         if genome_schema_version != reference.schema_version:
             raise ConfigurationError(
-                f"{instance.primary_name} genome schema_version does not match its reference"
+                f"{instance.primary_name} genome schema_version "
+                "does not match its reference"
             )
         resolved[instance.instance_id] = actual_hash
 
